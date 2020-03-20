@@ -1,7 +1,7 @@
-package com.sausage.app.dao.applicationWorkFlow.impl;
+package com.sausage.app.dao.ApplicationWorkFlow.impl;
 
 import com.sausage.app.dao.AbstractHibernateDAO;
-import com.sausage.app.dao.applicationWorkFlow.ApplicationWorkFlowDAO;
+import com.sausage.app.dao.ApplicationWorkFlow.ApplicationWorkFlowDAO;
 import com.sausage.app.entity.ApplicationWorkFlow;
 import org.springframework.stereotype.Repository;
 

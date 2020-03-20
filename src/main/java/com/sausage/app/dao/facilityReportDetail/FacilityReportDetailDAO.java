@@ -1,4 +1,4 @@
 package com.sausage.app.dao.facilityReportDetail;
 
-public interface FacilityReportDAO {
+public interface FacilityReportDetailDAO {
 }

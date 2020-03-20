@@ -1,7 +1,7 @@
-package com.sausage.app.dao.role.impl;
+package com.sausage.app.dao.Role.impl;
 
 import com.sausage.app.dao.AbstractHibernateDAO;
-import com.sausage.app.dao.role.RoleDAO;
+import com.sausage.app.dao.Role.RoleDAO;
 import com.sausage.app.entity.Role;
 import org.springframework.stereotype.Repository;
 

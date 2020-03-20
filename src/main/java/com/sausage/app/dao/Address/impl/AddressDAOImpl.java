@@ -1,7 +1,7 @@
-package com.sausage.app.dao.address.impl;
+package com.sausage.app.dao.Address.impl;
 
 import com.sausage.app.dao.AbstractHibernateDAO;
-import com.sausage.app.dao.address.AddressDAO;
+import com.sausage.app.dao.Address.AddressDAO;
 import com.sausage.app.entity.Address;
 import org.springframework.stereotype.Repository;
 
