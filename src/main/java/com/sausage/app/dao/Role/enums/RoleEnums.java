@@ -5,7 +5,7 @@ public enum RoleEnums {
     HR(2);
 
     private final int value;
-    private RoleEnums(int value){
+    RoleEnums(int value){
         this.value = value;
     }
 

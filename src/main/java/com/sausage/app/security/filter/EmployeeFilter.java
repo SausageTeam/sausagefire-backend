@@ -15,29 +15,29 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class EmployeeFilter  extends OncePerRequestFilter {
+public class EmployeeFilter {
 
-    private UserRoleService userRoleService;
-
-    @Autowired
-    public void setUserRoleService(UserRoleService userRoleService) {
-        this.userRoleService = userRoleService;
-    }
-
-    @Override
-    protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-        String userId = JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY);
-        if(userId == null){
-            String authService = this.getFilterConfig().getInitParameter("services.auth");
-            httpServletResponse.sendRedirect(authService + "?redirect=" + httpServletRequest.getRequestURL());
-        } else{
-            if (userRoleService.getUserRoleId(Integer.parseInt(userId)) == RoleEnums.EMPLOYEE.getValue()){
-                filterChain.doFilter(httpServletRequest, httpServletResponse);
-            }
-            else {
-                String authService = this.getFilterConfig().getInitParameter("services.auth");
-                httpServletResponse.sendRedirect(authService + "?redirect=" + httpServletRequest.getRequestURL());
-            }
-        }
-    }
+//    private UserRoleService userRoleService;
+//
+//    @Autowired
+//    public void setUserRoleService(UserRoleService userRoleService) {
+//        this.userRoleService = userRoleService;
+//    }
+//
+//    @Override
+//    protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
+//        String userId = JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY);
+//        if(userId == null){
+//            String authService = this.getFilterConfig().getInitParameter("services.auth");
+//            httpServletResponse.sendRedirect(authService + "?redirect=" + httpServletRequest.getRequestURL());
+//        } else{
+//            if (userRoleService.getUserRoleId(Integer.parseInt(userId)) == RoleEnums.EMPLOYEE.getValue()){
+//                filterChain.doFilter(httpServletRequest, httpServletResponse);
+//            }
+//            else {
+//                String authService = this.getFilterConfig().getInitParameter("services.auth");
+//                httpServletResponse.sendRedirect(authService + "?redirect=" + httpServletRequest.getRequestURL());
+//            }
+//        }
+//    }
 }
