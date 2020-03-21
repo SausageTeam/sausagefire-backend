@@ -17,8 +17,9 @@ public class Employee implements Serializable {
     @Column(name = "ID")
     private int id;
 
-    @Column(name = "PERSON_ID")
-    private int personID;
+    @OneToOne
+    @JoinColumn(name = "PERSON_ID")
+    private Person person;
 
     @Column(name = "TITLE")
     private String title;

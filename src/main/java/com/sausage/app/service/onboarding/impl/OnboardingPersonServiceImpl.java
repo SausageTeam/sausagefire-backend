@@ -47,8 +47,8 @@ public class OnboardingPersonServiceImpl implements OnboardingPersonService {
             onboardingPerson.setCellPhone(person.getCellphone());
             onboardingPerson.setAlternatePhone(person.getAlternatePhone());
             onboardingPerson.setGender(person.getGender());
-            onboardingPerson.setSSN(person.getSSN());
-            onboardingPerson.setDOB(person.getDOB());
+            onboardingPerson.setSsn(person.getSSN());
+            onboardingPerson.setDob(person.getDOB());
             return onboardingPerson;
         } else {
             return null;
@@ -67,8 +67,8 @@ public class OnboardingPersonServiceImpl implements OnboardingPersonService {
         person.setCellphone(onboardingPerson.getCellPhone());
         person.setAlternatePhone(onboardingPerson.getAlternatePhone());
         person.setGender(onboardingPerson.getGender());
-        person.setSSN(onboardingPerson.getSSN());
-        person.setDOB(onboardingPerson.getDOB());
+        person.setSSN(onboardingPerson.getSsn());
+        person.setDOB(onboardingPerson.getDob());
         personDAO.updatePerson(person);
     }
 

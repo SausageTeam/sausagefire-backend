@@ -39,7 +39,7 @@ public class FilterConfig {
 //        final FilterRegistrationBean<EmployeeFilter> registrationBean = new FilterRegistrationBean<>();
 //        registrationBean.setFilter(employeeFilter);
 //        registrationBean.setInitParameters(Collections.singletonMap("services.auth", authService));
-//        registrationBean.addUrlPatterns("/employee/*");
+//        registrationBean.addUrlPatterns("/Employee/*");
 //        return registrationBean;
 //    }
 

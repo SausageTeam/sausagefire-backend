@@ -1,13 +1,17 @@
 package com.sausage.app.service.onboarding.impl;
 
 import com.sausage.app.dao.Person.PersonDAO;
-import com.sausage.app.dao.employee.EmployeeDAO;
+import com.sausage.app.dao.Employee.EmployeeDAO;
 import com.sausage.app.dao.user.UserDAO;
 import com.sausage.app.domain.onboarding.onboardingAvatar.OnboardingAvatar;
 import com.sausage.app.entity.Employee;
+import com.sausage.app.entity.Person;
+import com.sausage.app.entity.User;
 import com.sausage.app.service.onboarding.OnboardingAvatarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.File;
 
 @Service
 public class OnboardingAvatarServiceImpl implements OnboardingAvatarService {
@@ -33,9 +37,22 @@ public class OnboardingAvatarServiceImpl implements OnboardingAvatarService {
         this.employeeDAO = employeeDAO;
     }
 
+    private Employee getEmployeeByUserId(int userId) {
+        User user = userDAO.getUserById(userId);
+        Person person = personDAO.getPersonById(user.getPersonId());
+        return employeeDAO.getEmployeeByPerson(person);
+    }
+
     @Override
     public OnboardingAvatar getOnboardingAvatar(int userId) {
-        return null;
+        OnboardingAvatar onboardingAvatar = new OnboardingAvatar();
+
+        Employee employee = getEmployeeByUserId(userId);
+        String avatar_path = employee.getAvartar();
+        File avatar = new File(avatar_path);
+        onboardingAvatar.setAvatar(avatar);
+
+        return onboardingAvatar;
     }
 
 }

@@ -21,8 +21,8 @@ public class OnboardingPerson {
 
     String gender;
 
-    String SSN;
+    String ssn;
 
-    String DOB;
+    String dob;
 
 }
