@@ -50,16 +50,17 @@ public class OnboardingPersonServiceImpl implements OnboardingPersonService {
     @Override
     @Transactional
     public void postOnboardingPerson(int userId, OnboardingPersonRequest onboardingPersonRequest) {
+        OnboardingPerson onboardingPerson = onboardingPersonRequest.getOnboardingPerson();
         Person person = getPersonByUserId(userId);
-        person.setFirstName(onboardingPersonRequest.getFirstName());
-        person.setLastName(onboardingPersonRequest.getLastName());
-        person.setMiddleName(onboardingPersonRequest.getMiddleName());
-        person.setEmail(onboardingPersonRequest.getEmail());
-        person.setCellphone(onboardingPersonRequest.getCellPhone());
-        person.setAlternatePhone(onboardingPersonRequest.getCellPhone());
-        person.setGender(onboardingPersonRequest.getGender());
-        person.setSSN(onboardingPersonRequest.getSSN());
-        person.setDOB(onboardingPersonRequest.getDOB());
+        person.setFirstName(onboardingPerson.getFirstName());
+        person.setLastName(onboardingPerson.getLastName());
+        person.setMiddleName(onboardingPerson.getMiddleName());
+        person.setEmail(onboardingPerson.getEmail());
+        person.setCellphone(onboardingPerson.getCellPhone());
+        person.setAlternatePhone(onboardingPerson.getCellPhone());
+        person.setGender(onboardingPerson.getGender());
+        person.setSSN(onboardingPerson.getSSN());
+        person.setDOB(onboardingPerson.getDOB());
         personDAO.updatePerson(person);
     }
 

@@ -7,6 +7,22 @@ import lombok.Setter;
 @Setter
 public class OnboardingPerson {
 
+    String firstName;
+
+    String lastName;
+
+    String middleName;
+
     String email;
+
+    String cellPhone;
+
+    String alternatePhone;
+
+    String gender;
+
+    String SSN;
+
+    String DOB;
 
 }
