@@ -10,4 +10,10 @@ public class UserDAOImpl extends AbstractHibernateDAO<User> implements UserDAO {
 
     public UserDAOImpl() { setClazz(User.class); }
 
+    @Override
+    public User getUser(int id) {
+        return findById(id);
+    }
+
+
 }

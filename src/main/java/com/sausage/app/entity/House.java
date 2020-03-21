@@ -15,14 +15,14 @@ public class House implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    private int id;
+    private Integer id;
 
     @Column(name = "CONTACT_ID")
-    private int contactID;
+    private Integer contactID;
 
     @Column(name = "ADDRESS")
     private String address;
 
     @Column(name = "NUMBER_OF_PERSON")
-    private int numberOfPerson;
+    private Integer numberOfPerson;
 }

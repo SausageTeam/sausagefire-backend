@@ -8,4 +8,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class HouseDAOImpl extends AbstractHibernateDAO<House> implements HouseDAO {
     public HouseDAOImpl() { setClazz(House.class);}
+
+    @Override
+    public House getHouse(int id) {
+        return findById(id);
+    }
 }

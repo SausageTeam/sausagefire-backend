@@ -8,4 +8,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class PersonDAOImpl extends AbstractHibernateDAO<Person> implements PersonDAO {
     public PersonDAOImpl() { setClazz(Person.class); }
+
+    @Override
+    public Person getPerson(int id) {
+        return findById(id);
+    }
 }
