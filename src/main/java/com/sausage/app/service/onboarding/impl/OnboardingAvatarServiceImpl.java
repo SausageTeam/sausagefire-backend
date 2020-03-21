@@ -1,5 +1,6 @@
 package com.sausage.app.service.onboarding.impl;
 
+import com.sausage.app.constant.Constant;
 import com.sausage.app.dao.Person.PersonDAO;
 import com.sausage.app.dao.Employee.EmployeeDAO;
 import com.sausage.app.dao.user.UserDAO;
@@ -7,6 +8,8 @@ import com.sausage.app.domain.onboarding.onboardingAvatar.OnboardingAvatar;
 import com.sausage.app.entity.Employee;
 import com.sausage.app.entity.Person;
 import com.sausage.app.entity.User;
+import com.sausage.app.fileIO.fileInput;
+import com.sausage.app.fileIO.fileOut;
 import com.sausage.app.service.onboarding.OnboardingAvatarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,11 +51,17 @@ public class OnboardingAvatarServiceImpl implements OnboardingAvatarService {
         OnboardingAvatar onboardingAvatar = new OnboardingAvatar();
 
         Employee employee = getEmployeeByUserId(userId);
-        String avatar_path = employee.getAvartar();
-        File avatar = new File(avatar_path);
+        File avatar = fileOut.getAvatar(employee.getId());
         onboardingAvatar.setAvatar(avatar);
 
         return onboardingAvatar;
     }
+
+    @Override
+    public void updateOnboardingAvatar(int userId, File avatar) {
+        Employee employee = getEmployeeByUserId(userId);
+        fileInput.updateAvatar(employee.getId(), avatar);
+    }
+
 
 }

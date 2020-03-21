@@ -1,4 +1,4 @@
-package com.sausage.app.domain.onboarding.onboardingPerson;
+package com.sausage.app.domain.onboarding.onboardingAvatar;
 
 import com.sausage.app.domain.common.GenericResponse;
 import com.sausage.app.domain.common.ServiceStatus;
@@ -7,9 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class OnboardingPersonResponse extends GenericResponse {
-
-    OnboardingPerson onboardingPerson;
+public class OnboardingAvatarPostResponse extends GenericResponse {
 
     ServiceStatus serviceStatus;
 
