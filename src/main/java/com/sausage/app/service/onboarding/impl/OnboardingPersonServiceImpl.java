@@ -40,7 +40,15 @@ public class OnboardingPersonServiceImpl implements OnboardingPersonService {
         Person person = getPersonByUserId(userId);
         if (person != null) {
             OnboardingPerson onboardingPerson = new OnboardingPerson();
+            onboardingPerson.setFirstName(person.getFirstName());
+            onboardingPerson.setLastName(person.getLastName());
+            onboardingPerson.setMiddleName(person.getMiddleName());
             onboardingPerson.setEmail(person.getEmail());
+            onboardingPerson.setCellPhone(person.getCellphone());
+            onboardingPerson.setAlternatePhone(person.getAlternatePhone());
+            onboardingPerson.setGender(person.getGender());
+            onboardingPerson.setSSN(person.getSSN());
+            onboardingPerson.setDOB(person.getDOB());
             return onboardingPerson;
         } else {
             return null;
@@ -57,7 +65,7 @@ public class OnboardingPersonServiceImpl implements OnboardingPersonService {
         person.setMiddleName(onboardingPerson.getMiddleName());
         person.setEmail(onboardingPerson.getEmail());
         person.setCellphone(onboardingPerson.getCellPhone());
-        person.setAlternatePhone(onboardingPerson.getCellPhone());
+        person.setAlternatePhone(onboardingPerson.getAlternatePhone());
         person.setGender(onboardingPerson.getGender());
         person.setSSN(onboardingPerson.getSSN());
         person.setDOB(onboardingPerson.getDOB());
