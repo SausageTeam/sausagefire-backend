@@ -9,7 +9,7 @@ import com.sausage.app.entity.Employee;
 import com.sausage.app.entity.Person;
 import com.sausage.app.entity.User;
 import com.sausage.app.fileIO.fileInput;
-import com.sausage.app.fileIO.fileOut;
+import com.sausage.app.fileIO.fileOutput;
 import com.sausage.app.service.onboarding.OnboardingAvatarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,7 +52,8 @@ public class OnboardingAvatarServiceImpl implements OnboardingAvatarService {
         OnboardingAvatar onboardingAvatar = new OnboardingAvatar();
 
         Employee employee = getEmployeeByUserId(userId);
-        File avatar = fileOut.getAvatar(employee.getId());
+        String avatarPath = String.format(Constant.EMPLOYEE_AVATAR_PATH, employee.getId());
+        File avatar = fileOutput.getAvatar(avatarPath);
         onboardingAvatar.setAvatar(avatar);
 
         return onboardingAvatar;
@@ -65,7 +66,7 @@ public class OnboardingAvatarServiceImpl implements OnboardingAvatarService {
         Employee employee = getEmployeeByUserId(userId);
         String avatarPath = String.format(Constant.EMPLOYEE_AVATAR_PATH, employee.getId());
         fileInput.setAvatar(avatarPath, avatar);
-        employee.setAvartar(avatarPath);
+        employee.setAvatar(avatarPath);
         employeeDAO.setEmployee(employee);
     }
 

@@ -6,6 +6,10 @@ import com.sausage.app.domain.onboarding.onboardingAvatar.OnboardingAvatar;
 import com.sausage.app.domain.onboarding.onboardingAvatar.OnboardingAvatarGetResponse;
 import com.sausage.app.domain.onboarding.onboardingAvatar.OnboardingAvatarPostRequest;
 import com.sausage.app.domain.onboarding.onboardingAvatar.OnboardingAvatarPostResponse;
+import com.sausage.app.domain.onboarding.onboardingDriving.OnboardingDriving;
+import com.sausage.app.domain.onboarding.onboardingDriving.OnboardingDrivingGetResponse;
+import com.sausage.app.domain.onboarding.onboardingDriving.OnboardingDrivingPostRequest;
+import com.sausage.app.domain.onboarding.onboardingDriving.OnboardingDrivingPostResponse;
 import com.sausage.app.domain.onboarding.onboardingPerson.OnboardingPerson;
 import com.sausage.app.domain.onboarding.onboardingPerson.OnboardingPersonRequest;
 import com.sausage.app.domain.onboarding.onboardingPerson.OnboardingPersonResponse;
@@ -14,6 +18,7 @@ import com.sausage.app.domain.onboarding.onboardingVisa.OnboardingVisaGetRespons
 import com.sausage.app.domain.onboarding.onboardingVisa.OnboardingVisaPostRequest;
 import com.sausage.app.domain.onboarding.onboardingVisa.OnboardingVisaPostResponse;
 import com.sausage.app.service.onboarding.OnboardingAvatarService;
+import com.sausage.app.service.onboarding.OnboardingDrivingService;
 import com.sausage.app.service.onboarding.OnboardingPersonService;
 import com.sausage.app.service.onboarding.OnboardingVisaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +26,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
 
 @RestController
 @RequestMapping("/employee/onboarding")
@@ -32,6 +36,8 @@ public class OnboardingController {
     private OnboardingAvatarService onboardingAvatarService;
 
     private OnboardingVisaService onboardingVisaService;
+
+    private OnboardingDrivingService onboardingDrivingService;
 
     @Autowired
     public void setOnboardingPersonService(OnboardingPersonService onboardingPersonService) {
@@ -46,6 +52,11 @@ public class OnboardingController {
     @Autowired
     public void setOnboardingVisaService(OnboardingVisaService onboardingVisaService) {
         this.onboardingVisaService = onboardingVisaService;
+    }
+
+    @Autowired
+    public void setOnboardingDrivingService(OnboardingDrivingService onboardingDrivingService) {
+        this.onboardingDrivingService = onboardingDrivingService;
     }
 
     /**
@@ -116,7 +127,7 @@ public class OnboardingController {
         return onboardingVisaGetResponse;
     }
 
-    @PostMapping(value = "/visa")
+    @PostMapping(value = "/visa", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public @ResponseBody
     OnboardingVisaPostResponse postOnboardingVisa(@RequestBody OnboardingVisaPostRequest onboardingVisaPostRequest){
         OnboardingVisaPostResponse onboardingVisaPostResponse = new OnboardingVisaPostResponse();
@@ -128,6 +139,32 @@ public class OnboardingController {
         return onboardingVisaPostResponse;
     }
 
+    /**
+     * Driving page
+     */
+    @GetMapping(value = "/driving")
+    public @ResponseBody
+    OnboardingDrivingGetResponse getOnboardingDriving(HttpServletRequest httpServletRequest){
+        OnboardingDrivingGetResponse onboardingDrivingGetResponse = new OnboardingDrivingGetResponse();
+        //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
+        int userId = 9;
+        OnboardingDriving onboardingDriving = onboardingDrivingService.getOnboardingDriving(userId);
+        onboardingDrivingGetResponse.setOnboardingDriving(onboardingDriving);
+        prepareResponse(onboardingDrivingGetResponse, true, "");
+        return  onboardingDrivingGetResponse;
+    }
+
+    @PostMapping(value = "/driving", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public @ResponseBody
+    OnboardingDrivingPostResponse postOnboardingDriving(@RequestBody OnboardingDrivingPostRequest onboardingDrivingPostRequest){
+        OnboardingDrivingPostResponse onboardingDrivingPostResponse = new OnboardingDrivingPostResponse();
+        //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
+        int userId = 9;
+        OnboardingDriving onboardingDriving = onboardingDrivingPostRequest.getOnboardingDriving();
+        onboardingDrivingService.setOnboardingDriving(userId, onboardingDriving);
+        prepareResponse(onboardingDrivingPostResponse, true, "");
+        return onboardingDrivingPostResponse;
+    }
 
     private void prepareResponse(GenericResponse response, boolean success, String errorMessage) {
         response.setServiceStatus(new ServiceStatus(success ? "SUCCESS" : "FAILED", success, errorMessage));

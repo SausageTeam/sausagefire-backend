@@ -8,4 +8,6 @@ public interface Constant {
     String EMPLOYEE_AVATAR_PATH ="/static/%d/avatar.jpg";
     int DEFAULT_AVATAR_WIDTH = 64;
     int DEFAULT_AVATAR_HEIGHT = 64;
+
+    String EMPLOYEE_DRIVER_LICENSE_PATH = "/static/%d/driver_license.pdf";
 }

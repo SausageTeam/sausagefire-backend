@@ -22,4 +22,15 @@ public class fileInput {
         }
     }
 
+    public static void setFile(String filePath, File file) {
+        try {
+            File localFile = new File(filePath);
+            if (!localFile.exists()){
+                boolean create = localFile.createNewFile();
+            }
+            boolean rename = file.renameTo(localFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
