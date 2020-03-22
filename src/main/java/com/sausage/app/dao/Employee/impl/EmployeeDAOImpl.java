@@ -23,7 +23,7 @@ public class EmployeeDAOImpl extends AbstractHibernateDAO<Employee> implements E
         Session session = getCurrentSession();
         Query query = session.createQuery(GET_EMPLOYEE);
         query.setParameter("person", person);
-
+        System.out.println(person.getId());
         @SuppressWarnings("unchecked")
         List<Employee> employees = (List<Employee>) query.getResultList();
         return (employees.size() > 0) ? employees.get(0) : null;

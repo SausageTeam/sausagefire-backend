@@ -64,8 +64,11 @@ public class OnboardingVisaServiceImpl implements OnboardingVisaService {
         onboardingVisa.setVisaEndDate(employee.getVisaEndDate());
 
         VisaStatus visaStatus = employee.getVisaStatus();
-        onboardingVisa.setVisaType(visaStatus.getVisaType());
-
+        if (visaStatus == null){
+            onboardingVisa.setVisaType(null);
+        }else {
+            onboardingVisa.setVisaType(visaStatus.getVisaType());
+        }
         return onboardingVisa;
     }
 

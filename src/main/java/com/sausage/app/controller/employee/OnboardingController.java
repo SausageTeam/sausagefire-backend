@@ -100,7 +100,7 @@ public class OnboardingController {
         return onboardingAvatarGetResponse;
     }
 
-    @PostMapping(value = "/avatar", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @PostMapping(value = "/avatar", consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     OnboardingAvatarPostResponse postOnboardingAvatar(@RequestBody OnboardingAvatarPostRequest onboardingAvatarPostRequest){
         OnboardingAvatarPostResponse onboardingAvatarPostResponse = new OnboardingAvatarPostResponse();
@@ -127,7 +127,7 @@ public class OnboardingController {
         return onboardingVisaGetResponse;
     }
 
-    @PostMapping(value = "/visa", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @PostMapping(value = "/visa", consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     OnboardingVisaPostResponse postOnboardingVisa(@RequestBody OnboardingVisaPostRequest onboardingVisaPostRequest){
         OnboardingVisaPostResponse onboardingVisaPostResponse = new OnboardingVisaPostResponse();
@@ -154,7 +154,7 @@ public class OnboardingController {
         return  onboardingDrivingGetResponse;
     }
 
-    @PostMapping(value = "/driving", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @PostMapping(value = "/driving", consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     OnboardingDrivingPostResponse postOnboardingDriving(@RequestBody OnboardingDrivingPostRequest onboardingDrivingPostRequest){
         OnboardingDrivingPostResponse onboardingDrivingPostResponse = new OnboardingDrivingPostResponse();
