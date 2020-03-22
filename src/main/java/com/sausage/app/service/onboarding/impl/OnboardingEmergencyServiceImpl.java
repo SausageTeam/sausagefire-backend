@@ -96,7 +96,7 @@ public class OnboardingEmergencyServiceImpl implements OnboardingEmergencyServic
                 .email(onboardingEmergency.getEmail())
                 .cellphone(onboardingEmergency.getCellPhone())
                 .build();
-        personDAO.updatePerson(person);
+        personDAO.setPerson(person);
 
         AddressDomain addressDomain = onboardingEmergency.getAddressDomain();
         Address address = Address.builder()

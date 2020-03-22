@@ -97,7 +97,7 @@ public class OnboardingReferenceServiceImpl implements OnboardingReferenceServic
                 .email(onboardingReference.getEmail())
                 .cellphone(onboardingReference.getCellPhone())
                 .build();
-        personDAO.updatePerson(person);
+        personDAO.setPerson(person);
 
         AddressDomain addressDomain = onboardingReference.getAddressDomain();
         Address address = Address.builder()

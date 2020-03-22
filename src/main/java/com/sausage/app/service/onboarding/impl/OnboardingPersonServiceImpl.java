@@ -69,7 +69,7 @@ public class OnboardingPersonServiceImpl implements OnboardingPersonService {
         person.setGender(onboardingPerson.getGender());
         person.setSSN(onboardingPerson.getSsn());
         person.setDOB(onboardingPerson.getDob());
-        personDAO.updatePerson(person);
+        personDAO.setPerson(person);
     }
 
 

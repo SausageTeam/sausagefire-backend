@@ -6,7 +6,7 @@ public interface PersonDAO {
 
     Person getPersonById(int id);
 
-    void updatePerson(Person person);
+    Person setPerson(Person person);
 
 //    Person updatePersonNoId(Person person);
 
