@@ -7,5 +7,8 @@ public interface AddressDAO {
 
     Address getAddressByPerson(Person person);
 
-    void setAddressNoId(Address address);
+    void setAddress(Address address);
+
+//    void setAddressNoId(Address address);
+
 }

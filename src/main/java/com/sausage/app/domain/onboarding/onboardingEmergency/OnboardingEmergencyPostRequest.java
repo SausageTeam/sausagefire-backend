@@ -12,6 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 public class OnboardingEmergencyPostRequest {
 
-    List<OnboardingEmergency> onboardingEmergencyList;
+    OnboardingEmergency onboardingEmergency;
 
 }

@@ -1,5 +1,6 @@
 package com.sausage.app.domain.onboarding.onboardingReference;
 
+import com.sausage.app.domain.common.AddressDomain;
 import lombok.*;
 
 @Getter
@@ -19,7 +20,7 @@ public class OnboardingReference {
 
     String cellPhone;
 
-    OnboardingReferenceAddress onboardingReferenceAddress;
+    AddressDomain addressDomain;
 
     String relationship;
 

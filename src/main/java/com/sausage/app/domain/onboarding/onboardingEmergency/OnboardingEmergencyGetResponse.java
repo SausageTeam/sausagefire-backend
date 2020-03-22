@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class OnboardingEmergencyGetResponse extends GenericResponse {
 
-    List<OnboardingEmergency> onboardingEmergencyList;
+    OnboardingEmergency onboardingEmergency;
 
     ServiceStatus serviceStatus;
 

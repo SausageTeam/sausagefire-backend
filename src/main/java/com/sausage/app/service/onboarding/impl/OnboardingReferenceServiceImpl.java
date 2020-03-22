@@ -6,7 +6,7 @@ import com.sausage.app.dao.Person.PersonDAO;
 import com.sausage.app.dao.Contact.ContactDAO;
 import com.sausage.app.dao.user.UserDAO;
 import com.sausage.app.domain.onboarding.onboardingReference.OnboardingReference;
-import com.sausage.app.domain.onboarding.onboardingReference.OnboardingReferenceAddress;
+import com.sausage.app.domain.common.AddressDomain;
 import com.sausage.app.entity.*;
 import com.sausage.app.service.onboarding.OnboardingReferenceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +65,7 @@ public class OnboardingReferenceServiceImpl implements OnboardingReferenceServic
         Person contactPerson = contact.getPerson();
         Address address = addressDAO.getAddressByPerson(contactPerson);
 
-        OnboardingReferenceAddress onboardingReferenceAddress = OnboardingReferenceAddress.builder()
+        AddressDomain addressDomain = AddressDomain.builder()
                 .addressLineOne(address.getAddressLineOne())
                 .addressLineTwo(address.getAddressLineTwo())
                 .city(address.getCity())
@@ -80,7 +80,7 @@ public class OnboardingReferenceServiceImpl implements OnboardingReferenceServic
                 .middleName(contactPerson.getMiddleName())
                 .email(contactPerson.getEmail())
                 .cellPhone(contactPerson.getCellphone())
-                .onboardingReferenceAddress(onboardingReferenceAddress)
+                .addressDomain(addressDomain)
                 .relationship(contact.getRelationship())
                 .title(contact.getTitle())
                 .build();
@@ -97,19 +97,19 @@ public class OnboardingReferenceServiceImpl implements OnboardingReferenceServic
                 .email(onboardingReference.getEmail())
                 .cellphone(onboardingReference.getCellPhone())
                 .build();
-        person = personDAO.updatePersonNoId(person);
+        personDAO.updatePerson(person);
 
-        OnboardingReferenceAddress onboardingReferenceAddress = onboardingReference.getOnboardingReferenceAddress();
+        AddressDomain addressDomain = onboardingReference.getAddressDomain();
         Address address = Address.builder()
-                .addressLineOne(onboardingReferenceAddress.getAddressLineOne())
-                .addressLineTwo(onboardingReferenceAddress.getAddressLineTwo())
-                .city(onboardingReferenceAddress.getCity())
-                .zipCode(onboardingReferenceAddress.getZipCode())
-                .stateName(onboardingReferenceAddress.getStateName())
-                .stateAbbr(onboardingReferenceAddress.getStateAbbr())
+                .addressLineOne(addressDomain.getAddressLineOne())
+                .addressLineTwo(addressDomain.getAddressLineTwo())
+                .city(addressDomain.getCity())
+                .zipCode(addressDomain.getZipCode())
+                .stateName(addressDomain.getStateName())
+                .stateAbbr(addressDomain.getStateAbbr())
                 .person(person)
                 .build();
-        addressDAO.setAddressNoId(address);
+        addressDAO.setAddress(address);
 
         Contact contact = Contact.builder()
                 .person(person)

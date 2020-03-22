@@ -1,6 +1,6 @@
 package com.sausage.app.domain.onboarding.onboardingEmergency;
 
-import com.sausage.app.domain.onboarding.onboardingReference.OnboardingReferenceAddress;
+import com.sausage.app.domain.common.AddressDomain;
 import lombok.*;
 
 @Getter
@@ -20,7 +20,7 @@ public class OnboardingEmergency {
 
     String cellPhone;
 
-    OnboardingReferenceAddress onboardingReferenceAddress;
+    AddressDomain addressDomain;
 
     String relationship;
 

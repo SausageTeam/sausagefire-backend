@@ -8,6 +8,6 @@ public interface PersonDAO {
 
     void updatePerson(Person person);
 
-    Person updatePersonNoId(Person person);
+//    Person updatePersonNoId(Person person);
 
 }

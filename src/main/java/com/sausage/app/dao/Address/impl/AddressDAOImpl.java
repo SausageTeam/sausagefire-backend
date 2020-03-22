@@ -15,7 +15,7 @@ public class AddressDAOImpl extends AbstractHibernateDAO<Address> implements Add
 
     private static final String GET_ADDRESS = "FROM Address WHERE person = :person";
 
-    private static final String GET_ADDRESS_MORE = "FROM Address WHERE addressLineOne = :addressLineOne AND zipCode = :zipCode AND person = :person";
+//    private static final String GET_ADDRESS_MORE = "FROM Address WHERE addressLineOne = :addressLineOne AND zipCode = :zipCode AND person = :person";
 
     public AddressDAOImpl() {
         setClazz(Address.class);
@@ -33,18 +33,24 @@ public class AddressDAOImpl extends AbstractHibernateDAO<Address> implements Add
     }
 
     @Override
-    public void setAddressNoId(Address address) {
+    public void setAddress(Address address) {
         Session session = getCurrentSession();
-        Query query = session.createQuery(GET_ADDRESS_MORE);
-        query.setParameter("addressLineOne", address.getAddressLineOne());
-        query.setParameter("zipCode", address.getZipCode());
-        query.setParameter("person", address.getPerson());
-
-        @SuppressWarnings("unchecked")
-        List<Address> addresses = (List<Address>) query.getResultList();
-        if (addresses.size() == 0) {
-            session.merge(address);
-        }
+        session.merge(address);
     }
+
+//    @Override
+//    public void setAddressNoId(Address address) {
+//        Session session = getCurrentSession();
+//        Query query = session.createQuery(GET_ADDRESS_MORE);
+//        query.setParameter("addressLineOne", address.getAddressLineOne());
+//        query.setParameter("zipCode", address.getZipCode());
+//        query.setParameter("person", address.getPerson());
+//
+//        @SuppressWarnings("unchecked")
+//        List<Address> addresses = (List<Address>) query.getResultList();
+//        if (addresses.size() == 0) {
+//            session.merge(address);
+//        }
+//    }
 
 }

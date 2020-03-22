@@ -1,4 +1,4 @@
-package com.sausage.app.domain.onboarding.onboardingReference;
+package com.sausage.app.domain.common;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OnboardingReferenceAddress {
+public class AddressDomain {
 
     String addressLineOne;
 

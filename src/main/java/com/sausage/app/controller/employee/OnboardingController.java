@@ -83,7 +83,8 @@ public class OnboardingController {
      * Person page
      */
     @GetMapping(value = "/person")
-    public @ResponseBody OnboardingPersonResponse getOnboardingPerson(HttpServletRequest httpServletRequest){
+    public @ResponseBody
+    OnboardingPersonResponse getOnboardingPerson(HttpServletRequest httpServletRequest) {
         OnboardingPersonResponse res = new OnboardingPersonResponse();
 
 //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
@@ -95,7 +96,8 @@ public class OnboardingController {
     }
 
     @PostMapping(value = "/person", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody OnboardingPersonResponse postOnboardingPerson(@RequestBody OnboardingPersonRequest req){
+    public @ResponseBody
+    OnboardingPersonResponse postOnboardingPerson(@RequestBody OnboardingPersonRequest req) {
         OnboardingPersonResponse res = new OnboardingPersonResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
         int userId = 9;
@@ -110,7 +112,7 @@ public class OnboardingController {
      */
     @GetMapping(value = "/avatar")
     public @ResponseBody
-    OnboardingAvatarGetResponse getOnboardingAvatar(HttpServletRequest httpServletRequest){
+    OnboardingAvatarGetResponse getOnboardingAvatar(HttpServletRequest httpServletRequest) {
         OnboardingAvatarGetResponse onboardingAvatarGetResponse = new OnboardingAvatarGetResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
         int userId = 9;
@@ -122,7 +124,7 @@ public class OnboardingController {
 
     @PostMapping(value = "/avatar", consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    OnboardingAvatarPostResponse postOnboardingAvatar(@RequestBody OnboardingAvatarPostRequest onboardingAvatarPostRequest){
+    OnboardingAvatarPostResponse postOnboardingAvatar(@RequestBody OnboardingAvatarPostRequest onboardingAvatarPostRequest) {
         OnboardingAvatarPostResponse onboardingAvatarPostResponse = new OnboardingAvatarPostResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
         int userId = 9;
@@ -137,7 +139,7 @@ public class OnboardingController {
      */
     @GetMapping(value = "/visa")
     public @ResponseBody
-    OnboardingVisaGetResponse getOnboardingVisa(HttpServletRequest httpServletRequest){
+    OnboardingVisaGetResponse getOnboardingVisa(HttpServletRequest httpServletRequest) {
         OnboardingVisaGetResponse onboardingVisaGetResponse = new OnboardingVisaGetResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
         int userId = 9;
@@ -149,7 +151,7 @@ public class OnboardingController {
 
     @PostMapping(value = "/visa", consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    OnboardingVisaPostResponse postOnboardingVisa(@RequestBody OnboardingVisaPostRequest onboardingVisaPostRequest){
+    OnboardingVisaPostResponse postOnboardingVisa(@RequestBody OnboardingVisaPostRequest onboardingVisaPostRequest) {
         OnboardingVisaPostResponse onboardingVisaPostResponse = new OnboardingVisaPostResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
         int userId = 9;
@@ -164,19 +166,19 @@ public class OnboardingController {
      */
     @GetMapping(value = "/driving")
     public @ResponseBody
-    OnboardingDrivingGetResponse getOnboardingDriving(HttpServletRequest httpServletRequest){
+    OnboardingDrivingGetResponse getOnboardingDriving(HttpServletRequest httpServletRequest) {
         OnboardingDrivingGetResponse onboardingDrivingGetResponse = new OnboardingDrivingGetResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
         int userId = 9;
         OnboardingDriving onboardingDriving = onboardingDrivingService.getOnboardingDriving(userId);
         onboardingDrivingGetResponse.setOnboardingDriving(onboardingDriving);
         prepareResponse(onboardingDrivingGetResponse, true, "");
-        return  onboardingDrivingGetResponse;
+        return onboardingDrivingGetResponse;
     }
 
     @PostMapping(value = "/driving", consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    OnboardingDrivingPostResponse postOnboardingDriving(@RequestBody OnboardingDrivingPostRequest onboardingDrivingPostRequest){
+    OnboardingDrivingPostResponse postOnboardingDriving(@RequestBody OnboardingDrivingPostRequest onboardingDrivingPostRequest) {
         OnboardingDrivingPostResponse onboardingDrivingPostResponse = new OnboardingDrivingPostResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
         int userId = 9;
@@ -191,7 +193,7 @@ public class OnboardingController {
      */
     @GetMapping(value = "/reference")
     public @ResponseBody
-    OnboardingReferenceGetResponse getOnboardingReference(HttpServletRequest httpServletRequest){
+    OnboardingReferenceGetResponse getOnboardingReference(HttpServletRequest httpServletRequest) {
         OnboardingReferenceGetResponse onboardingReferenceGetResponse = new OnboardingReferenceGetResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
         int userId = 9;
@@ -203,7 +205,7 @@ public class OnboardingController {
 
     @PostMapping(value = "/reference", consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    OnboardingReferencePostResponse postOnboardingReference(@RequestBody OnboardingReferencePostRequest onboardingReferencePostRequest){
+    OnboardingReferencePostResponse postOnboardingReference(@RequestBody OnboardingReferencePostRequest onboardingReferencePostRequest) {
         OnboardingReferencePostResponse onboardingReferencePostResponse = new OnboardingReferencePostResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
         int userId = 9;
@@ -218,26 +220,24 @@ public class OnboardingController {
      */
     @GetMapping(value = "/emergency")
     public @ResponseBody
-    OnboardingEmergencyGetResponse getOnboardingEmergency(HttpServletRequest httpServletRequest){
+    OnboardingEmergencyGetResponse getOnboardingEmergency(HttpServletRequest httpServletRequest) {
         OnboardingEmergencyGetResponse onboardingEmergencyGetResponse = new OnboardingEmergencyGetResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
         int userId = 9;
-        List<OnboardingEmergency> onboardingEmergencyList = onboardingEmergencyService.getOnboardingEmergency(userId);
-        onboardingEmergencyGetResponse.setOnboardingEmergencyList(onboardingEmergencyList);
+        OnboardingEmergency onboardingEmergency = onboardingEmergencyService.getOnboardingEmergency(userId);
+        onboardingEmergencyGetResponse.setOnboardingEmergency(onboardingEmergency);
         prepareResponse(onboardingEmergencyGetResponse, true, "");
         return onboardingEmergencyGetResponse;
     }
 
     @PostMapping(value = "/emergency", consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    OnboardingEmergencyPostResponse postOnboardingEmergency(@RequestBody OnboardingEmergencyPostRequest onboardingEmergencyPostRequest){
+    OnboardingEmergencyPostResponse postOnboardingEmergency(@RequestBody OnboardingEmergencyPostRequest onboardingEmergencyPostRequest) {
         OnboardingEmergencyPostResponse onboardingEmergencyPostResponse = new OnboardingEmergencyPostResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
         int userId = 9;
-        List<OnboardingEmergency> onboardingEmergencyList = onboardingEmergencyPostRequest.getOnboardingEmergencyList();
-        for (OnboardingEmergency onboardingEmergency : onboardingEmergencyList) {
-            onboardingEmergencyService.setOnboardingEmergency(userId, onboardingEmergency);
-        }
+        OnboardingEmergency onboardingEmergency = onboardingEmergencyPostRequest.getOnboardingEmergency();
+        onboardingEmergencyService.setOnboardingEmergency(userId, onboardingEmergency);
         prepareResponse(onboardingEmergencyPostResponse, true, "");
         return onboardingEmergencyPostResponse;
     }

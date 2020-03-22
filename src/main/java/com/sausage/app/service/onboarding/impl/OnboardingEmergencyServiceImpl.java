@@ -6,16 +6,12 @@ import com.sausage.app.dao.Employee.EmployeeDAO;
 import com.sausage.app.dao.Person.PersonDAO;
 import com.sausage.app.dao.user.UserDAO;
 import com.sausage.app.domain.onboarding.onboardingEmergency.OnboardingEmergency;
-import com.sausage.app.domain.onboarding.onboardingReference.OnboardingReference;
-import com.sausage.app.domain.onboarding.onboardingReference.OnboardingReferenceAddress;
+import com.sausage.app.domain.common.AddressDomain;
 import com.sausage.app.entity.*;
 import com.sausage.app.service.onboarding.OnboardingEmergencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class OnboardingEmergencyServiceImpl implements OnboardingEmergencyService {
@@ -62,14 +58,13 @@ public class OnboardingEmergencyServiceImpl implements OnboardingEmergencyServic
 
     @Override
     @Transactional
-    public List<OnboardingEmergency> getOnboardingEmergency(int userId) {
-        List<OnboardingEmergency> onboardingEmergencyList = new ArrayList<>();
+    public OnboardingEmergency getOnboardingEmergency(int userId) {
         Employee employee = getEmployeeByUserId(userId);
         Contact contact = contactDAO.getContactById(employee.getReferenceId());
         Person contactPerson = contact.getPerson();
         Address address = addressDAO.getAddressByPerson(contactPerson);
 
-        OnboardingReferenceAddress onboardingReferenceAddress = OnboardingReferenceAddress.builder()
+        AddressDomain addressDomain = AddressDomain.builder()
                 .addressLineOne(address.getAddressLineOne())
                 .addressLineTwo(address.getAddressLineTwo())
                 .city(address.getCity())
@@ -78,18 +73,16 @@ public class OnboardingEmergencyServiceImpl implements OnboardingEmergencyServic
                 .stateAbbr(address.getStateAbbr())
                 .build();
 
-        onboardingEmergencyList.add(OnboardingEmergency.builder()
+        return OnboardingEmergency.builder()
                 .firstName(contactPerson.getFirstName())
                 .lastName(contactPerson.getLastName())
                 .middleName(contactPerson.getMiddleName())
                 .email(contactPerson.getEmail())
                 .cellPhone(contactPerson.getCellphone())
-                .onboardingReferenceAddress(onboardingReferenceAddress)
+                .addressDomain(addressDomain)
                 .relationship(contact.getRelationship())
                 .title(contact.getTitle())
-                .build());
-
-        return onboardingEmergencyList;
+                .build();
     }
 
     @Override
@@ -103,19 +96,19 @@ public class OnboardingEmergencyServiceImpl implements OnboardingEmergencyServic
                 .email(onboardingEmergency.getEmail())
                 .cellphone(onboardingEmergency.getCellPhone())
                 .build();
-        person = personDAO.updatePersonNoId(person);
+        personDAO.updatePerson(person);
 
-        OnboardingReferenceAddress onboardingReferenceAddress = onboardingEmergency.getOnboardingReferenceAddress();
+        AddressDomain addressDomain = onboardingEmergency.getAddressDomain();
         Address address = Address.builder()
-                .addressLineOne(onboardingReferenceAddress.getAddressLineOne())
-                .addressLineTwo(onboardingReferenceAddress.getAddressLineTwo())
-                .city(onboardingReferenceAddress.getCity())
-                .zipCode(onboardingReferenceAddress.getZipCode())
-                .stateName(onboardingReferenceAddress.getStateName())
-                .stateAbbr(onboardingReferenceAddress.getStateAbbr())
+                .addressLineOne(addressDomain.getAddressLineOne())
+                .addressLineTwo(addressDomain.getAddressLineTwo())
+                .city(addressDomain.getCity())
+                .zipCode(addressDomain.getZipCode())
+                .stateName(addressDomain.getStateName())
+                .stateAbbr(addressDomain.getStateAbbr())
                 .person(person)
                 .build();
-        addressDAO.setAddressNoId(address);
+        addressDAO.setAddress(address);
 
         Contact contact = Contact.builder()
                 .person(person)
