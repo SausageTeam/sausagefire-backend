@@ -58,5 +58,12 @@ public class Employee implements Serializable {
     private String driverLicenseExpirationDate;
 
     @Column(name = "HOUSE_ID")
-    private int houseID;
+    private int houseId;
+
+    @Column(name = "REFERENCE_ID")
+    private int referenceId;
+
+    @Column(name = "EMERGENCY_ID")
+    private int emergencyId;
+
 }

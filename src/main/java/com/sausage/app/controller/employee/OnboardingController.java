@@ -13,14 +13,15 @@ import com.sausage.app.domain.onboarding.onboardingDriving.OnboardingDrivingPost
 import com.sausage.app.domain.onboarding.onboardingPerson.OnboardingPerson;
 import com.sausage.app.domain.onboarding.onboardingPerson.OnboardingPersonRequest;
 import com.sausage.app.domain.onboarding.onboardingPerson.OnboardingPersonResponse;
+import com.sausage.app.domain.onboarding.onboardingReference.OnboardingReference;
+import com.sausage.app.domain.onboarding.onboardingReference.OnboardingReferenceGetResponse;
+import com.sausage.app.domain.onboarding.onboardingReference.OnboardingReferencePostRequest;
+import com.sausage.app.domain.onboarding.onboardingReference.OnboardingReferencePostResponse;
 import com.sausage.app.domain.onboarding.onboardingVisa.OnboardingVisa;
 import com.sausage.app.domain.onboarding.onboardingVisa.OnboardingVisaGetResponse;
 import com.sausage.app.domain.onboarding.onboardingVisa.OnboardingVisaPostRequest;
 import com.sausage.app.domain.onboarding.onboardingVisa.OnboardingVisaPostResponse;
-import com.sausage.app.service.onboarding.OnboardingAvatarService;
-import com.sausage.app.service.onboarding.OnboardingDrivingService;
-import com.sausage.app.service.onboarding.OnboardingPersonService;
-import com.sausage.app.service.onboarding.OnboardingVisaService;
+import com.sausage.app.service.onboarding.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +39,8 @@ public class OnboardingController {
     private OnboardingVisaService onboardingVisaService;
 
     private OnboardingDrivingService onboardingDrivingService;
+
+    private OnboardingReferenceService onboardingReferenceService;
 
     @Autowired
     public void setOnboardingPersonService(OnboardingPersonService onboardingPersonService) {
@@ -57,6 +60,11 @@ public class OnboardingController {
     @Autowired
     public void setOnboardingDrivingService(OnboardingDrivingService onboardingDrivingService) {
         this.onboardingDrivingService = onboardingDrivingService;
+    }
+
+    @Autowired
+    public void setOnboardingReferenceService(OnboardingReferenceService onboardingReferenceService) {
+        this.onboardingReferenceService = onboardingReferenceService;
     }
 
     /**
@@ -164,6 +172,33 @@ public class OnboardingController {
         onboardingDrivingService.setOnboardingDriving(userId, onboardingDriving);
         prepareResponse(onboardingDrivingPostResponse, true, "");
         return onboardingDrivingPostResponse;
+    }
+
+    /**
+     * Reference page
+     */
+    @GetMapping(value = "/reference")
+    public @ResponseBody
+    OnboardingReferenceGetResponse getOnboardingReference(HttpServletRequest httpServletRequest){
+        OnboardingReferenceGetResponse onboardingReferenceGetResponse = new OnboardingReferenceGetResponse();
+        //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
+        int userId = 9;
+        OnboardingReference onboardingReference = onboardingReferenceService.getOnboardingReference(userId);
+        onboardingReferenceGetResponse.setOnboardingReference(onboardingReference);
+        prepareResponse(onboardingReferenceGetResponse, true, "");
+        return onboardingReferenceGetResponse;
+    }
+
+    @PostMapping(value = "/reference", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    OnboardingReferencePostResponse postOnboardingReference(@RequestBody OnboardingReferencePostRequest onboardingReferencePostRequest){
+        OnboardingReferencePostResponse onboardingReferencePostResponse = new OnboardingReferencePostResponse();
+        //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
+        int userId = 9;
+        OnboardingReference onboardingReference = onboardingReferencePostRequest.getOnboardingReference();
+        onboardingReferenceService.setOnboardingReference(userId, onboardingReference);
+        prepareResponse(onboardingReferencePostResponse, true, "");
+        return onboardingReferencePostResponse;
     }
 
     private void prepareResponse(GenericResponse response, boolean success, String errorMessage) {
