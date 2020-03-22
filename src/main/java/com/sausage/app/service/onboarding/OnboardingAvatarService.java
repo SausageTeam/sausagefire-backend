@@ -8,5 +8,6 @@ public interface OnboardingAvatarService {
 
     OnboardingAvatar getOnboardingAvatar(int userId);
 
-    void updateOnboardingAvatar(int userId, File avatar);
+    void setOnboardingAvatar(int userId, OnboardingAvatar onboardingAvatar);
+
 }

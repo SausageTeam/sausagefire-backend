@@ -6,4 +6,7 @@ import com.sausage.app.entity.Person;
 public interface EmployeeDAO {
 
     Employee getEmployeeByPerson(Person person);
+
+    void setEmployee(Employee employee);
+
 }

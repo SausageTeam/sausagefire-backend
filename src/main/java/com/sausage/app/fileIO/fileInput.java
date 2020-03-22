@@ -10,8 +10,7 @@ import java.io.IOException;
 
 public class fileInput {
 
-    public static void updateAvatar(int employeeId, File file) {
-        String avatarPath = String.format(Constant.EMPLOYEE_AVATAR_PATH, employeeId);
+    public static void setAvatar(String avatarPath, File file) {
         try {
             BufferedImage bufferedImage = ImageIO.read(file);
             BufferedImage newBufferedImage = new BufferedImage(Constant.DEFAULT_AVATAR_WIDTH,

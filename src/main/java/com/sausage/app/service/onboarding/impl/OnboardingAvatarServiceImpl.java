@@ -13,6 +13,7 @@ import com.sausage.app.fileIO.fileOut;
 import com.sausage.app.service.onboarding.OnboardingAvatarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 
@@ -58,9 +59,14 @@ public class OnboardingAvatarServiceImpl implements OnboardingAvatarService {
     }
 
     @Override
-    public void updateOnboardingAvatar(int userId, File avatar) {
+    @Transactional
+    public void setOnboardingAvatar(int userId, OnboardingAvatar onboardingAvatar) {
+        File avatar = onboardingAvatar.getAvatar();
         Employee employee = getEmployeeByUserId(userId);
-        fileInput.updateAvatar(employee.getId(), avatar);
+        String avatarPath = String.format(Constant.EMPLOYEE_AVATAR_PATH, employee.getId());
+        fileInput.setAvatar(avatarPath, avatar);
+        employee.setAvartar(avatarPath);
+        employeeDAO.setEmployee(employee);
     }
 
 

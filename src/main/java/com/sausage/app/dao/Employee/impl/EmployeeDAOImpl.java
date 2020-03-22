@@ -29,4 +29,10 @@ public class EmployeeDAOImpl extends AbstractHibernateDAO<Employee> implements E
         return (employees.size() > 0) ? employees.get(0) : null;
     }
 
+    @Override
+    public void setEmployee(Employee employee) {
+        Session session = getCurrentSession();
+        session.merge(employee);
+    }
+
 }
