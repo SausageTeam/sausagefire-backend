@@ -10,6 +10,10 @@ import com.sausage.app.domain.onboarding.onboardingDriving.OnboardingDriving;
 import com.sausage.app.domain.onboarding.onboardingDriving.OnboardingDrivingGetResponse;
 import com.sausage.app.domain.onboarding.onboardingDriving.OnboardingDrivingPostRequest;
 import com.sausage.app.domain.onboarding.onboardingDriving.OnboardingDrivingPostResponse;
+import com.sausage.app.domain.onboarding.onboardingEmergency.OnboardingEmergency;
+import com.sausage.app.domain.onboarding.onboardingEmergency.OnboardingEmergencyGetResponse;
+import com.sausage.app.domain.onboarding.onboardingEmergency.OnboardingEmergencyPostRequest;
+import com.sausage.app.domain.onboarding.onboardingEmergency.OnboardingEmergencyPostResponse;
 import com.sausage.app.domain.onboarding.onboardingPerson.OnboardingPerson;
 import com.sausage.app.domain.onboarding.onboardingPerson.OnboardingPersonRequest;
 import com.sausage.app.domain.onboarding.onboardingPerson.OnboardingPersonResponse;
@@ -27,6 +31,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequestMapping("/employee/onboarding")
@@ -41,6 +46,8 @@ public class OnboardingController {
     private OnboardingDrivingService onboardingDrivingService;
 
     private OnboardingReferenceService onboardingReferenceService;
+
+    private OnboardingEmergencyService onboardingEmergencyService;
 
     @Autowired
     public void setOnboardingPersonService(OnboardingPersonService onboardingPersonService) {
@@ -65,6 +72,11 @@ public class OnboardingController {
     @Autowired
     public void setOnboardingReferenceService(OnboardingReferenceService onboardingReferenceService) {
         this.onboardingReferenceService = onboardingReferenceService;
+    }
+
+    @Autowired
+    public void setOnboardingEmergencyService(OnboardingEmergencyService onboardingEmergencyService) {
+        this.onboardingEmergencyService = onboardingEmergencyService;
     }
 
     /**
@@ -199,6 +211,35 @@ public class OnboardingController {
         onboardingReferenceService.setOnboardingReference(userId, onboardingReference);
         prepareResponse(onboardingReferencePostResponse, true, "");
         return onboardingReferencePostResponse;
+    }
+
+    /**
+     * Emergency page
+     */
+    @GetMapping(value = "/emergency")
+    public @ResponseBody
+    OnboardingEmergencyGetResponse getOnboardingEmergency(HttpServletRequest httpServletRequest){
+        OnboardingEmergencyGetResponse onboardingEmergencyGetResponse = new OnboardingEmergencyGetResponse();
+        //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
+        int userId = 9;
+        List<OnboardingEmergency> onboardingEmergencyList = onboardingEmergencyService.getOnboardingEmergency(userId);
+        onboardingEmergencyGetResponse.setOnboardingEmergencyList(onboardingEmergencyList);
+        prepareResponse(onboardingEmergencyGetResponse, true, "");
+        return onboardingEmergencyGetResponse;
+    }
+
+    @PostMapping(value = "/emergency", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    OnboardingEmergencyPostResponse postOnboardingEmergency(@RequestBody OnboardingEmergencyPostRequest onboardingEmergencyPostRequest){
+        OnboardingEmergencyPostResponse onboardingEmergencyPostResponse = new OnboardingEmergencyPostResponse();
+        //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
+        int userId = 9;
+        List<OnboardingEmergency> onboardingEmergencyList = onboardingEmergencyPostRequest.getOnboardingEmergencyList();
+        for (OnboardingEmergency onboardingEmergency : onboardingEmergencyList) {
+            onboardingEmergencyService.setOnboardingEmergency(userId, onboardingEmergency);
+        }
+        prepareResponse(onboardingEmergencyPostResponse, true, "");
+        return onboardingEmergencyPostResponse;
     }
 
     private void prepareResponse(GenericResponse response, boolean success, String errorMessage) {
