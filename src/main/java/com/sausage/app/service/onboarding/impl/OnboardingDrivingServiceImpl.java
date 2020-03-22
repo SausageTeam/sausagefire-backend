@@ -63,6 +63,7 @@ public class OnboardingDrivingServiceImpl implements OnboardingDrivingService {
         Employee employee = getEmployeeByUserId(userId);
         String driverLicense = employee.getDriverLicense();
         String driverLicenseExpirationDate = employee.getDriverLicenseExpirationDate();
+        String car = employee.getCar();
 
         PersonalDocument personalDocument = personalDocumentDAO.getPersonalDocumentByEmployeeId(employee.getId());
         String driverLicenseDocPath = personalDocument.getPath();
@@ -72,6 +73,7 @@ public class OnboardingDrivingServiceImpl implements OnboardingDrivingService {
                 .driverLicense(driverLicense)
                 .driverLicenseExpirationDate(driverLicenseExpirationDate)
                 .driverLicenseDoc(driverLicenseDoc)
+                .car(car)
                 .build();
     }
 
@@ -81,6 +83,7 @@ public class OnboardingDrivingServiceImpl implements OnboardingDrivingService {
         Employee employee = getEmployeeByUserId(userId);
         employee.setDriverLicense(onboardingDriving.getDriverLicense());
         employee.setDriverLicenseExpirationDate(onboardingDriving.getDriverLicenseExpirationDate());
+        employee.setCar(onboardingDriving.getCar());
         employeeDAO.setEmployee(employee);
 
         String driverLicenseDocPath = String.format(EMPLOYEE_DRIVER_LICENSE_PATH, employee.getId());

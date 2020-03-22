@@ -17,4 +17,5 @@ public class OnboardingDriving {
 
     File driverLicenseDoc;
 
+    String car;
 }
