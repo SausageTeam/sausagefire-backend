@@ -9,16 +9,16 @@ import lombok.*;
 @AllArgsConstructor
 public class ProfileEmployment {
 
-    String visaType;
-
-    String visaStartDate;
-
-    String visaEndDate;
+    String title;
 
     String startDate;
 
     String endDate;
 
-    String title;
+    String visaType;
+
+    String visaStartDate;
+
+    String visaEndDate;
 
 }

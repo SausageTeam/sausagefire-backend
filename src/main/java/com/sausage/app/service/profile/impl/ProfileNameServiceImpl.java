@@ -52,7 +52,9 @@ public class ProfileNameServiceImpl implements ProfileNameService {
     public ProfileName getProfileName(int userId) {
         Person person = getPersonByUserId(userId);
         Employee employee = employeeDAO.getEmployeeByPerson(person);
-        String fullName = String.format("%s %s %s", person.getFirstName(), person.getMiddleName(), person.getLastName());
+        String firstName = person.getFirstName();
+        String middleName = person.getMiddleName();
+        String lastName = person.getLastName();
         String preferredName = person.getPreferredName();
 
         String avatarPath = String.format(Constant.EMPLOYEE_AVATAR_PATH, employee.getId());
@@ -70,7 +72,9 @@ public class ProfileNameServiceImpl implements ProfileNameService {
         String ssn = person.getSSN();
 
         return ProfileName.builder()
-                .fullName(fullName)
+                .firstName(firstName)
+                .middleName(middleName)
+                .lastName(lastName)
                 .preferredName(preferredName)
                 .avatar(avatar)
                 .dob(dob)
@@ -85,24 +89,15 @@ public class ProfileNameServiceImpl implements ProfileNameService {
         Person person = getPersonByUserId(userId);
         Employee employee = employeeDAO.getEmployeeByPerson(person);
 
-        String fullName = profileName.getFullName();
+        String firstName = profileName.getFirstName();
+        String middleName = profileName.getMiddleName();
+        String lastName = profileName.getLastName();
         String preferredName = profileName.getPreferredName();
         File avatar = profileName.getAvatar();
         String dob = profileName.getDob();
         int age = profileName.getAge();
         String gender = profileName.getGender();
         String ssn = profileName.getSsn();
-
-        String[] arr_fullName = fullName.split(" ");
-        String firstName = arr_fullName[0];
-        String middleName = null;
-        String lastName = null;
-        if (arr_fullName.length == 2){
-            lastName = arr_fullName[1];
-        } else{
-            middleName = arr_fullName[1];
-            lastName = arr_fullName[2];
-        }
 
         person.setFirstName(firstName);
         person.setMiddleName(middleName);

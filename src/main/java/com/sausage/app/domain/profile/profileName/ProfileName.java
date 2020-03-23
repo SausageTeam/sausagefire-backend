@@ -11,7 +11,11 @@ import java.io.File;
 @AllArgsConstructor
 public class ProfileName {
 
-    String fullName;
+    String firstName;
+
+    String middleName;
+
+    String lastName;
 
     String preferredName;
 

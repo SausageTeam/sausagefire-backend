@@ -10,7 +10,11 @@ import lombok.*;
 @AllArgsConstructor
 public class ProfileEmergencyContact {
 
-    String fullName;
+    String firstName;
+
+    String middleName;
+
+    String lastName;
 
     String cellPhone;
 

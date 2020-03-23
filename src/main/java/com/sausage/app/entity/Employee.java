@@ -41,9 +41,8 @@ public class Employee implements Serializable {
     @Column(name = "CAR")
     private String car;
 
-    @OneToOne
-    @JoinColumn(name = "VISA_STATUS_ID")
-    private VisaStatus visaStatus;
+    @Column(name = "VISA_STATUS_ID")
+    private int visaStatusId;
 
     @Column(name = "VISA_START_DATE")
     private String visaStartDate;

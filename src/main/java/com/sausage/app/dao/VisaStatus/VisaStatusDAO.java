@@ -8,4 +8,6 @@ public interface VisaStatusDAO {
 
     VisaStatus setVisaStatus(VisaStatus visaStatus);
 
+    VisaStatus setOtherVisaStatus(String visaType);
+
 }

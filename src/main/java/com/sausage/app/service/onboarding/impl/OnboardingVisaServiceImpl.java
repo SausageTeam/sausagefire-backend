@@ -2,8 +2,8 @@ package com.sausage.app.service.onboarding.impl;
 
 import com.sausage.app.dao.Employee.EmployeeDAO;
 import com.sausage.app.dao.Person.PersonDAO;
-import com.sausage.app.dao.user.UserDAO;
 import com.sausage.app.dao.VisaStatus.VisaStatusDAO;
+import com.sausage.app.dao.user.UserDAO;
 import com.sausage.app.domain.onboarding.onboardingVisa.OnboardingVisa;
 import com.sausage.app.entity.Employee;
 import com.sausage.app.entity.Person;
@@ -58,17 +58,12 @@ public class OnboardingVisaServiceImpl implements OnboardingVisaService {
     @Transactional
     public OnboardingVisa getOnboardingVisa(int userId) {
         OnboardingVisa onboardingVisa = new OnboardingVisa();
-
         Employee employee = getEmployeeByUserId(userId);
+        int visaStatusId = employee.getVisaStatusId();
+        VisaStatus visaStatus = visaStatusDAO.getVisaStatusById(visaStatusId);
+        onboardingVisa.setVisaType(visaStatus.getVisaType());
         onboardingVisa.setVisaStartDate(employee.getVisaStartDate());
         onboardingVisa.setVisaEndDate(employee.getVisaEndDate());
-
-        VisaStatus visaStatus = employee.getVisaStatus();
-        if (visaStatus == null){
-            onboardingVisa.setVisaType(null);
-        }else {
-            onboardingVisa.setVisaType(visaStatus.getVisaType());
-        }
         return onboardingVisa;
     }
 
@@ -80,22 +75,23 @@ public class OnboardingVisaServiceImpl implements OnboardingVisaService {
         String visaStartDate = onboardingVisa.getVisaStartDate();
         String visaEndDate = onboardingVisa.getVisaEndDate();
 
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        String formatDateTime = now.format(format);
-        VisaStatus visaStatus = VisaStatus.builder()
-                .visaType(visaType)
-                .activeFlag(1)
-                .modificationDate(formatDateTime)
-                .createUser(0)
-                .build();
-        visaStatus = visaStatusDAO.setVisaStatus(visaStatus);
+        VisaStatus visaStatus = visaStatusDAO.setOtherVisaStatus(visaType);
+        if (visaStatus == null){
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            String formatDateTime = now.format(format);
+            visaStatus = VisaStatus.builder()
+                    .visaType(visaType)
+                    .modificationDate(formatDateTime)
+                    .createUser(userId)
+                    .build();
+            visaStatus = visaStatusDAO.setVisaStatus(visaStatus);
+        }
 
-        employee.setVisaStatus(visaStatus);
+        employee.setVisaStatusId(visaStatus.getId());
         employee.setVisaStartDate(visaStartDate);
         employee.setVisaEndDate(visaEndDate);
         employeeDAO.setEmployee(employee);
     }
-
 
 }
