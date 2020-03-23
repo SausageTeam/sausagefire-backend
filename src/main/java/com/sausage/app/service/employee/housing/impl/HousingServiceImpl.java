@@ -5,8 +5,6 @@ import com.sausage.app.dao.employee.EmployeeDAO;
 import com.sausage.app.dao.house.HouseDAO;
 import com.sausage.app.dao.user.UserDAO;
 import com.sausage.app.domain.housing.housingInfo.HousingInfo;
-import com.sausage.app.domain.housing.housingInfo.HousingInfoRequest;
-import com.sausage.app.domain.housing.housingInfo.HousingInfoResponse;
 import com.sausage.app.domain.housing.housingInfo.Resident;
 import com.sausage.app.entity.Employee;
 import com.sausage.app.entity.House;
@@ -56,8 +54,8 @@ public class HousingServiceImpl implements HousingService {
 
     @Override
     @Transactional
-    public HousingInfo getHousingInfo(HousingInfoRequest housingInfoRequest){
-        User user = userDAO.getUser(housingInfoRequest.getUserID());
+    public HousingInfo getHousingInfo(int userID){
+        User user = userDAO.getUser(userID);
         int personID = userService.getPersonID(user);
         Employee employee = employeeDAO.getEmployee(personID);
         int houseID = employee.getHouseID();

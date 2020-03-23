@@ -1,9 +1,9 @@
 package com.sausage.app.domain.housing.housingInfo;
 
-import lombok.*;
+        import lombok.*;
 
-import java.io.Serializable;
-import java.util.List;
+        import java.io.Serializable;
+        import java.util.List;
 
 @Getter
 @Setter

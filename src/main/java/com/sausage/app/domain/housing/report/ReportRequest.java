@@ -8,5 +8,4 @@ import lombok.Setter;
 public class ReportRequest {
     private String title;
     private String description;
-    private int userID;
 }

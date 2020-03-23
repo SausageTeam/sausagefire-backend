@@ -1,7 +1,6 @@
 package com.sausage.app.service.employee.housing;
 
 import com.sausage.app.domain.housing.maintenanceHistory.MaintenanceHistory;
-import com.sausage.app.domain.housing.maintenanceHistory.MaintenanceHistoryRequest;
 import com.sausage.app.entity.FacilityReport;
 
 import java.util.List;

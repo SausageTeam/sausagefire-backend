@@ -5,15 +5,12 @@ import com.sausage.app.dao.employee.EmployeeDAO;
 import com.sausage.app.dao.facilityReport.FacilityReportDAO;
 import com.sausage.app.dao.user.UserDAO;
 import com.sausage.app.domain.housing.maintenanceHistory.MaintenanceHistory;
-import com.sausage.app.domain.housing.maintenanceHistory.MaintenanceHistoryRequest;
-import com.sausage.app.domain.housing.report.ReportRequest;
 import com.sausage.app.entity.*;
 import com.sausage.app.service.employee.housing.FacilityReportService;
 import com.sausage.app.service.employee.housing.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.Table;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;

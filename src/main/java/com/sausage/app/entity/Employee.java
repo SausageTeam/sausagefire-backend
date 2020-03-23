@@ -32,8 +32,8 @@ public class Employee implements Serializable {
     @Column(name = "END_DATE")
     private String endDate;
 
-    @Column(name = "AVARTAR")
-    private String avartar;
+    @Column(name = "AVATAR")
+    private String avatar;
 
     @Column(name = "CAR")
     private String car;
