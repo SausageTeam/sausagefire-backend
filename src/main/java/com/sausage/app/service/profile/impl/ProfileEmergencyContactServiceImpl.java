@@ -61,7 +61,9 @@ public class ProfileEmergencyContactServiceImpl implements ProfileEmergencyConta
     @Override
     public ProfileEmergencyContact getProfileEmergencyContact(int userId) {
         Person person = getContactPersonByUserId(userId);
-        String fullName = String.format("%s %s %s", person.getFirstName(), person.getMiddleName(), person.getLastName());
+        String firstName = person.getFirstName();
+        String middleName = person.getMiddleName();
+        String lastName = person.getLastName();
         String cellPhone = person.getCellphone();
 
         Address address = addressDAO.getAddressByPerson(person);
@@ -75,7 +77,9 @@ public class ProfileEmergencyContactServiceImpl implements ProfileEmergencyConta
                 .build();
 
         return ProfileEmergencyContact.builder()
-                .fullName(fullName)
+                .firstName(firstName)
+                .middleName(middleName)
+                .lastName(lastName)
                 .cellPhone(cellPhone)
                 .addressDomain(addressDomain)
                 .build();
@@ -84,20 +88,11 @@ public class ProfileEmergencyContactServiceImpl implements ProfileEmergencyConta
     @Override
     public void setProfileEmergencyContact(int userId, ProfileEmergencyContact profileEmergencyContact) {
         Person person = getContactPersonByUserId(userId);
-        String fullName = profileEmergencyContact.getFullName();
+        String firstName = profileEmergencyContact.getFirstName();
+        String middleName = profileEmergencyContact.getMiddleName();
+        String lastName = profileEmergencyContact.getLastName();
         String cellPhone = profileEmergencyContact.getCellPhone();
         AddressDomain addressDomain = profileEmergencyContact.getAddressDomain();
-
-        String[] arr_fullName = fullName.split(" ");
-        String firstName = arr_fullName[0];
-        String middleName = null;
-        String lastName = null;
-        if (arr_fullName.length == 2){
-            lastName = arr_fullName[1];
-        } else{
-            middleName = arr_fullName[1];
-            lastName = arr_fullName[2];
-        }
 
         person.setFirstName(firstName);
         person.setMiddleName(middleName);

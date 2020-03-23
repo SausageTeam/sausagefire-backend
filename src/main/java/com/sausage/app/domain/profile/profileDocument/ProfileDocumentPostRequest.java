@@ -8,4 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProfileDocumentPostRequest {
+
+    ProfileDocument profileDocument;
+
 }

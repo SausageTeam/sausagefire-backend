@@ -11,6 +11,8 @@ import lombok.*;
 @AllArgsConstructor
 public class ProfileDocumentGetResponse extends GenericResponse {
 
+    ProfileDocument profileDocument;
+
     ServiceStatus serviceStatus;
 
 }
