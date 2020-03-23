@@ -11,6 +11,7 @@ import com.sausage.app.entity.User;
 import com.sausage.app.service.profile.ProfileAddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProfileAddressServiceImpl implements ProfileAddressService {
@@ -18,8 +19,6 @@ public class ProfileAddressServiceImpl implements ProfileAddressService {
     private UserDAO userDAO;
 
     private PersonDAO personDAO;
-
-    private EmployeeDAO employeeDAO;
 
     private AddressDAO addressDAO;
 
@@ -34,11 +33,6 @@ public class ProfileAddressServiceImpl implements ProfileAddressService {
     }
 
     @Autowired
-    public void setEmployeeDAO(EmployeeDAO employeeDAO) {
-        this.employeeDAO = employeeDAO;
-    }
-
-    @Autowired
     public void setAddressDAO(AddressDAO addressDAO) {
         this.addressDAO = addressDAO;
     }
@@ -50,6 +44,7 @@ public class ProfileAddressServiceImpl implements ProfileAddressService {
     }
 
     @Override
+    @Transactional
     public ProfileAddress getProfileAddress(int userId) {
         Address address = getAddressByUserId(userId);
         return ProfileAddress.builder()
@@ -63,6 +58,7 @@ public class ProfileAddressServiceImpl implements ProfileAddressService {
     }
 
     @Override
+    @Transactional
     public void setProfileAddress(int userId, ProfileAddress profileAddress) {
         Address address = getAddressByUserId(userId);
         address.setAddressLineOne(profileAddress.getAddressLineOne());

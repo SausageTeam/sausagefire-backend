@@ -17,8 +17,9 @@ public class ApplicationWorkFlow implements Serializable {
     @Column(name = "ID")
     private int id;
 
-    @Column(name = "EMPLOYEE_ID")
-    private int employeeID;
+    @OneToOne
+    @JoinColumn(name = "EMPLOYEE_ID")
+    private Employee employee;
 
     @Column(name = "CREATED_DATE")
     private String createdDate;
@@ -27,7 +28,7 @@ public class ApplicationWorkFlow implements Serializable {
     private String modificationDate;
 
     @Column(name = "STATUS")
-    private String status;
+    private int status;
 
     @Column(name = "COMMENTS")
     private String comments;

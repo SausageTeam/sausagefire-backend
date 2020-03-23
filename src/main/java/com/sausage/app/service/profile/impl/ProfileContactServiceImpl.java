@@ -9,6 +9,7 @@ import com.sausage.app.entity.User;
 import com.sausage.app.service.profile.ProfileContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProfileContactServiceImpl implements ProfileContactService {
@@ -16,8 +17,6 @@ public class ProfileContactServiceImpl implements ProfileContactService {
     private UserDAO userDAO;
 
     private PersonDAO personDAO;
-
-    private EmployeeDAO employeeDAO;
 
     @Autowired
     public void setUserDAO(UserDAO userDAO) {
@@ -29,17 +28,13 @@ public class ProfileContactServiceImpl implements ProfileContactService {
         this.personDAO = personDAO;
     }
 
-    @Autowired
-    public void setEmployeeDAO(EmployeeDAO employeeDAO) {
-        this.employeeDAO = employeeDAO;
-    }
-
     private Person getPersonByUserId(int userId) {
         User user = userDAO.getUserById(userId);
         return personDAO.getPersonById(user.getPersonId());
     }
 
     @Override
+    @Transactional
     public ProfileContact getProfileContact(int userId) {
         Person person = getPersonByUserId(userId);
         return ProfileContact.builder()
@@ -50,6 +45,7 @@ public class ProfileContactServiceImpl implements ProfileContactService {
     }
 
     @Override
+    @Transactional
     public void setProfileContact(int userId, ProfileContact profileContact) {
         Person person = getPersonByUserId(userId);
         person.setEmail(profileContact.getPersonalEmail());

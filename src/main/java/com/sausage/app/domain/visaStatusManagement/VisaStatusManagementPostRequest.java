@@ -1,4 +1,4 @@
-package com.sausage.app.domain.visaStatus;
+package com.sausage.app.domain.visaStatusManagement;
 
 import lombok.*;
 
@@ -9,7 +9,7 @@ import java.io.File;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class VisaStatusPostRequest {
+public class VisaStatusManagementPostRequest {
 
     File file;
 

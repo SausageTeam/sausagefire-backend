@@ -10,6 +10,7 @@ import com.sausage.app.entity.User;
 import com.sausage.app.service.profile.ProfileDocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProfileDocumentServiceImpl implements ProfileDocumentService {
@@ -42,11 +43,13 @@ public class ProfileDocumentServiceImpl implements ProfileDocumentService {
     }
 
     @Override
+    @Transactional
     public ProfileDocument getProfileDocument(int userId) {
         return null;
     }
 
     @Override
+    @Transactional
     public void setProfileDocument(int userId, ProfileDocument profileDocument) {
 
     }

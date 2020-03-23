@@ -12,6 +12,7 @@ import com.sausage.app.entity.VisaStatus;
 import com.sausage.app.service.profile.ProfileEmploymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -54,6 +55,7 @@ public class ProfileEmploymentServiceImpl implements ProfileEmploymentService {
     }
 
     @Override
+    @Transactional
     public ProfileEmployment getProfileEmployment(int userId) {
         Employee employee = getEmployeeByUserId(userId);
         VisaStatus visaStatus = visaStatusDAO.getVisaStatusById(employee.getVisaStatusId());
@@ -69,6 +71,7 @@ public class ProfileEmploymentServiceImpl implements ProfileEmploymentService {
     }
 
     @Override
+    @Transactional
     public void setProfileEmployment(int userId, ProfileEmployment profileEmployment) {
         Employee employee = getEmployeeByUserId(userId);
 

@@ -10,4 +10,6 @@ public interface Constant {
     int DEFAULT_AVATAR_HEIGHT = 64;
 
     String EMPLOYEE_DRIVER_LICENSE_PATH = "/static/%d/driver_license.pdf";
+
+    String APPLICATION_WORK_FLOW_PATH = "/static/%d/%d.pdf";
 }

@@ -11,6 +11,7 @@ import com.sausage.app.entity.*;
 import com.sausage.app.service.profile.ProfileEmergencyContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProfileEmergencyContactServiceImpl implements ProfileEmergencyContactService {
@@ -59,6 +60,7 @@ public class ProfileEmergencyContactServiceImpl implements ProfileEmergencyConta
     }
 
     @Override
+    @Transactional
     public ProfileEmergencyContact getProfileEmergencyContact(int userId) {
         Person person = getContactPersonByUserId(userId);
         String firstName = person.getFirstName();
@@ -86,6 +88,7 @@ public class ProfileEmergencyContactServiceImpl implements ProfileEmergencyConta
     }
 
     @Override
+    @Transactional
     public void setProfileEmergencyContact(int userId, ProfileEmergencyContact profileEmergencyContact) {
         Person person = getContactPersonByUserId(userId);
         String firstName = profileEmergencyContact.getFirstName();

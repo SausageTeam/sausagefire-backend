@@ -13,6 +13,7 @@ import com.sausage.app.fileIO.fileOutput;
 import com.sausage.app.service.profile.ProfileNameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.time.LocalDate;
@@ -49,6 +50,7 @@ public class ProfileNameServiceImpl implements ProfileNameService {
     }
 
     @Override
+    @Transactional
     public ProfileName getProfileName(int userId) {
         Person person = getPersonByUserId(userId);
         Employee employee = employeeDAO.getEmployeeByPerson(person);
@@ -85,6 +87,7 @@ public class ProfileNameServiceImpl implements ProfileNameService {
     }
 
     @Override
+    @Transactional
     public void setProfileName(int userId, ProfileName profileName) {
         Person person = getPersonByUserId(userId);
         Employee employee = employeeDAO.getEmployeeByPerson(person);

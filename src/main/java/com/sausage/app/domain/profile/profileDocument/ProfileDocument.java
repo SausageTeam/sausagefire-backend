@@ -9,6 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 public class ProfileDocument {
 
+    /* delete when using */
     String temp;
 
 }
