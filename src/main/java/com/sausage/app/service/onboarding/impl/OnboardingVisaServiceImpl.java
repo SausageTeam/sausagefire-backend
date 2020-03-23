@@ -3,7 +3,7 @@ package com.sausage.app.service.onboarding.impl;
 import com.sausage.app.dao.Employee.EmployeeDAO;
 import com.sausage.app.dao.Person.PersonDAO;
 import com.sausage.app.dao.VisaStatus.VisaStatusDAO;
-import com.sausage.app.dao.user.UserDAO;
+import com.sausage.app.dao.User.UserDAO;
 import com.sausage.app.domain.onboarding.onboardingVisa.OnboardingVisa;
 import com.sausage.app.entity.Employee;
 import com.sausage.app.entity.Person;

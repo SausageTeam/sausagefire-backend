@@ -1,7 +1,7 @@
 package com.sausage.app.service.onboarding.impl;
 
 import com.sausage.app.dao.Person.PersonDAO;
-import com.sausage.app.dao.user.UserDAO;
+import com.sausage.app.dao.User.UserDAO;
 import com.sausage.app.domain.onboarding.onboardingPerson.OnboardingPerson;
 import com.sausage.app.domain.onboarding.onboardingPerson.OnboardingPersonRequest;
 import com.sausage.app.entity.Person;

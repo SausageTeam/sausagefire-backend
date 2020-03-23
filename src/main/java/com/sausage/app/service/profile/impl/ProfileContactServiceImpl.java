@@ -2,9 +2,8 @@ package com.sausage.app.service.profile.impl;
 
 import com.sausage.app.dao.Employee.EmployeeDAO;
 import com.sausage.app.dao.Person.PersonDAO;
-import com.sausage.app.dao.user.UserDAO;
+import com.sausage.app.dao.User.UserDAO;
 import com.sausage.app.domain.profile.profileContact.ProfileContact;
-import com.sausage.app.entity.Employee;
 import com.sausage.app.entity.Person;
 import com.sausage.app.entity.User;
 import com.sausage.app.service.profile.ProfileContactService;

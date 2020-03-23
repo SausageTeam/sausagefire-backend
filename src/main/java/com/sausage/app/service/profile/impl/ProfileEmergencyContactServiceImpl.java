@@ -4,7 +4,7 @@ import com.sausage.app.dao.Address.AddressDAO;
 import com.sausage.app.dao.Contact.ContactDAO;
 import com.sausage.app.dao.Employee.EmployeeDAO;
 import com.sausage.app.dao.Person.PersonDAO;
-import com.sausage.app.dao.user.UserDAO;
+import com.sausage.app.dao.User.UserDAO;
 import com.sausage.app.domain.common.AddressDomain;
 import com.sausage.app.domain.profile.profileEmergencyContact.ProfileEmergencyContact;
 import com.sausage.app.entity.*;
