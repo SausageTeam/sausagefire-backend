@@ -9,8 +9,8 @@ import com.sausage.app.entity.Employee;
 import com.sausage.app.entity.Person;
 import com.sausage.app.entity.PersonalDocument;
 import com.sausage.app.entity.User;
-import com.sausage.app.fileIO.fileInput;
-import com.sausage.app.fileIO.fileOutput;
+import com.sausage.app.fileIO.FileInput;
+import com.sausage.app.fileIO.FileOutput;
 import com.sausage.app.service.employee.onboarding.EmployeeOnboardingDrivingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,7 +67,7 @@ public class EmployeeOnboardingDrivingServiceImpl implements EmployeeOnboardingD
 
         PersonalDocument personalDocument = personalDocumentDAO.getPersonalDrivingDocumentByEmployee(employee);
         String driverLicenseDocPath = personalDocument.getPath();
-        File driverLicenseDoc = fileOutput.getFile(driverLicenseDocPath);
+        File driverLicenseDoc = FileOutput.getFile(driverLicenseDocPath);
 
         return OnboardingDriving.builder()
                 .driverLicense(driverLicense)
@@ -86,8 +86,8 @@ public class EmployeeOnboardingDrivingServiceImpl implements EmployeeOnboardingD
         employee.setCar(onboardingDriving.getCar());
         employeeDAO.setEmployee(employee);
 
-        String driverLicenseDocPath = String.format(FILE_PATH, employee.getId(), EMPLOYEE_DRIVER_LICENSE_TITLE);
-        fileInput.setFile(driverLicenseDocPath, onboardingDriving.getDriverLicenseDoc());
+        String driverLicenseDocPath = String.format(DEFAULT_FILE_PATH, employee.getId(), "driver_license.pdf");
+        FileInput.setFile(driverLicenseDocPath, onboardingDriving.getDriverLicenseDoc());
         PersonalDocument personalDocument = personalDocumentDAO.getPersonalDrivingDocumentByEmployee(employee);
         personalDocument.setPath(driverLicenseDocPath);
         personalDocumentDAO.setPersonalDocument(personalDocument);

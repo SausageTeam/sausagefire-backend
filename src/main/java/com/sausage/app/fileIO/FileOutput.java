@@ -4,7 +4,7 @@ import com.sausage.app.constant.Constant;
 
 import java.io.File;
 
-public class fileOutput {
+public class FileOutput {
 
     public static File getAvatar(String avatarPath) {
         File avatar = new File(avatarPath);

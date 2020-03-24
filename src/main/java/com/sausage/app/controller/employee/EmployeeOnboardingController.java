@@ -23,12 +23,19 @@ import com.sausage.app.domain.employee.onboarding.onboardingVisa.OnboardingVisa;
 import com.sausage.app.domain.employee.onboarding.onboardingVisa.OnboardingVisaGetResponse;
 import com.sausage.app.domain.employee.onboarding.onboardingVisa.OnboardingVisaPostRequest;
 import com.sausage.app.domain.employee.onboarding.onboardingVisa.OnboardingVisaPostResponse;
+import com.sausage.app.fileIO.URIConvert;
+import com.sausage.app.service.common.FileStorageService;
 import com.sausage.app.service.employee.onboarding.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/employee/onboarding")
@@ -117,7 +124,7 @@ public class EmployeeOnboardingController {
      */
     @GetMapping(value = "/avatar")
     public @ResponseBody
-    OnboardingAvatarGetResponse getOnboardingAvatar(HttpServletRequest httpServletRequest) {
+    OnboardingAvatarGetResponse getOnboardingAvatar(HttpServletRequest httpServletRequest) throws IOException {
         OnboardingAvatarGetResponse onboardingAvatarGetResponse = new OnboardingAvatarGetResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
         int userId = 2;

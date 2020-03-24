@@ -10,8 +10,8 @@ import com.sausage.app.dao.User.UserDAO;
 import com.sausage.app.dao.VisaStatus.VisaStatusDAO;
 import com.sausage.app.domain.employee.visaStatusManagement.VisaStatusManagement;
 import com.sausage.app.entity.*;
-import com.sausage.app.fileIO.fileInput;
-import com.sausage.app.fileIO.fileOutput;
+import com.sausage.app.fileIO.FileInput;
+import com.sausage.app.fileIO.FileOutput;
 import com.sausage.app.service.employee.visaStatusManagement.EmployeeVisaStatusManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -97,9 +97,9 @@ public class EmployeeVisaStatusManagementServiceImpl implements EmployeeVisaStat
         boolean ifExpired = (diff < 100);
         if (ifF1 && ifEAD && ifExpired){
             DigitalDocument i983_empty = digitalDocumentDAO.getDigitalDocumentByType("I983_empty");
-            File i983_empty_file = fileOutput.getFile(i983_empty.getTemplateLocation());
+            File i983_empty_file = FileOutput.getFile(i983_empty.getTemplateLocation());
             DigitalDocument i983_sample = digitalDocumentDAO.getDigitalDocumentByType("I983_sample");
-            File i983_sample_file = fileOutput.getFile(i983_sample.getTemplateLocation());
+            File i983_sample_file = FileOutput.getFile(i983_sample.getTemplateLocation());
             visaStatusManagement.setIfNeedDownload(true);
             visaStatusManagement.setStatus(applicationWorkFlow.getStatus());
             visaStatusManagement.setComments(applicationWorkFlow.getComments());
@@ -120,7 +120,7 @@ public class EmployeeVisaStatusManagementServiceImpl implements EmployeeVisaStat
     public void setVisaStatusManagement(int userId, File file) {
         Employee employee = getEmployeeByUserId(userId);
         ApplicationWorkFlow applicationWorkFlow = applicationWorkFlowDAO.getApplicationWorkFlowByEmployee(employee);
-        String filePath = String.format(Constant.FILE_PATH, employee.getId(), ApplicationWorkFlowStatusEnums.values()[applicationWorkFlow.getStatus()].getStr());
-        fileInput.setFile(filePath, file);
+        String filePath = String.format(Constant.DEFAULT_FILE_PATH, employee.getId(), ApplicationWorkFlowStatusEnums.values()[applicationWorkFlow.getStatus()].getStr() + ".pdf");
+        FileInput.setFile(filePath, file);
     }
 }

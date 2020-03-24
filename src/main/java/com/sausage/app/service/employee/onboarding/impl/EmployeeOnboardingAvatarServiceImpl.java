@@ -8,14 +8,15 @@ import com.sausage.app.domain.employee.onboarding.onboardingAvatar.OnboardingAva
 import com.sausage.app.entity.Employee;
 import com.sausage.app.entity.Person;
 import com.sausage.app.entity.User;
-import com.sausage.app.fileIO.fileInput;
-import com.sausage.app.fileIO.fileOutput;
+import com.sausage.app.fileIO.FileOutput;
+import com.sausage.app.fileIO.URIConvert;
 import com.sausage.app.service.employee.onboarding.EmployeeOnboardingAvatarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
+import java.net.URI;
 
 @Service
 public class EmployeeOnboardingAvatarServiceImpl implements EmployeeOnboardingAvatarService {
@@ -48,26 +49,26 @@ public class EmployeeOnboardingAvatarServiceImpl implements EmployeeOnboardingAv
     }
 
     @Override
+    @Transactional
     public OnboardingAvatar getOnboardingAvatar(int userId) {
-        OnboardingAvatar onboardingAvatar = new OnboardingAvatar();
-
         Employee employee = getEmployeeByUserId(userId);
-        String avatarPath = String.format(Constant.EMPLOYEE_AVATAR_PATH, employee.getId());
-        File avatar = fileOutput.getAvatar(avatarPath);
-        onboardingAvatar.setAvatar(avatar);
-
-        return onboardingAvatar;
+        String avatarPath = String.format(Constant.DEFAULT_FILE_PATH, employee.getId(), "avatar.jpg");
+        FileOutput.getAvatar(avatarPath);
+        String uri = URIConvert.getUri(employee.getId(), "avatar.jpg");
+        return OnboardingAvatar.builder()
+                .avatarUri(uri)
+                .build();
     }
 
     @Override
     @Transactional
     public void setOnboardingAvatar(int userId, OnboardingAvatar onboardingAvatar) {
-        File avatar = onboardingAvatar.getAvatar();
-        Employee employee = getEmployeeByUserId(userId);
-        String avatarPath = String.format(Constant.EMPLOYEE_AVATAR_PATH, employee.getId());
-        fileInput.setAvatar(avatarPath, avatar);
-        employee.setAvatar(avatarPath);
-        employeeDAO.setEmployee(employee);
+//        File avatar = onboardingAvatar.getAvatar();
+//        Employee employee = getEmployeeByUserId(userId);
+//        String avatarPath = String.format(Constant.EMPLOYEE_AVATAR_PATH, employee.getId());
+//        FileInput.setAvatar(avatarPath, avatar);
+//        employee.setAvatar(avatarPath);
+//        employeeDAO.setEmployee(employee);
     }
 
 

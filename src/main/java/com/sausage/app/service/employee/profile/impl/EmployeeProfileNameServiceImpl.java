@@ -8,8 +8,8 @@ import com.sausage.app.domain.employee.profile.profileName.ProfileName;
 import com.sausage.app.entity.Employee;
 import com.sausage.app.entity.Person;
 import com.sausage.app.entity.User;
-import com.sausage.app.fileIO.fileInput;
-import com.sausage.app.fileIO.fileOutput;
+import com.sausage.app.fileIO.FileInput;
+import com.sausage.app.fileIO.FileOutput;
 import com.sausage.app.service.employee.profile.EmployeeProfileNameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,8 +59,8 @@ public class EmployeeProfileNameServiceImpl implements EmployeeProfileNameServic
         String lastName = person.getLastName();
         String preferredName = person.getPreferredName();
 
-        String avatarPath = String.format(Constant.EMPLOYEE_AVATAR_PATH, employee.getId());
-        File avatar = fileOutput.getAvatar(avatarPath);
+        String avatarPath = String.format(Constant.DEFAULT_FILE_PATH, employee.getId(), "avatar.jpg");
+        File avatar = FileOutput.getAvatar(avatarPath);
 
         String dob = person.getDOB();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -111,8 +111,8 @@ public class EmployeeProfileNameServiceImpl implements EmployeeProfileNameServic
         person.setSSN(ssn);
         personDAO.setPerson(person);
 
-        String avatarPath = String.format(Constant.EMPLOYEE_AVATAR_PATH, employee.getId());
-        fileInput.setAvatar(avatarPath, avatar);
+        String avatarPath = String.format(Constant.DEFAULT_FILE_PATH, employee.getId(), "avatar.jpg");
+        FileInput.setAvatar(avatarPath, avatar);
     }
 
 }

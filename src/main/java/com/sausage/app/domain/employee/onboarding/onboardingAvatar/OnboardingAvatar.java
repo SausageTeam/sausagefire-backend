@@ -1,14 +1,16 @@
 package com.sausage.app.domain.employee.onboarding.onboardingAvatar;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.File;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class OnboardingAvatar {
 
-    File avatar;
+    String avatarUri;
 
 }

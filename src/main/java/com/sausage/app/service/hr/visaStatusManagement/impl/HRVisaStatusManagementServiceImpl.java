@@ -11,7 +11,7 @@ import com.sausage.app.entity.ApplicationWorkFlow;
 import com.sausage.app.entity.Employee;
 import com.sausage.app.entity.Person;
 import com.sausage.app.entity.PersonalDocument;
-import com.sausage.app.fileIO.fileOutput;
+import com.sausage.app.fileIO.FileOutput;
 import com.sausage.app.service.hr.visaStatusManagement.HRVisaStatusManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -90,7 +90,7 @@ public class HRVisaStatusManagementServiceImpl implements HRVisaStatusManagement
             List<File> documentReceivedList = new ArrayList<>();
             for (PersonalDocument personalDocument : personalDocumentList) {
                 documentTitleList.add(personalDocument.getTitle());
-                documentReceivedList.add(fileOutput.getFile(personalDocument.getPath()));
+                documentReceivedList.add(FileOutput.getFile(personalDocument.getPath()));
             }
 
             String workAuthorization = ApplicationWorkFlowStatusEnums.values()[applicationWorkFlow.getStatus()].getStr();

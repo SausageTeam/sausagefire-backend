@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class fileInput {
+public class FileInput {
 
     public static void setAvatar(String avatarPath, File file) {
         try {
