@@ -102,17 +102,16 @@ public class EmployeeOnboardingPersonServiceImpl implements EmployeeOnboardingPe
     @Override
     @Transactional
     public void setOnboardingPerson(int userId, OnboardingPerson onboardingPerson) {
-        Person person = Person.builder()
-                .firstName(onboardingPerson.getFirstName())
-                .middleName(onboardingPerson.getMiddleName())
-                .lastName(onboardingPerson.getLastName())
-                .email(onboardingPerson.getEmail())
-                .cellphone(onboardingPerson.getCellPhone())
-                .alternatePhone(onboardingPerson.getAlternatePhone())
-                .gender(onboardingPerson.getGender())
-                .SSN(onboardingPerson.getSsn())
-                .DOB(onboardingPerson.getDob())
-                .build();
+        Person person = getPersonByUserId(userId);
+        person.setFirstName(onboardingPerson.getFirstName());
+        person.setMiddleName(onboardingPerson.getMiddleName());
+        person.setLastName(onboardingPerson.getLastName());
+        person.setEmail(onboardingPerson.getEmail());
+        person.setCellphone(onboardingPerson.getCellPhone());
+        person.setAlternatePhone(onboardingPerson.getAlternatePhone());
+        person.setGender(onboardingPerson.getGender());
+        person.setSSN(onboardingPerson.getSsn());
+        person.setDOB(onboardingPerson.getDob());
         personDAO.setPerson(person);
     }
 
