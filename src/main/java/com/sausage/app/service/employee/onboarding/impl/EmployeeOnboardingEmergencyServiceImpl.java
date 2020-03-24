@@ -5,8 +5,8 @@ import com.sausage.app.dao.Contact.ContactDAO;
 import com.sausage.app.dao.Employee.EmployeeDAO;
 import com.sausage.app.dao.Person.PersonDAO;
 import com.sausage.app.dao.User.UserDAO;
-import com.sausage.app.domain.employee.onboarding.onboardingEmergency.OnboardingEmergency;
 import com.sausage.app.domain.common.AddressDomain;
+import com.sausage.app.domain.employee.onboarding.onboardingEmergency.OnboardingEmergency;
 import com.sausage.app.entity.*;
 import com.sausage.app.service.employee.onboarding.EmployeeOnboardingEmergencyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class EmployeeOnboardingEmergencyServiceImpl implements EmployeeOnboardingEmergencyService {
+
     private UserDAO userDAO;
 
     private PersonDAO personDAO;
@@ -60,7 +61,11 @@ public class EmployeeOnboardingEmergencyServiceImpl implements EmployeeOnboardin
     @Transactional
     public OnboardingEmergency getOnboardingEmergency(int userId) {
         Employee employee = getEmployeeByUserId(userId);
-        Contact contact = contactDAO.getContactById(employee.getReferenceId());
+        if (employee.getEmergencyId() == 0){
+            return OnboardingEmergency.builder()
+                    .addressDomain(AddressDomain.builder().build()).build();
+        }
+        Contact contact = contactDAO.getContactById(employee.getEmergencyId());
         Person contactPerson = contact.getPerson();
         Address address = addressDAO.getAddressByPerson(contactPerson);
 
@@ -89,35 +94,65 @@ public class EmployeeOnboardingEmergencyServiceImpl implements EmployeeOnboardin
     @Transactional
     public void setOnboardingEmergency(int userId, OnboardingEmergency onboardingEmergency) {
         Employee employee = getEmployeeByUserId(userId);
-        Person person = Person.builder()
-                .firstName(onboardingEmergency.getFirstName())
-                .lastName(onboardingEmergency.getLastName())
-                .middleName(onboardingEmergency.getMiddleName())
-                .email(onboardingEmergency.getEmail())
-                .cellphone(onboardingEmergency.getCellPhone())
-                .build();
-        personDAO.setPerson(person);
-
         AddressDomain addressDomain = onboardingEmergency.getAddressDomain();
-        Address address = Address.builder()
-                .addressLineOne(addressDomain.getAddressLineOne())
-                .addressLineTwo(addressDomain.getAddressLineTwo())
-                .city(addressDomain.getCity())
-                .zipCode(addressDomain.getZipCode())
-                .stateName(addressDomain.getStateName())
-                .stateAbbr(addressDomain.getStateAbbr())
-                .person(person)
-                .build();
-        addressDAO.setAddress(address);
+        Contact contact;
+        Person person;
+        Address address;
+        if (employee.getEmergencyId() == 0) {
+            person = Person.builder()
+                    .firstName(onboardingEmergency.getFirstName())
+                    .lastName(onboardingEmergency.getLastName())
+                    .middleName(onboardingEmergency.getMiddleName())
+                    .email(onboardingEmergency.getEmail())
+                    .cellphone(onboardingEmergency.getCellPhone())
+                    .build();
+            person = personDAO.setPerson(person);
 
-        Contact contact = Contact.builder()
-                .person(person)
-                .relationship(onboardingEmergency.getRelationship())
-                .title(onboardingEmergency.getTitle())
-                .isReference(1)
-                .isEmergency(0)
-                .isLandlord(0).build();
-        contact = contactDAO.setContact(contact);
+
+            address = Address.builder()
+                    .addressLineOne(addressDomain.getAddressLineOne())
+                    .addressLineTwo(addressDomain.getAddressLineTwo())
+                    .city(addressDomain.getCity())
+                    .zipCode(addressDomain.getZipCode())
+                    .stateName(addressDomain.getStateName())
+                    .stateAbbr(addressDomain.getStateAbbr())
+                    .person(person)
+                    .build();
+            addressDAO.setAddress(address);
+
+
+            contact = Contact.builder()
+                    .person(person)
+                    .relationship(onboardingEmergency.getRelationship())
+                    .title(onboardingEmergency.getTitle())
+                    .isEmergency(1)
+                    .isEmergency(0)
+                    .isLandlord(0).build();
+            contact = contactDAO.setContact(contact);
+        } else{
+            contact = contactDAO.getContactById(employee.getEmergencyId());
+            person = contact.getPerson();
+            address = addressDAO.getAddressByPerson(person);
+
+            person.setFirstName(onboardingEmergency.getFirstName());
+            person.setMiddleName(onboardingEmergency.getMiddleName());
+            person.setLastName(onboardingEmergency.getLastName());
+            person.setEmail(onboardingEmergency.getEmail());
+            person.setCellphone(onboardingEmergency.getCellPhone());
+            person = personDAO.setPerson(person);
+
+            address.setAddressLineOne(addressDomain.getAddressLineOne());
+            address.setAddressLineTwo(addressDomain.getAddressLineTwo());
+            address.setCity(addressDomain.getCity());
+            address.setZipCode(addressDomain.getZipCode());
+            address.setStateName(addressDomain.getStateName());
+            address.setStateAbbr(addressDomain.getStateAbbr());
+            address.setPerson(person);
+            addressDAO.setAddress(address);
+
+            contact.setPerson(person);
+            contactDAO.setContact(contact);
+        }
 
         employee.setEmergencyId(contact.getId());
         employeeDAO.setEmployee(employee);
