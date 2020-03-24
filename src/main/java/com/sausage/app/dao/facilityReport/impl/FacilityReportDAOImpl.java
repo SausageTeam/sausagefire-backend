@@ -2,16 +2,9 @@ package com.sausage.app.dao.facilityReport.impl;
 
 import com.sausage.app.dao.AbstractHibernateDAO;
 import com.sausage.app.dao.Person.PersonDAO;
-import com.sausage.app.dao.Person.impl.PersonDAOImpl;
 import com.sausage.app.dao.employee.EmployeeDAO;
-import com.sausage.app.dao.employee.impl.EmployeeDAOImpl;
 import com.sausage.app.dao.facilityReport.FacilityReportDAO;
-import com.sausage.app.domain.housing.report.Report;
-import com.sausage.app.domain.housing.report.ReportRequest;
-import com.sausage.app.domain.housing.report.ReportResponse;
-import com.sausage.app.entity.Employee;
 import com.sausage.app.entity.FacilityReport;
-import com.sausage.app.entity.Person;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
