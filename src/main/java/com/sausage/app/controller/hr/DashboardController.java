@@ -39,7 +39,7 @@ public class DashboardController {
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
         int userId = 9;
         int employeeId = dashboardPostRequest.getEmployeeId();
-        HRDashboardService.postHRDashboard(employeeId);;
+        HRDashboardService.postHRDashboard(employeeId);
         prepareResponse(dashboardPostResponse, true, "");
         return dashboardPostResponse;
     }

@@ -1,5 +1,6 @@
 package com.sausage.app.service.hr.dashboard;
 
+<<<<<<< HEAD
 import com.sausage.app.domain.hr.dashboard.Dashboard;
 import com.sausage.app.domain.hr.dashboard.Trouble;
 
@@ -11,4 +12,7 @@ public interface HRDashboardService {
 
     void postHRDashboard(int employeeId);
 
+=======
+public interface DashboardService {
+>>>>>>> kevin/onboarding
 }
