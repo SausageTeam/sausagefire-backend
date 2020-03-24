@@ -94,39 +94,67 @@ public class EmployeeOnboardingReferenceServiceImpl implements EmployeeOnboardin
     @Transactional
     public void setOnboardingReference(int userId, OnboardingReference onboardingReference) {
         Employee employee = getEmployeeByUserId(userId);
-        System.out.println(onboardingReference.getFirstName());
-        Person person = Person.builder()
-                .firstName(onboardingReference.getFirstName())
-                .lastName(onboardingReference.getLastName())
-                .middleName(onboardingReference.getMiddleName())
-                .email(onboardingReference.getEmail())
-                .cellphone(onboardingReference.getCellPhone())
-                .build();
-        personDAO.setPerson(person);
-
         AddressDomain addressDomain = onboardingReference.getAddressDomain();
-        System.out.println(addressDomain == null);
-        Address address = Address.builder()
-                .addressLineOne(addressDomain.getAddressLineOne())
-                .addressLineTwo(addressDomain.getAddressLineTwo())
-                .city(addressDomain.getCity())
-                .zipCode(addressDomain.getZipCode())
-                .stateName(addressDomain.getStateName())
-                .stateAbbr(addressDomain.getStateAbbr())
-                .person(person)
-                .build();
-        addressDAO.setAddress(address);
+        Contact contact;
+        Person person;
+        Address address;
+        if (employee.getReferenceId() == 0) {
+            person = Person.builder()
+                    .firstName(onboardingReference.getFirstName())
+                    .lastName(onboardingReference.getLastName())
+                    .middleName(onboardingReference.getMiddleName())
+                    .email(onboardingReference.getEmail())
+                    .cellphone(onboardingReference.getCellPhone())
+                    .build();
+            person = personDAO.setPerson(person);
 
-        Contact contact = Contact.builder()
-                .person(person)
-                .relationship(onboardingReference.getRelationship())
-                .title(onboardingReference.getTitle())
-                .isReference(1)
-                .isEmergency(0)
-                .isLandlord(0).build();
-        contact = contactDAO.setContact(contact);
 
-        employee.setEmergencyId(contact.getId());
+            address = Address.builder()
+                    .addressLineOne(addressDomain.getAddressLineOne())
+                    .addressLineTwo(addressDomain.getAddressLineTwo())
+                    .city(addressDomain.getCity())
+                    .zipCode(addressDomain.getZipCode())
+                    .stateName(addressDomain.getStateName())
+                    .stateAbbr(addressDomain.getStateAbbr())
+                    .person(person)
+                    .build();
+            addressDAO.setAddress(address);
+
+
+            contact = Contact.builder()
+                    .person(person)
+                    .relationship(onboardingReference.getRelationship())
+                    .title(onboardingReference.getTitle())
+                    .isReference(1)
+                    .isEmergency(0)
+                    .isLandlord(0).build();
+            contact = contactDAO.setContact(contact);
+        } else{
+           contact = contactDAO.getContactById(employee.getReferenceId());
+           person = contact.getPerson();
+           address = addressDAO.getAddressByPerson(person);
+
+           person.setFirstName(onboardingReference.getFirstName());
+           person.setMiddleName(onboardingReference.getMiddleName());
+           person.setLastName(onboardingReference.getLastName());
+           person.setEmail(onboardingReference.getEmail());
+           person.setCellphone(onboardingReference.getCellPhone());
+           person = personDAO.setPerson(person);
+
+           address.setAddressLineOne(addressDomain.getAddressLineOne());
+           address.setAddressLineTwo(addressDomain.getAddressLineTwo());
+           address.setCity(addressDomain.getCity());
+           address.setZipCode(addressDomain.getZipCode());
+           address.setStateName(addressDomain.getStateName());
+           address.setStateAbbr(addressDomain.getStateAbbr());
+           address.setPerson(person);
+           addressDAO.setAddress(address);
+
+           contact.setPerson(person);
+           contactDAO.setContact(contact);
+        }
+
+        employee.setReferenceId(contact.getId());
         employeeDAO.setEmployee(employee);
     }
 }
