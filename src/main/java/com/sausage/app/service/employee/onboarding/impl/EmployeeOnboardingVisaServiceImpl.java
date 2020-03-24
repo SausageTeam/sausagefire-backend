@@ -61,9 +61,11 @@ public class EmployeeOnboardingVisaServiceImpl implements EmployeeOnboardingVisa
         Employee employee = getEmployeeByUserId(userId);
         int visaStatusId = employee.getVisaStatusId();
         VisaStatus visaStatus = visaStatusDAO.getVisaStatusById(visaStatusId);
-        onboardingVisa.setVisaType(visaStatus.getVisaType());
-        onboardingVisa.setVisaStartDate(employee.getVisaStartDate());
-        onboardingVisa.setVisaEndDate(employee.getVisaEndDate());
+        if (visaStatus != null) {
+            onboardingVisa.setVisaType(visaStatus.getVisaType());
+            onboardingVisa.setVisaStartDate(employee.getVisaStartDate());
+            onboardingVisa.setVisaEndDate(employee.getVisaEndDate());
+        }
         return onboardingVisa;
     }
 

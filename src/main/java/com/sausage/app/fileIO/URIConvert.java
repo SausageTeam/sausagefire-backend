@@ -41,7 +41,7 @@ public class URIConvert {
         String fileName = "avatar.jpg";
 
         try {
-            Path targetLocation = this.fileStorageLocation.resolve(employeeID + fileName);
+            Path targetLocation = this.fileStorageLocation.resolve(employeeID + "/" + fileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
