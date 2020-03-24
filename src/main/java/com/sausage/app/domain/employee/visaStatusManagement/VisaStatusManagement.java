@@ -17,8 +17,8 @@ public class VisaStatusManagement {
 
     String comments;
 
-    File emptyForm;
+    String emptyForm;
 
-    File sampleForm;
+    String sampleForm;
 
 }

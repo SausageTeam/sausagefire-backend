@@ -12,6 +12,7 @@ import com.sausage.app.domain.employee.visaStatusManagement.VisaStatusManagement
 import com.sausage.app.entity.*;
 import com.sausage.app.fileIO.FileInput;
 import com.sausage.app.fileIO.FileOutput;
+import com.sausage.app.fileIO.URIConvert;
 import com.sausage.app.service.employee.visaStatusManagement.EmployeeVisaStatusManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,8 @@ public class EmployeeVisaStatusManagementServiceImpl implements EmployeeVisaStat
     private ApplicationWorkFlowDAO applicationWorkFlowDAO;
 
     private DigitalDocumentDAO digitalDocumentDAO;
+
+    private URIConvert uriConvert;
 
     @Autowired
     public void setUserDAO(UserDAO userDAO) {
@@ -70,6 +73,11 @@ public class EmployeeVisaStatusManagementServiceImpl implements EmployeeVisaStat
         this.digitalDocumentDAO = digitalDocumentDAO;
     }
 
+    @Autowired
+    public void setUriConvert(URIConvert uriConvert) {
+        this.uriConvert = uriConvert;
+    }
+
     private Employee getEmployeeByUserId(int userId) {
         User user = userDAO.getUserById(userId);
         Person person = personDAO.getPersonById(user.getPersonId());
@@ -96,15 +104,13 @@ public class EmployeeVisaStatusManagementServiceImpl implements EmployeeVisaStat
         boolean ifEAD = (applicationWorkFlow.getStatus() == OPT_EAD.getValue());
         boolean ifExpired = (diff < 100);
         if (ifF1 && ifEAD && ifExpired){
-            DigitalDocument i983_empty = digitalDocumentDAO.getDigitalDocumentByType("I983_empty");
-            File i983_empty_file = FileOutput.getFile(i983_empty.getTemplateLocation());
-            DigitalDocument i983_sample = digitalDocumentDAO.getDigitalDocumentByType("I983_sample");
-            File i983_sample_file = FileOutput.getFile(i983_sample.getTemplateLocation());
+            String uri_empty = uriConvert.getUri(employee.getId(), "I983_empty");
+            String uri_sample = uriConvert.getUri(employee.getId(), "I983_sample");
             visaStatusManagement.setIfNeedDownload(true);
             visaStatusManagement.setStatus(applicationWorkFlow.getStatus());
             visaStatusManagement.setComments(applicationWorkFlow.getComments());
-            visaStatusManagement.setEmptyForm(i983_empty_file);
-            visaStatusManagement.setSampleForm(i983_sample_file);
+            visaStatusManagement.setEmptyForm(uri_empty);
+            visaStatusManagement.setSampleForm(uri_sample);
         }else{
             visaStatusManagement.setIfNeedDownload(false);
             visaStatusManagement.setStatus(applicationWorkFlow.getStatus());
