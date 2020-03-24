@@ -32,6 +32,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
@@ -136,12 +137,11 @@ public class EmployeeOnboardingController {
 
     @PostMapping(value = "/avatar", consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    OnboardingAvatarPostResponse postOnboardingAvatar(@RequestBody OnboardingAvatarPostRequest onboardingAvatarPostRequest) {
+    OnboardingAvatarPostResponse postOnboardingAvatar(@RequestParam("avatar") MultipartFile file) {
         OnboardingAvatarPostResponse onboardingAvatarPostResponse = new OnboardingAvatarPostResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
         int userId = 2;
-        OnboardingAvatar onboardingAvatar = onboardingAvatarPostRequest.getOnboardingAvatar();
-        employeeOnboardingAvatarService.setOnboardingAvatar(userId, onboardingAvatar);
+        employeeOnboardingAvatarService.setOnboardingAvatar(userId, file);
         prepareResponse(onboardingAvatarPostResponse, true, "");
         return onboardingAvatarPostResponse;
     }

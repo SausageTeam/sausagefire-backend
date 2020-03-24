@@ -21,6 +21,8 @@ public class AppControllerServiceImpl implements AppControllerService {
 
     private EmployeeDAO employeeDAO;
 
+    private URIConvert uriConvert;
+
     @Autowired
     public void setUserDAO(UserDAO userDAO) {
         this.userDAO = userDAO;
@@ -42,10 +44,15 @@ public class AppControllerServiceImpl implements AppControllerService {
         return employeeDAO.getEmployeeByPerson(person);
     }
 
+    @Autowired
+    public void setUriConvert(URIConvert uriConvert) {
+        this.uriConvert = uriConvert;
+    }
+
     @Override
     public AppDomain getAppDomain(int userId) {
         Employee employee = getEmployeeByUserId(userId);
-        String uri = URIConvert.getUri(employee.getId(), "avatar.jpg");
+        String uri = uriConvert.getUri(employee.getId(), "avatar.jpg");
         return AppDomain.builder()
                 .avatarUri(uri)
                 .build();

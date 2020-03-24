@@ -4,6 +4,7 @@ import com.sausage.app.constant.Constant;
 import com.sausage.app.dao.Person.PersonDAO;
 import com.sausage.app.dao.Employee.EmployeeDAO;
 import com.sausage.app.dao.User.UserDAO;
+import com.sausage.app.domain.common.UploadFileResponse;
 import com.sausage.app.domain.employee.onboarding.onboardingAvatar.OnboardingAvatar;
 import com.sausage.app.entity.Employee;
 import com.sausage.app.entity.Person;
@@ -14,6 +15,8 @@ import com.sausage.app.service.employee.onboarding.EmployeeOnboardingAvatarServi
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.File;
 import java.net.URI;
@@ -26,6 +29,8 @@ public class EmployeeOnboardingAvatarServiceImpl implements EmployeeOnboardingAv
     private PersonDAO personDAO;
 
     private EmployeeDAO employeeDAO;
+
+    private URIConvert uriConvert;
 
     @Autowired
     public void setUserDAO(UserDAO userDAO) {
@@ -42,6 +47,11 @@ public class EmployeeOnboardingAvatarServiceImpl implements EmployeeOnboardingAv
         this.employeeDAO = employeeDAO;
     }
 
+    @Autowired
+    public void setUriConvert(URIConvert uriConvert) {
+        this.uriConvert = uriConvert;
+    }
+
     private Employee getEmployeeByUserId(int userId) {
         User user = userDAO.getUserById(userId);
         Person person = personDAO.getPersonById(user.getPersonId());
@@ -54,7 +64,7 @@ public class EmployeeOnboardingAvatarServiceImpl implements EmployeeOnboardingAv
         Employee employee = getEmployeeByUserId(userId);
         String avatarPath = String.format(Constant.DEFAULT_FILE_PATH, employee.getId(), "avatar.jpg");
         FileOutput.getAvatar(avatarPath);
-        String uri = URIConvert.getUri(employee.getId(), "avatar.jpg");
+        String uri = uriConvert.getUri(employee.getId(), "avatar.jpg");
         return OnboardingAvatar.builder()
                 .avatarUri(uri)
                 .build();
@@ -62,14 +72,9 @@ public class EmployeeOnboardingAvatarServiceImpl implements EmployeeOnboardingAv
 
     @Override
     @Transactional
-    public void setOnboardingAvatar(int userId, OnboardingAvatar onboardingAvatar) {
-//        File avatar = onboardingAvatar.getAvatar();
-//        Employee employee = getEmployeeByUserId(userId);
-//        String avatarPath = String.format(Constant.EMPLOYEE_AVATAR_PATH, employee.getId());
-//        FileInput.setAvatar(avatarPath, avatar);
-//        employee.setAvatar(avatarPath);
-//        employeeDAO.setEmployee(employee);
+    public void setOnboardingAvatar(int userId, MultipartFile file) {
+        Employee employee = getEmployeeByUserId(userId);
+        uriConvert.storeFile(employee.getId(), file);
     }
-
 
 }
