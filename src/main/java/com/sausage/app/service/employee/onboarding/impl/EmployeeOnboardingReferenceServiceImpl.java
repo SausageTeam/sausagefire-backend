@@ -62,6 +62,10 @@ public class EmployeeOnboardingReferenceServiceImpl implements EmployeeOnboardin
     public OnboardingReference getOnboardingReference(int userId) {
         Employee employee = getEmployeeByUserId(userId);
         Contact contact = contactDAO.getContactById(employee.getReferenceId());
+        if (contact == null){
+            return OnboardingReference.builder()
+                    .addressDomain(AddressDomain.builder().build()).build();
+        }
         Person contactPerson = contact.getPerson();
         Address address = addressDAO.getAddressByPerson(contactPerson);
 
@@ -90,6 +94,7 @@ public class EmployeeOnboardingReferenceServiceImpl implements EmployeeOnboardin
     @Transactional
     public void setOnboardingReference(int userId, OnboardingReference onboardingReference) {
         Employee employee = getEmployeeByUserId(userId);
+        System.out.println(onboardingReference.getFirstName());
         Person person = Person.builder()
                 .firstName(onboardingReference.getFirstName())
                 .lastName(onboardingReference.getLastName())
@@ -100,6 +105,7 @@ public class EmployeeOnboardingReferenceServiceImpl implements EmployeeOnboardin
         personDAO.setPerson(person);
 
         AddressDomain addressDomain = onboardingReference.getAddressDomain();
+        System.out.println(addressDomain == null);
         Address address = Address.builder()
                 .addressLineOne(addressDomain.getAddressLineOne())
                 .addressLineTwo(addressDomain.getAddressLineTwo())
