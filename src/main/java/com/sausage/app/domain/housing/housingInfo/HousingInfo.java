@@ -1,7 +1,6 @@
 package com.sausage.app.domain.housing.housingInfo;
 
         import lombok.*;
-
         import java.io.Serializable;
         import java.util.List;
 

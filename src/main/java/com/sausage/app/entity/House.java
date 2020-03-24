@@ -25,4 +25,7 @@ public class House implements Serializable {
 
     @Column(name = "NUMBER_OF_PERSON")
     private Integer numberOfPerson;
+
+    @Column(name = "MAX_PERSON")
+    private Integer maxPerson;
 }
