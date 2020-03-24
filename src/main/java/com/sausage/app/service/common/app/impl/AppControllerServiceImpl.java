@@ -39,15 +39,15 @@ public class AppControllerServiceImpl implements AppControllerService {
         this.employeeDAO = employeeDAO;
     }
 
+    @Autowired
+    public void setUriConvert(URIConvert uriConvert) {
+        this.uriConvert = uriConvert;
+    }
+
     private Employee getEmployeeByUserId(int userId){
         User user = userDAO.getUserById(userId);
         Person person = personDAO.getPersonById(user.getPersonId());
         return employeeDAO.getEmployeeByPerson(person);
-    }
-
-    @Autowired
-    public void setUriConvert(URIConvert uriConvert) {
-        this.uriConvert = uriConvert;
     }
 
     @Override
