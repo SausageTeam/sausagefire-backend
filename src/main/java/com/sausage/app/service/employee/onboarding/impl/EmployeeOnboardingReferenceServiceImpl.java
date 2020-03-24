@@ -61,11 +61,11 @@ public class EmployeeOnboardingReferenceServiceImpl implements EmployeeOnboardin
     @Transactional
     public OnboardingReference getOnboardingReference(int userId) {
         Employee employee = getEmployeeByUserId(userId);
-        Contact contact = contactDAO.getContactById(employee.getReferenceId());
-        if (contact == null){
+        if (employee.getReferenceId() == 0){
             return OnboardingReference.builder()
                     .addressDomain(AddressDomain.builder().build()).build();
         }
+        Contact contact = contactDAO.getContactById(employee.getReferenceId());
         Person contactPerson = contact.getPerson();
         Address address = addressDAO.getAddressByPerson(contactPerson);
 
