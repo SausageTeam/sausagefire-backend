@@ -63,6 +63,7 @@ public class EmployeeOnboardingVisaServiceImpl implements EmployeeOnboardingVisa
         VisaStatus visaStatus = visaStatusDAO.getVisaStatusById(visaStatusId);
         if (visaStatus != null) {
             onboardingVisa.setVisaType(visaStatus.getVisaType());
+            onboardingVisa.setCustomType(visaStatus.getCustomType());
             onboardingVisa.setVisaStartDate(employee.getVisaStartDate());
             onboardingVisa.setVisaEndDate(employee.getVisaEndDate());
         }
@@ -74,6 +75,7 @@ public class EmployeeOnboardingVisaServiceImpl implements EmployeeOnboardingVisa
     public void setOnboardingVisa(int userId, OnboardingVisa onboardingVisa) {
         Employee employee = getEmployeeByUserId(userId);
         String visaType = onboardingVisa.getVisaType();
+        String customType = onboardingVisa.getCustomType();
         String visaStartDate = onboardingVisa.getVisaStartDate();
         String visaEndDate = onboardingVisa.getVisaEndDate();
 
@@ -84,6 +86,7 @@ public class EmployeeOnboardingVisaServiceImpl implements EmployeeOnboardingVisa
             String formatDateTime = now.format(format);
             visaStatus = VisaStatus.builder()
                     .visaType(visaType)
+                    .customType(customType)
                     .modificationDate(formatDateTime)
                     .createUser(userId)
                     .build();

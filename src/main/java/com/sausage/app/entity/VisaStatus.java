@@ -22,6 +22,9 @@ public class VisaStatus implements Serializable {
     @Column(name = "VISA_TYPE")
     private String visaType;
 
+    @Column(name = "CUSTOM_TYPE")
+    private String customType;
+
     @Column(name = "ACTIVE_FLAG")
     private int activeFlag;
 
