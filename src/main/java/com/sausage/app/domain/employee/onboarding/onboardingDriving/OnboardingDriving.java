@@ -17,6 +17,10 @@ public class OnboardingDriving {
 
     File driverLicenseDoc;
 
-    String car;
+    String maker;
+
+    String model;
+
+    String color;
 
 }

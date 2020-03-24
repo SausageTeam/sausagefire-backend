@@ -64,33 +64,27 @@ public class EmployeeOnboardingDrivingServiceImpl implements EmployeeOnboardingD
         String driverLicense = employee.getDriverLicense();
         String driverLicenseExpirationDate = employee.getDriverLicenseExpirationDate();
         String car = employee.getCar();
-
-        PersonalDocument personalDocument = personalDocumentDAO.getPersonalDrivingDocumentByEmployee(employee);
-        String driverLicenseDocPath = personalDocument.getPath();
-        File driverLicenseDoc = FileOutput.getFile(driverLicenseDocPath);
+        String[] arr_car = car.split("_");
 
         return OnboardingDriving.builder()
                 .driverLicense(driverLicense)
                 .driverLicenseExpirationDate(driverLicenseExpirationDate)
-                .driverLicenseDoc(driverLicenseDoc)
-                .car(car)
+                .driverLicenseDoc(null)
+                .maker(arr_car[0])
+                .model(arr_car[1])
+                .color(arr_car[2])
                 .build();
     }
 
     @Override
     @Transactional
     public void setOnboardingDriving(int userId, OnboardingDriving onboardingDriving) {
+        String car = String.format("%s_%s_%s", onboardingDriving.getMaker(), onboardingDriving.getModel(), onboardingDriving.getColor());
         Employee employee = getEmployeeByUserId(userId);
         employee.setDriverLicense(onboardingDriving.getDriverLicense());
         employee.setDriverLicenseExpirationDate(onboardingDriving.getDriverLicenseExpirationDate());
-        employee.setCar(onboardingDriving.getCar());
+        employee.setCar(car);
         employeeDAO.setEmployee(employee);
-
-        String driverLicenseDocPath = String.format(DEFAULT_FILE_PATH, employee.getId(), "driver_license.pdf");
-        FileInput.setFile(driverLicenseDocPath, onboardingDriving.getDriverLicenseDoc());
-        PersonalDocument personalDocument = personalDocumentDAO.getPersonalDrivingDocumentByEmployee(employee);
-        personalDocument.setPath(driverLicenseDocPath);
-        personalDocumentDAO.setPersonalDocument(personalDocument);
     }
 
 }
