@@ -19,7 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,13 +65,13 @@ public class HRVisaStatusManagementServiceImpl implements HRVisaStatusManagement
     public VisaStatusManagement getVisaStatusManagement() {
         List<VisaStatusRecord> visaStatusRecordList = new ArrayList<>();
         List<Employee> employeeList = employeeDAO.getAllEmployee();
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         for (Employee employee : employeeList) {
             Person person = employee.getPerson();
 
             String visaEndDate = employee.getVisaEndDate();
-            LocalDateTime now = LocalDateTime.now();
+            LocalDate now = LocalDate.now();
             ApplicationWorkFlow applicationWorkFlow = applicationWorkFlowDAO.getApplicationWorkFlowByEmployee(employee);
             int diff = 0;
             if (visaEndDate != null && applicationWorkFlow == null) {
@@ -80,9 +82,9 @@ public class HRVisaStatusManagementServiceImpl implements HRVisaStatusManagement
                         .type("OPT")
                         .build();
                 applicationWorkFlowDAO.setApplicationWorkFlow(applicationWorkFlow);
-                LocalDateTime localDateTime = LocalDateTime.parse(visaEndDate, format);
-                Duration duration = Duration.between(now, localDateTime);
-                diff = (int) duration.toDays();
+                LocalDate localDate = LocalDate.parse(visaEndDate , format);
+                Period period = Period.between(now, localDate);
+                diff = (int) period.getDays();
             }
 
             List<PersonalDocument> personalDocumentList = personalDocumentDAO.getPersonalDocumentByEmployee(employee);

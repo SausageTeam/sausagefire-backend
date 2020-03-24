@@ -20,7 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 
 import static com.sausage.app.dao.ApplicationWorkFlow.enums.ApplicationWorkFlowStatusEnums.OPT_EAD;
@@ -94,11 +96,11 @@ public class EmployeeVisaStatusManagementServiceImpl implements EmployeeVisaStat
         VisaStatus visaStatus = visaStatusDAO.getVisaStatusById(employee.getVisaStatusId());
 
         String visaEndDate = employee.getVisaEndDate();
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime localDateTime = LocalDateTime.parse(visaEndDate , format);
-        LocalDateTime now = LocalDateTime.now();
-        Duration duration = Duration.between(now, localDateTime);
-        long diff = duration.toDays();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(visaEndDate , format);
+        LocalDate now = LocalDate.now();
+        Period period = Period.between(now, localDate);
+        long diff = period.getDays();
 
         boolean ifF1 = (visaStatus.getId() == F1.getValue());
         boolean ifEAD = (applicationWorkFlow.getStatus() == OPT_EAD.getValue());
