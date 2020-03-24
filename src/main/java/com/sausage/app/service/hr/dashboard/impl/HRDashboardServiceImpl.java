@@ -4,9 +4,7 @@ import com.sausage.app.constant.Constant;
 import com.sausage.app.dao.ApplicationWorkFlow.ApplicationWorkFlowDAO;
 import com.sausage.app.dao.ApplicationWorkFlow.enums.ApplicationWorkFlowStatusEnums;
 import com.sausage.app.dao.Employee.EmployeeDAO;
-import com.sausage.app.dao.Person.PersonDAO;
 import com.sausage.app.dao.PersonalDocument.PersonalDocumentDAO;
-import com.sausage.app.dao.User.UserDAO;
 import com.sausage.app.domain.hr.dashboard.Dashboard;
 import com.sausage.app.domain.hr.dashboard.Trouble;
 import com.sausage.app.entity.*;
@@ -26,25 +24,11 @@ import static com.sausage.app.dao.ApplicationWorkFlow.enums.ApplicationWorkFlowS
 @Service
 public class HRDashboardServiceImpl implements HRDashboardService {
 
-    private UserDAO userDAO;
-
-    private PersonDAO personDAO;
-
     private EmployeeDAO employeeDAO;
 
-    ApplicationWorkFlowDAO applicationWorkFlowDAO;
+    private ApplicationWorkFlowDAO applicationWorkFlowDAO;
 
-    PersonalDocumentDAO personalDocumentDAO;
-
-    @Autowired
-    public void setUserDAO(UserDAO userDAO) {
-        this.userDAO = userDAO;
-    }
-
-    @Autowired
-    public void setPersonDAO(PersonDAO personDAO) {
-        this.personDAO = personDAO;
-    }
+    private PersonalDocumentDAO personalDocumentDAO;
 
     @Autowired
     public void setEmployeeDAO(EmployeeDAO employeeDAO) {

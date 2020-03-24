@@ -9,9 +9,9 @@ public interface Constant {
     int DEFAULT_AVATAR_WIDTH = 64;
     int DEFAULT_AVATAR_HEIGHT = 64;
 
-    String EMPLOYEE_DRIVER_LICENSE_PATH = "/static/%d/driver_license.pdf";
+    String EMPLOYEE_DRIVER_LICENSE_TITLE = "driver_license";
 
-    String APPLICATION_WORK_FLOW_PATH = "/static/%d/%d.pdf";
+    String FILE_PATH = "/static/%d/%s.pdf";
 
     String VISA_NOTIFICATION = "Hi %s, this is the email from sausage.com that reminds you to upload your %s.";
 }

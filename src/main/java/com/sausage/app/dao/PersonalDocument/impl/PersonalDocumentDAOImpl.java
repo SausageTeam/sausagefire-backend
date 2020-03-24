@@ -1,5 +1,6 @@
 package com.sausage.app.dao.PersonalDocument.impl;
 
+import com.sausage.app.constant.Constant;
 import com.sausage.app.dao.AbstractHibernateDAO;
 import com.sausage.app.dao.PersonalDocument.PersonalDocumentDAO;
 import com.sausage.app.entity.Employee;
@@ -14,18 +15,32 @@ import java.util.List;
 @Repository
 public class PersonalDocumentDAOImpl extends AbstractHibernateDAO<PersonalDocument> implements PersonalDocumentDAO {
 
+    private static final String GET_PERSONAL_DOCUMENT_BY_EMPLOYEE = "FROM PersonalDocument WHERE employee = :employee";
+
     private static final String GET_LATEST_DOCUMENT = "FROM PersonalDocument WHERE employee = :employee ORDER BY id DESC";
 
-    private static final String GET_PERSONAL_DOCUMENT = "FROM PersonalDocument WHERE employee = :employee";
+    private static final String GET_PERSONAL_DRIVING_DOCUMENT = "FROM PersonalDocument WHERE employee = :employee AND title = :title";
 
     public PersonalDocumentDAOImpl() { setClazz(PersonalDocument.class);}
 
 
     @Override
-    public PersonalDocument getPersonalDocumentByEmployee(Employee employee) {
+    public List<PersonalDocument> getPersonalDocumentByEmployee(Employee employee) {
         Session session = getCurrentSession();
-        Query query = session.createQuery(GET_PERSONAL_DOCUMENT);
+        Query query = session.createQuery(GET_PERSONAL_DOCUMENT_BY_EMPLOYEE);
         query.setParameter("employee", employee);
+
+        @SuppressWarnings("unchecked")
+        List<PersonalDocument> personalDocumentList = (List<PersonalDocument>) query.getResultList();
+        return personalDocumentList;
+    }
+
+    @Override
+    public PersonalDocument getPersonalDrivingDocumentByEmployee(Employee employee) {
+        Session session = getCurrentSession();
+        Query query = session.createQuery(GET_PERSONAL_DRIVING_DOCUMENT);
+        query.setParameter("employee", employee);
+        query.setParameter("title", Constant.EMPLOYEE_DRIVER_LICENSE_TITLE);
 
         @SuppressWarnings("unchecked")
         List<PersonalDocument> personalDocuments = (List<PersonalDocument>) query.getResultList();
