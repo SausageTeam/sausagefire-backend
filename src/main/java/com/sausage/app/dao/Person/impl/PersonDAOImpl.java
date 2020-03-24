@@ -13,4 +13,5 @@ public class PersonDAOImpl extends AbstractHibernateDAO<Person> implements Perso
     public Person getPerson(int id) {
         return findById(id);
     }
+
 }

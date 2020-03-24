@@ -3,6 +3,7 @@ package com.sausage.app.controller.hr;
 import com.sausage.app.domain.common.ServiceStatus;
 import com.sausage.app.domain.housing.housesDetails.AllHousesDetails;
 import com.sausage.app.domain.housing.housesDetails.AllHousesDetailsResponse;
+import com.sausage.app.domain.housing.housesDetails.EmployeeInfo;
 import com.sausage.app.domain.housing.report.ReportResponse;
 import com.sausage.app.service.employee.housing.AllHousesDetailsService;
 import com.sausage.app.service.employee.housing.impl.AllHousesDetailsServiceImpl;
@@ -28,6 +29,8 @@ public class HouseManageController {
     public AllHousesDetailsResponse getAllHousesDetails() {
         AllHousesDetailsResponse response = new AllHousesDetailsResponse();
         List<AllHousesDetails> allHousesDetailsList = allHousesDetailsService.getAllHousesDetailList();
+        List<EmployeeInfo> employeeInfoList = allHousesDetailsService.getEmployeeInfoList();
+        response.setEmployeeInfoList(employeeInfoList);
         response.setAllHousesDetailsList(allHousesDetailsList);
         prepareFacilityReportResponse(response, true, "");
         return response;

@@ -13,4 +13,5 @@ import java.util.List;
 public class AllHousesDetailsResponse {
     private ServiceStatus serviceStatus;
     private List<AllHousesDetails> allHousesDetailsList;
+    private List<EmployeeInfo> employeeInfoList;
 }

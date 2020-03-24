@@ -13,7 +13,7 @@ import java.util.List;
 public class EmployeeDAOImpl extends AbstractHibernateDAO<Employee> implements EmployeeDAO {
     private static final String GET_EMPLOYEE = "FROM Employee WHERE personID = :personID";
     private static final String GET_EMPLOYEE_FROM_THE_HOUSE = "FROM Employee WHERE houseID = :houseID";
-
+    private static final String GET_ALL_EMPLOYEES = "FROM Employee";
     public EmployeeDAOImpl() { setClazz(Employee.class);}
 
     @Override
@@ -34,4 +34,11 @@ public class EmployeeDAOImpl extends AbstractHibernateDAO<Employee> implements E
         return employeeList.size() > 0 ? employeeList : null;
     }
 
+    @Override
+    public List<Employee> getAllEmployees() {
+        Session session = getCurrentSession();
+        Query query = session.createQuery(GET_ALL_EMPLOYEES);
+        List<Employee> employeeList = query.getResultList();
+        return employeeList;
+    }
 }

@@ -7,4 +7,5 @@ import java.util.List;
 public interface EmployeeDAO {
     Employee getEmployee(int personID);
     List<Employee> getEmployeesFromTheHouse(int houseID);
+    List<Employee> getAllEmployees();
 }

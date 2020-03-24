@@ -9,11 +9,9 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class AllHousesDetails implements Serializable {
-    private int id;
-    private String address;
-    private String landlord; // legal full name
+public class EmployeeInfo implements Serializable {
+    private String name;
     private String phoneNumber;
     private String email;
-    private int numOfResidents;
+    private String car;
 }
