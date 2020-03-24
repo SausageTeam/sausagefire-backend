@@ -84,7 +84,7 @@ public class EmployeeOnboardingController {
     OnboardingPersonGetResponse getOnboardingPerson(HttpServletRequest httpServletRequest) {
         OnboardingPersonGetResponse onboardingPersonGetResponse = new OnboardingPersonGetResponse();
 //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 9;
+        int userId = 2;
         OnboardingPerson onboardingPerson = employeeOnboardingPersonService.getOnboardingPerson(userId);
         if (onboardingPerson == null) {
             prepareResponse(onboardingPersonGetResponse, false, "Unexpected Error. It might be caused by missing data");
@@ -97,16 +97,16 @@ public class EmployeeOnboardingController {
 
     @PostMapping(value = "/person", consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    OnboardingPersonPostResponse postOnboardingPerson(@RequestBody OnboardingPersonPostRequest onboardingPersonPostRequest) {
+    OnboardingPersonPostResponse setOnboardingPerson(@RequestBody OnboardingPersonPostRequest onboardingPersonPostRequest) {
         OnboardingPersonPostResponse onboardingPersonPostResponse = new OnboardingPersonPostResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 9;
+        int userId = 2;
         OnboardingPerson onboardingPerson = onboardingPersonPostRequest.getOnboardingPerson();
         if (onboardingPerson == null) {
             prepareResponse(onboardingPersonPostResponse, false, "Unexpected Error.");
         } else {
             onboardingPersonPostResponse.setOnboardingPerson(onboardingPerson);
-            employeeOnboardingPersonService.postOnboardingPerson(userId, onboardingPerson);
+            employeeOnboardingPersonService.setOnboardingPerson(userId, onboardingPerson);
             prepareResponse(onboardingPersonPostResponse, true, "");
         }
         return onboardingPersonPostResponse;
@@ -120,7 +120,7 @@ public class EmployeeOnboardingController {
     OnboardingAvatarGetResponse getOnboardingAvatar(HttpServletRequest httpServletRequest) {
         OnboardingAvatarGetResponse onboardingAvatarGetResponse = new OnboardingAvatarGetResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 9;
+        int userId = 2;
         OnboardingAvatar onboardingAvatar = employeeOnboardingAvatarService.getOnboardingAvatar(userId);
         onboardingAvatarGetResponse.setOnboardingAvatar(onboardingAvatar);
         prepareResponse(onboardingAvatarGetResponse, true, "");
@@ -132,7 +132,7 @@ public class EmployeeOnboardingController {
     OnboardingAvatarPostResponse postOnboardingAvatar(@RequestBody OnboardingAvatarPostRequest onboardingAvatarPostRequest) {
         OnboardingAvatarPostResponse onboardingAvatarPostResponse = new OnboardingAvatarPostResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 9;
+        int userId = 2;
         OnboardingAvatar onboardingAvatar = onboardingAvatarPostRequest.getOnboardingAvatar();
         employeeOnboardingAvatarService.setOnboardingAvatar(userId, onboardingAvatar);
         prepareResponse(onboardingAvatarPostResponse, true, "");
@@ -147,7 +147,7 @@ public class EmployeeOnboardingController {
     OnboardingVisaGetResponse getOnboardingVisa(HttpServletRequest httpServletRequest) {
         OnboardingVisaGetResponse onboardingVisaGetResponse = new OnboardingVisaGetResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 9;
+        int userId = 2;
         OnboardingVisa onboardingVisa = employeeOnboardingVisaService.getOnboardingVisa(userId);
         onboardingVisaGetResponse.setOnboardingVisa(onboardingVisa);
         prepareResponse(onboardingVisaGetResponse, true, "");
@@ -159,7 +159,7 @@ public class EmployeeOnboardingController {
     OnboardingVisaPostResponse postOnboardingVisa(@RequestBody OnboardingVisaPostRequest onboardingVisaPostRequest) {
         OnboardingVisaPostResponse onboardingVisaPostResponse = new OnboardingVisaPostResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 9;
+        int userId = 2;
         OnboardingVisa onboardingVisa = onboardingVisaPostRequest.getOnboardingVisa();
         employeeOnboardingVisaService.setOnboardingVisa(userId, onboardingVisa);
         prepareResponse(onboardingVisaPostResponse, true, "");
@@ -174,7 +174,7 @@ public class EmployeeOnboardingController {
     OnboardingDrivingGetResponse getOnboardingDriving(HttpServletRequest httpServletRequest) {
         OnboardingDrivingGetResponse onboardingDrivingGetResponse = new OnboardingDrivingGetResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 9;
+        int userId = 2;
         OnboardingDriving onboardingDriving = employeeOnboardingDrivingService.getOnboardingDriving(userId);
         onboardingDrivingGetResponse.setOnboardingDriving(onboardingDriving);
         prepareResponse(onboardingDrivingGetResponse, true, "");
@@ -186,7 +186,7 @@ public class EmployeeOnboardingController {
     OnboardingDrivingPostResponse postOnboardingDriving(@RequestBody OnboardingDrivingPostRequest onboardingDrivingPostRequest) {
         OnboardingDrivingPostResponse onboardingDrivingPostResponse = new OnboardingDrivingPostResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 9;
+        int userId = 2;
         OnboardingDriving onboardingDriving = onboardingDrivingPostRequest.getOnboardingDriving();
         employeeOnboardingDrivingService.setOnboardingDriving(userId, onboardingDriving);
         prepareResponse(onboardingDrivingPostResponse, true, "");
@@ -201,7 +201,7 @@ public class EmployeeOnboardingController {
     OnboardingReferenceGetResponse getOnboardingReference(HttpServletRequest httpServletRequest) {
         OnboardingReferenceGetResponse onboardingReferenceGetResponse = new OnboardingReferenceGetResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 9;
+        int userId = 2;
         OnboardingReference onboardingReference = employeeOnboardingReferenceService.getOnboardingReference(userId);
         onboardingReferenceGetResponse.setOnboardingReference(onboardingReference);
         prepareResponse(onboardingReferenceGetResponse, true, "");
@@ -213,7 +213,7 @@ public class EmployeeOnboardingController {
     OnboardingReferencePostResponse postOnboardingReference(@RequestBody OnboardingReferencePostRequest onboardingReferencePostRequest) {
         OnboardingReferencePostResponse onboardingReferencePostResponse = new OnboardingReferencePostResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 9;
+        int userId = 2;
         OnboardingReference onboardingReference = onboardingReferencePostRequest.getOnboardingReference();
         employeeOnboardingReferenceService.setOnboardingReference(userId, onboardingReference);
         prepareResponse(onboardingReferencePostResponse, true, "");
@@ -228,7 +228,7 @@ public class EmployeeOnboardingController {
     OnboardingEmergencyGetResponse getOnboardingEmergency(HttpServletRequest httpServletRequest) {
         OnboardingEmergencyGetResponse onboardingEmergencyGetResponse = new OnboardingEmergencyGetResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 9;
+        int userId = 2;
         OnboardingEmergency onboardingEmergency = employeeOnboardingEmergencyService.getOnboardingEmergency(userId);
         onboardingEmergencyGetResponse.setOnboardingEmergency(onboardingEmergency);
         prepareResponse(onboardingEmergencyGetResponse, true, "");
@@ -240,7 +240,7 @@ public class EmployeeOnboardingController {
     OnboardingEmergencyPostResponse postOnboardingEmergency(@RequestBody OnboardingEmergencyPostRequest onboardingEmergencyPostRequest) {
         OnboardingEmergencyPostResponse onboardingEmergencyPostResponse = new OnboardingEmergencyPostResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 9;
+        int userId = 2;
         OnboardingEmergency onboardingEmergency = onboardingEmergencyPostRequest.getOnboardingEmergency();
         employeeOnboardingEmergencyService.setOnboardingEmergency(userId, onboardingEmergency);
         prepareResponse(onboardingEmergencyPostResponse, true, "");

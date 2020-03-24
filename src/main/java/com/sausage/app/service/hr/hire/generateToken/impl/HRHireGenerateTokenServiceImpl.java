@@ -33,18 +33,22 @@ public class HRHireGenerateTokenServiceImpl implements HRHireGenerateTokenServic
     @Override
     public boolean setHireGenerateToken(int userId, HireGenerateToken hireGenerateToken) {
         String email = hireGenerateToken.getEmail();
+        String title = hireGenerateToken.getTitle();
+        String startDate = hireGenerateToken.getStartDate();
+        String endDate = hireGenerateToken.getEndDate();
         User user = userDAO.getUserByEmail(email);
         if (user != null) {
             return false;
         } else {
-            String token = AES.encrypt(email, SECRET_KEY);
+            String decryptToken = String.format("%s %s %s %s", email, title, startDate, endDate);
+            String encryptToken = AES.encrypt(decryptToken, SECRET_KEY);
             RegistrationToken registrationToken = RegistrationToken.builder()
-                    .token(token)
+                    .token(encryptToken)
                     .email(email)
                     .createdBy(userId)
                     .build();
             registrationTokenDAO.setRegistrationToken(registrationToken);
-            String text = String.format(GENERATE_TOKEN_NOTIFICATION, token);
+            String text = String.format(GENERATE_TOKEN_NOTIFICATION, encryptToken);
             return true;
         }
     }

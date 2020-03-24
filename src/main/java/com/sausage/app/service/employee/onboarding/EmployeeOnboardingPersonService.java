@@ -6,6 +6,6 @@ public interface EmployeeOnboardingPersonService {
 
     OnboardingPerson getOnboardingPerson(int userId);
 
-    void postOnboardingPerson(int userId, OnboardingPerson onboardingPerson);
+    void setOnboardingPerson(int userId, OnboardingPerson onboardingPerson);
 
 }

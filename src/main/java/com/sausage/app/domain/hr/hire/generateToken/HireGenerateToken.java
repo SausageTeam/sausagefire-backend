@@ -11,4 +11,10 @@ public class HireGenerateToken {
 
     String email;
 
+    String title;
+
+    String startDate;
+
+    String endDate;
+
 }

@@ -29,7 +29,7 @@ public class HRVisaStatusManagementController {
     VisaStatusManagementGetResponse getVisaStatusManagement(HttpServletRequest httpServletRequest){
         VisaStatusManagementGetResponse visaStatusManagementGetResponse = new VisaStatusManagementGetResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 9;
+        int userId = 2;
         VisaStatusManagement visaStatusManagement = HRVisaStatusManagementService.getVisaStatusManagement();
         visaStatusManagementGetResponse.setVisaStatusManagement(visaStatusManagement);
         prepareResponse(visaStatusManagementGetResponse, true, "");
@@ -41,7 +41,7 @@ public class HRVisaStatusManagementController {
     VisaStatusManagementPostResponse postVisaStatusManagement(@RequestBody VisaStatusManagementPostRequest visaStatusManagementPostRequest){
         VisaStatusManagementPostResponse visaStatusManagementPostResponse = new VisaStatusManagementPostResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 9;
+        int userId = 2;
         int employeeId = visaStatusManagementPostRequest.getEmployeeId();
         HRVisaStatusManagementService.setVisaStatusManagement(employeeId);
         prepareResponse(visaStatusManagementPostResponse, true, "");

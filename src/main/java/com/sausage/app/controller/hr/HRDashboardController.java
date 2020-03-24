@@ -26,7 +26,7 @@ public class HRDashboardController {
     DashboardGetResponse getHRDashboard(HttpServletRequest httpServletRequest){
         DashboardGetResponse dashboardGetResponse = new DashboardGetResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 9;
+        int userId = 2;
         Dashboard dashboard = HRDashboardService.getHRDashboard();
         dashboardGetResponse.setDashboard(dashboard);
         prepareResponse(dashboardGetResponse, true, "");
@@ -37,7 +37,7 @@ public class HRDashboardController {
     public @ResponseBody DashboardPostResponse postHRDashboard(@RequestBody DashboardPostRequest dashboardPostRequest){
         DashboardPostResponse dashboardPostResponse = new DashboardPostResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 9;
+        int userId = 2;
         int employeeId = dashboardPostRequest.getEmployeeId();
         HRDashboardService.postHRDashboard(employeeId);
         prepareResponse(dashboardPostResponse, true, "");

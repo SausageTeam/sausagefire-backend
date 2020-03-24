@@ -26,7 +26,7 @@ public class HREmployeeProfileController {
     EmployeeProfileGetResponse getEmployeeProfile(HttpServletRequest httpServletRequest){
         EmployeeProfileGetResponse employeeProfileGetResponse = new EmployeeProfileGetResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 9;
+        int userId = 2;
         EmployeeProfile employeeProfile = HREmployeeProfileService.getEmployeeProfile();
         employeeProfileGetResponse.setEmployeeProfile(employeeProfile);
         prepareResponse(employeeProfileGetResponse, true, "");
@@ -38,7 +38,7 @@ public class HREmployeeProfileController {
     EmployeeProfilePostResponse postEmployeeProfile(@RequestBody EmployeeProfilePostRequest employeeProfilePostRequest){
         EmployeeProfilePostResponse employeeProfilePostResponse = new EmployeeProfilePostResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 9;
+        int userId = 2;
 
         prepareResponse(employeeProfilePostResponse, true, "");
         return employeeProfilePostResponse;

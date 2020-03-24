@@ -84,7 +84,7 @@ public class EmployeeProfileController {
     public ProfileNameGetResponse getProfileName(HttpServletRequest httpServletRequest){
         ProfileNameGetResponse profileNameGetResponse = new ProfileNameGetResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 9;
+        int userId = 2;
         ProfileName profileName = employeeProfileNameService.getProfileName(userId);
         profileNameGetResponse.setProfileName(profileName);
         prepareResponse(profileNameGetResponse, true, "");
@@ -95,7 +95,7 @@ public class EmployeeProfileController {
     public ProfileNamePostResponse postProfileName(@RequestBody ProfileNamePostRequest profileNamePostRequest){
         ProfileNamePostResponse profileNamePostResponse = new ProfileNamePostResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 9;
+        int userId = 2;
         ProfileName profileName = profileNamePostRequest.getProfileName();
         employeeProfileNameService.setProfileName(userId, profileName);
         prepareResponse(profileNamePostResponse, true, "");
@@ -109,7 +109,7 @@ public class EmployeeProfileController {
     public ProfileAddressGetResponse getProfileAddress(HttpServletRequest httpServletRequest){
         ProfileAddressGetResponse profileAddressGetResponse = new ProfileAddressGetResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 9;
+        int userId = 2;
         ProfileAddress profileAddress = employeeProfileAddressService.getProfileAddress(userId);
         profileAddressGetResponse.setProfileAddress(profileAddress);
         prepareResponse(profileAddressGetResponse, true, "");
@@ -120,7 +120,7 @@ public class EmployeeProfileController {
     public ProfileAddressPostResponse postProfileAddress(@RequestBody ProfileAddressPostRequest profileAddressPostRequest){
         ProfileAddressPostResponse profileAddressPostResponse = new ProfileAddressPostResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 9;
+        int userId = 2;
         ProfileAddress profileAddress = profileAddressPostRequest.getProfileAddress();
         employeeProfileAddressService.setProfileAddress(userId, profileAddress);
         prepareResponse(profileAddressPostResponse, true, "");
@@ -134,7 +134,7 @@ public class EmployeeProfileController {
     public ProfileContactGetResponse getProfileContact(HttpServletRequest httpServletRequest){
         ProfileContactGetResponse profileContactGetResponse = new ProfileContactGetResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 9;
+        int userId = 2;
         ProfileContact profileContact = employeeProfileContactService.getProfileContact(userId);
         profileContactGetResponse.setProfileContact(profileContact);
         prepareResponse(profileContactGetResponse, true, "");
@@ -145,7 +145,7 @@ public class EmployeeProfileController {
     public ProfileContactPostResponse postProfileContact(@RequestBody ProfileContactPostRequest profileContactPostRequest){
         ProfileContactPostResponse profileContactPostResponse = new ProfileContactPostResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 9;
+        int userId = 2;
         ProfileContact profileContact = profileContactPostRequest.getProfileContact();
         employeeProfileContactService.setProfileContact(userId, profileContact);
         prepareResponse(profileContactPostResponse, true, "");
@@ -159,7 +159,7 @@ public class EmployeeProfileController {
     public ProfileEmploymentGetResponse getProfileEmployment(HttpServletRequest httpServletRequest){
         ProfileEmploymentGetResponse profileEmploymentGetResponse = new ProfileEmploymentGetResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 9;
+        int userId = 2;
         ProfileEmployment profileEmployment = employeeProfileEmploymentService.getProfileEmployment(userId);
         profileEmploymentGetResponse.setProfileEmployment(profileEmployment);
         prepareResponse(profileEmploymentGetResponse, true, "");
@@ -170,7 +170,7 @@ public class EmployeeProfileController {
     public ProfileEmploymentPostResponse postProfileEmployment(@RequestBody ProfileEmploymentPostRequest profileEmploymentPostRequest){
         ProfileEmploymentPostResponse profileEmploymentPostResponse = new ProfileEmploymentPostResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 9;
+        int userId = 2;
         ProfileEmployment profileEmployment = profileEmploymentPostRequest.getProfileEmployment();
         employeeProfileEmploymentService.setProfileEmployment(userId, profileEmployment);
         prepareResponse(profileEmploymentPostResponse, true, "");
@@ -184,7 +184,7 @@ public class EmployeeProfileController {
     public ProfileEmergencyContactGetResponse getProfileEmergencyContact(HttpServletRequest httpServletRequest){
         ProfileEmergencyContactGetResponse profileEmergencyContactGetResponse = new ProfileEmergencyContactGetResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 9;
+        int userId = 2;
         ProfileEmergencyContact profileEmergencyContact = employeeProfileEmergencyContactService.getProfileEmergencyContact(userId);
         profileEmergencyContactGetResponse.setProfileEmergencyContact(profileEmergencyContact);
         prepareResponse(profileEmergencyContactGetResponse, true, "");
@@ -195,7 +195,7 @@ public class EmployeeProfileController {
     public ProfileEmergencyContactPostResponse postProfileEmergencyContact(@RequestBody ProfileEmergencyContactPostRequest profileEmergencyContactPostRequest){
         ProfileEmergencyContactPostResponse profileEmergencyContactPostResponse = new ProfileEmergencyContactPostResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 9;
+        int userId = 2;
         ProfileEmergencyContact profileEmergencyContact = profileEmergencyContactPostRequest.getProfileEmergencyContact();
         employeeProfileEmergencyContactService.setProfileEmergencyContact(userId, profileEmergencyContact);
         prepareResponse(profileEmergencyContactPostResponse, true, "");
@@ -209,7 +209,7 @@ public class EmployeeProfileController {
     public ProfileDocumentGetResponse getProfileDocument(HttpServletRequest httpServletRequest){
         ProfileDocumentGetResponse profileDocumentGetResponse = new ProfileDocumentGetResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 9;
+        int userId = 2;
 
         prepareResponse(profileDocumentGetResponse, true, "");
         return profileDocumentGetResponse;
@@ -219,7 +219,7 @@ public class EmployeeProfileController {
     public ProfileDocumentPostResponse postProfileDocument(@RequestBody ProfileDocumentPostRequest profileDocumentPostRequest){
         ProfileDocumentPostResponse profileDocumentPostResponse = new ProfileDocumentPostResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 9;
+        int userId = 2;
 
         prepareResponse(profileDocumentPostResponse, true, "");
         return profileDocumentPostResponse;

@@ -36,7 +36,7 @@ public class HRHireManagement {
     HireGenerateTokenGetResponse getHireGenerateToken(HttpServletRequest httpServletRequest) {
         HireGenerateTokenGetResponse hireGenerateTokenGetResponse = new HireGenerateTokenGetResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 9;
+        int userId = 2;
         prepareResponse(hireGenerateTokenGetResponse, true, "");
         return hireGenerateTokenGetResponse;
     }
@@ -46,7 +46,7 @@ public class HRHireManagement {
     HireGenerateTokenPostResponse postHireGenerateToken(@RequestBody HireGenerateTokenPostRequest hireGenerateTokenPostRequest) {
         HireGenerateTokenPostResponse hireGenerateTokenPostResponse = new HireGenerateTokenPostResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 9;
+        int userId = 2;
         HireGenerateToken hireGenerateToken = hireGenerateTokenPostRequest.getHireGenerateToken();
         boolean success = hrHireGenerateTokenService.setHireGenerateToken(userId, hireGenerateToken);
         if (!success) {
