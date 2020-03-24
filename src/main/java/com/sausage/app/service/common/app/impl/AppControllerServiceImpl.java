@@ -11,6 +11,7 @@ import com.sausage.app.fileIO.URIConvert;
 import com.sausage.app.service.common.app.AppControllerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AppControllerServiceImpl implements AppControllerService {
@@ -50,6 +51,7 @@ public class AppControllerServiceImpl implements AppControllerService {
     }
 
     @Override
+    @Transactional
     public AppDomain getAppDomain(int userId) {
         Employee employee = getEmployeeByUserId(userId);
         String uri = uriConvert.getUri(employee.getId(), "avatar.jpg");

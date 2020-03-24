@@ -135,7 +135,7 @@ public class EmployeeOnboardingController {
         return onboardingAvatarGetResponse;
     }
 
-    @PostMapping(value = "/avatar", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/avatar")
     public @ResponseBody
     OnboardingAvatarPostResponse postOnboardingAvatar(@RequestParam("avatar") MultipartFile file) {
         OnboardingAvatarPostResponse onboardingAvatarPostResponse = new OnboardingAvatarPostResponse();
