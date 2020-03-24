@@ -1,13 +1,15 @@
 package com.sausage.app.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "Employee")
 public class Employee implements Serializable {
@@ -17,8 +19,9 @@ public class Employee implements Serializable {
     @Column(name = "ID")
     private int id;
 
-    @Column(name = "PERSON_ID")
-    private int personID;
+    @OneToOne
+    @JoinColumn(name = "PERSON_ID")
+    private Person person;
 
     @Column(name = "TITLE")
     private String title;
@@ -32,14 +35,14 @@ public class Employee implements Serializable {
     @Column(name = "END_DATE")
     private String endDate;
 
-    @Column(name = "AVARTAR")
-    private String avartar;
+    @Column(name = "AVATAR")
+    private String avatar;
 
     @Column(name = "CAR")
     private String car;
 
     @Column(name = "VISA_STATUS_ID")
-    private int visaStatusID;
+    private int visaStatusId;
 
     @Column(name = "VISA_START_DATE")
     private String visaStartDate;
@@ -54,5 +57,12 @@ public class Employee implements Serializable {
     private String driverLicenseExpirationDate;
 
     @Column(name = "HOUSE_ID")
-    private int houseID;
+    private int houseId;
+
+    @Column(name = "REFERENCE_ID")
+    private int referenceId;
+
+    @Column(name = "EMERGENCY_ID")
+    private int emergencyId;
+
 }

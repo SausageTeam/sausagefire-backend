@@ -1,13 +1,15 @@
 package com.sausage.app.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "User")
 public class User implements Serializable {
@@ -19,6 +21,9 @@ public class User implements Serializable {
 
     @Column(name = "USERNAME")
     private String userName;
+
+    @Column(name = "EMAIL")
+    private String email;
 
     @Column(name = "PASSWORD")
     private String userPassword;

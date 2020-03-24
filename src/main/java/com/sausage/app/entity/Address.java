@@ -1,13 +1,15 @@
 package com.sausage.app.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "Address")
 public class Address implements Serializable {
@@ -26,16 +28,17 @@ public class Address implements Serializable {
     @Column(name = "CITY")
     private String city;
 
-    @Column(name = "CITY")
-    private String zipcode;
+    @Column(name = "ZIP_CODE")
+    private String zipCode;
 
     @Column(name = "STATE_NAME")
     private String stateName;
 
     @Column(name = "STATE_ABBR")
-    private String stateAbbreviation;
+    private String stateAbbr;
 
-    @Column(name = "PERSON_ID")
-    private int personID;
+    @ManyToOne
+    @JoinColumn(name = "PERSON_ID")
+    private Person person;
 
 }

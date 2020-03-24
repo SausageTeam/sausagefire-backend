@@ -1,13 +1,15 @@
 package com.sausage.app.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "RegistrationToken")
 public class RegistrationToken implements Serializable {
@@ -27,5 +29,9 @@ public class RegistrationToken implements Serializable {
     private String email;
 
     @Column(name = "CREATED_BY")
-    private String createdBy;
+    private int createdBy;
+
+    @Column(name = "ACTIVE_FLAG")
+    private int activeFlag;
+
 }

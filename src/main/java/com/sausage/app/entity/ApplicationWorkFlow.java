@@ -1,13 +1,15 @@
 package com.sausage.app.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "ApplicationWorkFlow")
 public class ApplicationWorkFlow implements Serializable {
@@ -17,8 +19,9 @@ public class ApplicationWorkFlow implements Serializable {
     @Column(name = "ID")
     private int id;
 
-    @Column(name = "EMPLOYEE_ID")
-    private int employeeID;
+    @OneToOne
+    @JoinColumn(name = "EMPLOYEE_ID")
+    private Employee employee;
 
     @Column(name = "CREATED_DATE")
     private String createdDate;
@@ -27,12 +30,18 @@ public class ApplicationWorkFlow implements Serializable {
     private String modificationDate;
 
     @Column(name = "STATUS")
-    private String status;
+    private int status;
 
     @Column(name = "COMMENTS")
     private String comments;
 
     @Column(name = "TYPE")
     private String type;
+
+    @Column(name = "UPLOAD")
+    private int upload;
+
+    @Column(name = "NOTIFY")
+    private int notify;
 
 }
