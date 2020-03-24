@@ -1,17 +1,17 @@
-package com.sausage.app.service.onboarding.impl;
+package com.sausage.app.service.employee.onboarding.impl;
 
 import com.sausage.app.dao.Employee.EmployeeDAO;
 import com.sausage.app.dao.Person.PersonDAO;
 import com.sausage.app.dao.PersonalDocument.PersonalDocumentDAO;
 import com.sausage.app.dao.User.UserDAO;
-import com.sausage.app.domain.onboarding.onboardingDriving.OnboardingDriving;
+import com.sausage.app.domain.employee.onboarding.onboardingDriving.OnboardingDriving;
 import com.sausage.app.entity.Employee;
 import com.sausage.app.entity.Person;
 import com.sausage.app.entity.PersonalDocument;
 import com.sausage.app.entity.User;
 import com.sausage.app.fileIO.fileInput;
 import com.sausage.app.fileIO.fileOutput;
-import com.sausage.app.service.onboarding.OnboardingDrivingService;
+import com.sausage.app.service.employee.onboarding.OnboardingDrivingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,7 +65,7 @@ public class OnboardingDrivingServiceImpl implements OnboardingDrivingService {
         String driverLicenseExpirationDate = employee.getDriverLicenseExpirationDate();
         String car = employee.getCar();
 
-        PersonalDocument personalDocument = personalDocumentDAO.getPersonalDocumentByEmployeeId(employee.getId());
+        PersonalDocument personalDocument = personalDocumentDAO.getPersonalDocumentByEmployee(employee);
         String driverLicenseDocPath = personalDocument.getPath();
         File driverLicenseDoc = fileOutput.getFile(driverLicenseDocPath);
 
@@ -88,7 +88,7 @@ public class OnboardingDrivingServiceImpl implements OnboardingDrivingService {
 
         String driverLicenseDocPath = String.format(EMPLOYEE_DRIVER_LICENSE_PATH, employee.getId());
         fileInput.setFile(driverLicenseDocPath, onboardingDriving.getDriverLicenseDoc());
-        PersonalDocument personalDocument = personalDocumentDAO.getPersonalDocumentByEmployeeId(employee.getId());
+        PersonalDocument personalDocument = personalDocumentDAO.getPersonalDocumentByEmployee(employee);
         personalDocument.setPath(driverLicenseDocPath);
         personalDocumentDAO.setPersonalDocument(personalDocument);
     }

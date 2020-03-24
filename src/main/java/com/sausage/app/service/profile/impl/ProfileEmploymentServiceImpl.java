@@ -1,15 +1,15 @@
-package com.sausage.app.service.profile.impl;
+package com.sausage.app.service.employee.profile.impl;
 
 import com.sausage.app.dao.Employee.EmployeeDAO;
 import com.sausage.app.dao.Person.PersonDAO;
 import com.sausage.app.dao.VisaStatus.VisaStatusDAO;
 import com.sausage.app.dao.User.UserDAO;
-import com.sausage.app.domain.profile.profileEmployment.ProfileEmployment;
+import com.sausage.app.domain.employee.profile.profileEmployment.ProfileEmployment;
 import com.sausage.app.entity.Employee;
 import com.sausage.app.entity.Person;
 import com.sausage.app.entity.User;
 import com.sausage.app.entity.VisaStatus;
-import com.sausage.app.service.profile.ProfileEmploymentService;
+import com.sausage.app.service.employee.profile.ProfileEmploymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

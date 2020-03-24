@@ -12,4 +12,6 @@ public interface Constant {
     String EMPLOYEE_DRIVER_LICENSE_PATH = "/static/%d/driver_license.pdf";
 
     String APPLICATION_WORK_FLOW_PATH = "/static/%d/%d.pdf";
+
+    String VISA_NOTIFICATION = "Hi %s, this is the email from sausage.com that reminds you to upload your %s.";
 }

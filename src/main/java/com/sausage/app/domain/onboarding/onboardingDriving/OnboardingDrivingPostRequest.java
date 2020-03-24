@@ -1,4 +1,4 @@
-package com.sausage.app.domain.onboarding.onboardingDriving;
+package com.sausage.app.domain.employee.onboarding.onboardingDriving;
 
 import lombok.Getter;
 import lombok.Setter;

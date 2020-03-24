@@ -1,4 +1,4 @@
-package com.sausage.app.domain.onboarding.onboardingReference;
+package com.sausage.app.domain.employee.onboarding.onboardingReference;
 
 import lombok.*;
 

@@ -1,6 +1,6 @@
-package com.sausage.app.service.profile;
+package com.sausage.app.service.employee.profile;
 
-import com.sausage.app.domain.profile.profileDocument.ProfileDocument;
+import com.sausage.app.domain.employee.profile.profileDocument.ProfileDocument;
 
 public interface ProfileDocumentService {
 

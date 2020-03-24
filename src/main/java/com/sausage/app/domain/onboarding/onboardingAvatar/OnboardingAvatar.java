@@ -1,4 +1,4 @@
-package com.sausage.app.domain.onboarding.onboardingAvatar;
+package com.sausage.app.domain.employee.onboarding.onboardingAvatar;
 
 import lombok.Getter;
 import lombok.Setter;

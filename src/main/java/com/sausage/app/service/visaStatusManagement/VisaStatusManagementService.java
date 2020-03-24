@@ -1,6 +1,6 @@
-package com.sausage.app.service.visaStatusManagement;
+package com.sausage.app.service.employee.visaStatusManagement;
 
-import com.sausage.app.domain.visaStatusManagement.VisaStatusManagement;
+import com.sausage.app.domain.employee.visaStatusManagement.VisaStatusManagement;
 
 import java.io.File;
 

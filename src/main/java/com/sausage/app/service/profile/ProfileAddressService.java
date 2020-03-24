@@ -1,6 +1,6 @@
-package com.sausage.app.service.profile;
+package com.sausage.app.service.employee.profile;
 
-import com.sausage.app.domain.profile.profileAddress.ProfileAddress;
+import com.sausage.app.domain.employee.profile.profileAddress.ProfileAddress;
 
 public interface ProfileAddressService {
 

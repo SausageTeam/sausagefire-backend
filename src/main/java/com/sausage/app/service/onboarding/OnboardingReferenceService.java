@@ -1,6 +1,6 @@
-package com.sausage.app.service.onboarding;
+package com.sausage.app.service.employee.onboarding;
 
-import com.sausage.app.domain.onboarding.onboardingReference.OnboardingReference;
+import com.sausage.app.domain.employee.onboarding.onboardingReference.OnboardingReference;
 
 public interface OnboardingReferenceService {
 

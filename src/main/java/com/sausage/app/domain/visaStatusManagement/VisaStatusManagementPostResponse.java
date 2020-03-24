@@ -1,4 +1,4 @@
-package com.sausage.app.domain.visaStatusManagement;
+package com.sausage.app.domain.employee.visaStatusManagement;
 
 import com.sausage.app.domain.common.GenericResponse;
 import com.sausage.app.domain.common.ServiceStatus;

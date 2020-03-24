@@ -1,6 +1,6 @@
-package com.sausage.app.service.onboarding;
+package com.sausage.app.service.employee.onboarding;
 
-import com.sausage.app.domain.onboarding.onboardingVisa.OnboardingVisa;
+import com.sausage.app.domain.employee.onboarding.onboardingVisa.OnboardingVisa;
 
 public interface OnboardingVisaService {
 

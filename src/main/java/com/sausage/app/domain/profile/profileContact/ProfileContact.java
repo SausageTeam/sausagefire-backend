@@ -1,4 +1,4 @@
-package com.sausage.app.domain.profile.profileContact;
+package com.sausage.app.domain.employee.profile.profileContact;
 
 import lombok.*;
 

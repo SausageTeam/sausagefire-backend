@@ -1,4 +1,4 @@
-package com.sausage.app.domain.profile.profileEmployment;
+package com.sausage.app.domain.employee.profile.profileEmployment;
 
 import com.sausage.app.domain.common.GenericResponse;
 import com.sausage.app.domain.common.ServiceStatus;

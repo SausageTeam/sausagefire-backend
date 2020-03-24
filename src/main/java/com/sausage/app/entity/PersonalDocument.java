@@ -17,8 +17,9 @@ public class PersonalDocument implements Serializable {
     @Column(name = "ID")
     private int id;
 
-    @Column(name = "EMPLOYEE_ID")
-    private int employeeId;
+    @ManyToOne
+    @JoinColumn(name = "EMPLOYEE_ID")
+    private Employee employee;
 
     @Column(name = "PATH")
     private String path;

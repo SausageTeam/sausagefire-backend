@@ -14,9 +14,25 @@ import java.util.List;
 @Repository
 public class EmployeeDAOImpl extends AbstractHibernateDAO<Employee> implements EmployeeDAO {
 
+    private static final String GET_ALL_EMPLOYEE = "FROM Employee";
+
     private static final String GET_EMPLOYEE = "FROM Employee WHERE person = :person";
 
     public EmployeeDAOImpl() { setClazz(Employee.class);}
+
+    @Override
+    public List<Employee> getAllEmployee() {
+        Session session = getCurrentSession();
+        Query query = session.createQuery(GET_ALL_EMPLOYEE);
+        @SuppressWarnings("unchecked")
+        List<Employee> employeeList = (List<Employee>) query.getResultList();
+        return employeeList;
+    }
+
+    @Override
+    public Employee getEmployeeById(int id) {
+        return findById(id);
+    }
 
     @Override
     public Employee getEmployeeByPerson(Person person) {

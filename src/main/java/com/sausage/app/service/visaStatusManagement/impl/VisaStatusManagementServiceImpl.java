@@ -1,4 +1,4 @@
-package com.sausage.app.service.visaStatusManagement.impl;
+package com.sausage.app.service.employee.visaStatusManagement.impl;
 
 import com.sausage.app.constant.Constant;
 import com.sausage.app.dao.ApplicationWorkFlow.ApplicationWorkFlowDAO;
@@ -7,11 +7,11 @@ import com.sausage.app.dao.Employee.EmployeeDAO;
 import com.sausage.app.dao.Person.PersonDAO;
 import com.sausage.app.dao.User.UserDAO;
 import com.sausage.app.dao.VisaStatus.VisaStatusDAO;
-import com.sausage.app.domain.visaStatusManagement.VisaStatusManagement;
+import com.sausage.app.domain.employee.visaStatusManagement.VisaStatusManagement;
 import com.sausage.app.entity.*;
 import com.sausage.app.fileIO.fileInput;
 import com.sausage.app.fileIO.fileOutput;
-import com.sausage.app.service.visaStatusManagement.VisaStatusManagementService;
+import com.sausage.app.service.employee.visaStatusManagement.VisaStatusManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +21,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static com.sausage.app.dao.ApplicationWorkFlow.enums.ApplicationWorkFlowEnums.OPT_EAD;
+import static com.sausage.app.dao.ApplicationWorkFlow.enums.ApplicationWorkFlowStatusEnums.OPT_EAD;
 import static com.sausage.app.dao.VisaStatus.enums.VisaStatusEnums.F1;
 
 @Service

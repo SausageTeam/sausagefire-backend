@@ -23,11 +23,11 @@
 #
 # Required ENV vars:
 # ------------------
-#   JAVA_HOME - location of a JDK home dir
+#   JAVA_HOME - location of a JDK trouble dir
 #
 # Optional ENV vars
 # -----------------
-#   M2_HOME - location of maven2's installed home dir
+#   M2_HOME - location of maven2's installed trouble dir
 #   MAVEN_OPTS - parameters passed to the Java VM when running Maven
 #     e.g. to debug Maven itself, use
 #       set MAVEN_OPTS=-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,Address=8000
@@ -55,7 +55,7 @@ CYGWIN*) cygwin=true ;;
 MINGW*) mingw=true ;;
 Darwin*)
   darwin=true
-  # Use /usr/libexec/java_home if available, otherwise fall back to /Library/Java/Home
+  # Use /usr/libexec/java_home if available, otherwise fall back to /Library/Java/Trouble
   # See https://developer.apple.com/library/mac/qa/qa1170/_index.html
   if [ -z "$JAVA_HOME" ]; then
     if [ -x "/usr/libexec/java_home" ]; then
@@ -69,12 +69,12 @@ esac
 
 if [ -z "$JAVA_HOME" ]; then
   if [ -r /etc/gentoo-release ]; then
-    JAVA_HOME=$(java-config --jre-home)
+    JAVA_HOME=$(java-config --jre-trouble)
   fi
 fi
 
 if [ -z "$M2_HOME" ]; then
-  ## resolve links - $0 may be a link to maven's home
+  ## resolve links - $0 may be a link to maven's trouble
   PRG="$0"
 
   # need this for relative symlinks

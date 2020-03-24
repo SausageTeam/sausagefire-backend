@@ -1,16 +1,16 @@
-package com.sausage.app.service.onboarding.impl;
+package com.sausage.app.service.employee.onboarding.impl;
 
 import com.sausage.app.constant.Constant;
 import com.sausage.app.dao.Person.PersonDAO;
 import com.sausage.app.dao.Employee.EmployeeDAO;
 import com.sausage.app.dao.User.UserDAO;
-import com.sausage.app.domain.onboarding.onboardingAvatar.OnboardingAvatar;
+import com.sausage.app.domain.employee.onboarding.onboardingAvatar.OnboardingAvatar;
 import com.sausage.app.entity.Employee;
 import com.sausage.app.entity.Person;
 import com.sausage.app.entity.User;
 import com.sausage.app.fileIO.fileInput;
 import com.sausage.app.fileIO.fileOutput;
-import com.sausage.app.service.onboarding.OnboardingAvatarService;
+import com.sausage.app.service.employee.onboarding.OnboardingAvatarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

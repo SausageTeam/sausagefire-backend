@@ -1,4 +1,4 @@
-package com.sausage.app.domain.onboarding.onboardingPerson;
+package com.sausage.app.domain.employee.onboarding.onboardingPerson;
 
 import lombok.Getter;
 import lombok.Setter;

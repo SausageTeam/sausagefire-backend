@@ -2,11 +2,11 @@ package com.sausage.app.controller.employee;
 
 import com.sausage.app.domain.common.GenericResponse;
 import com.sausage.app.domain.common.ServiceStatus;
-import com.sausage.app.domain.visaStatusManagement.VisaStatusManagement;
-import com.sausage.app.domain.visaStatusManagement.VisaStatusManagementGetResponse;
-import com.sausage.app.domain.visaStatusManagement.VisaStatusManagementPostRequest;
-import com.sausage.app.domain.visaStatusManagement.VisaStatusManagementPostResponse;
-import com.sausage.app.service.visaStatusManagement.VisaStatusManagementService;
+import com.sausage.app.domain.employee.visaStatusManagement.VisaStatusManagement;
+import com.sausage.app.domain.employee.visaStatusManagement.VisaStatusManagementGetResponse;
+import com.sausage.app.domain.employee.visaStatusManagement.VisaStatusManagementPostRequest;
+import com.sausage.app.domain.employee.visaStatusManagement.VisaStatusManagementPostResponse;
+import com.sausage.app.service.employee.visaStatusManagement.VisaStatusManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;

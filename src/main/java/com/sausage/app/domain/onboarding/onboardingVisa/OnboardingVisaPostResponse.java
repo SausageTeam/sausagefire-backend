@@ -1,4 +1,4 @@
-package com.sausage.app.domain.onboarding.onboardingVisa;
+package com.sausage.app.domain.employee.onboarding.onboardingVisa;
 
 import com.sausage.app.domain.common.GenericResponse;
 import com.sausage.app.domain.common.ServiceStatus;

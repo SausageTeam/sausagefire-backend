@@ -1,4 +1,4 @@
-package com.sausage.app.service.profile.impl;
+package com.sausage.app.service.employee.profile.impl;
 
 import com.sausage.app.dao.Address.AddressDAO;
 import com.sausage.app.dao.Contact.ContactDAO;
@@ -6,9 +6,9 @@ import com.sausage.app.dao.Employee.EmployeeDAO;
 import com.sausage.app.dao.Person.PersonDAO;
 import com.sausage.app.dao.User.UserDAO;
 import com.sausage.app.domain.common.AddressDomain;
-import com.sausage.app.domain.profile.profileEmergencyContact.ProfileEmergencyContact;
+import com.sausage.app.domain.employee.profile.profileEmergencyContact.ProfileEmergencyContact;
 import com.sausage.app.entity.*;
-import com.sausage.app.service.profile.ProfileEmergencyContactService;
+import com.sausage.app.service.employee.profile.ProfileEmergencyContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

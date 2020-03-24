@@ -1,14 +1,14 @@
-package com.sausage.app.service.onboarding.impl;
+package com.sausage.app.service.employee.onboarding.impl;
 
 import com.sausage.app.dao.Address.AddressDAO;
 import com.sausage.app.dao.Contact.ContactDAO;
 import com.sausage.app.dao.Employee.EmployeeDAO;
 import com.sausage.app.dao.Person.PersonDAO;
 import com.sausage.app.dao.User.UserDAO;
-import com.sausage.app.domain.onboarding.onboardingEmergency.OnboardingEmergency;
+import com.sausage.app.domain.employee.onboarding.onboardingEmergency.OnboardingEmergency;
 import com.sausage.app.domain.common.AddressDomain;
 import com.sausage.app.entity.*;
-import com.sausage.app.service.onboarding.OnboardingEmergencyService;
+import com.sausage.app.service.employee.onboarding.OnboardingEmergencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

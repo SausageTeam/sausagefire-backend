@@ -1,4 +1,4 @@
-package com.sausage.app.domain.profile.profileEmergencyContact;
+package com.sausage.app.domain.employee.profile.profileEmergencyContact;
 
 import com.sausage.app.domain.common.AddressDomain;
 import lombok.*;

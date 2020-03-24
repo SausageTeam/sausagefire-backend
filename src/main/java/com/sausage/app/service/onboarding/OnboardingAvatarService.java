@@ -1,6 +1,6 @@
-package com.sausage.app.service.onboarding;
+package com.sausage.app.service.employee.onboarding;
 
-import com.sausage.app.domain.onboarding.onboardingAvatar.OnboardingAvatar;
+import com.sausage.app.domain.employee.onboarding.onboardingAvatar.OnboardingAvatar;
 
 public interface OnboardingAvatarService {
 

@@ -1,4 +1,4 @@
-package com.sausage.app.domain.onboarding.onboardingVisa;
+package com.sausage.app.domain.employee.onboarding.onboardingVisa;
 
 import lombok.Getter;
 import lombok.Setter;
