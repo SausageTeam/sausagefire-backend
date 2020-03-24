@@ -71,10 +71,14 @@ public class HRVisaStatusManagementServiceImpl implements HRVisaStatusManagement
             Person person = employee.getPerson();
 
             String visaEndDate = employee.getVisaEndDate();
+
+            if(visaEndDate == null || visaEndDate.length() == 0)
+                continue;
+
             LocalDate now = LocalDate.now();
             ApplicationWorkFlow applicationWorkFlow = applicationWorkFlowDAO.getApplicationWorkFlowByEmployee(employee);
             int diff = 0;
-            if (visaEndDate != null && applicationWorkFlow == null) {
+            if (applicationWorkFlow == null) {
                 applicationWorkFlow = ApplicationWorkFlow.builder()
                         .createdDate(now.format(format))
                         .modificationDate(now.format(format))
@@ -82,10 +86,10 @@ public class HRVisaStatusManagementServiceImpl implements HRVisaStatusManagement
                         .type("OPT")
                         .build();
                 applicationWorkFlowDAO.setApplicationWorkFlow(applicationWorkFlow);
-                LocalDate localDate = LocalDate.parse(visaEndDate , format);
-                Period period = Period.between(now, localDate);
-                diff = (int) period.getDays();
             }
+            LocalDate localDate = LocalDate.parse(visaEndDate , format);
+            Period period = Period.between(now, localDate);
+            diff = period.getDays();
 
             List<PersonalDocument> personalDocumentList = personalDocumentDAO.getPersonalDocumentByEmployee(employee);
             List<String> documentTitleList = new ArrayList<>();

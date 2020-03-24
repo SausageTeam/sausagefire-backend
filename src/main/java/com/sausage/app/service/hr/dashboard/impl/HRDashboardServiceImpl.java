@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,40 +69,42 @@ public class HRDashboardServiceImpl implements HRDashboardService {
     private List<Trouble> buildNotifyTroubleList(){
         List<Trouble> notifyingList = new ArrayList<>();
         List<Employee> employeeList = employeeDAO.getAllEmployee();
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         for (Employee employee : employeeList){
             Person person = employee.getPerson();
             String visaEndDate = employee.getVisaEndDate();
-            LocalDateTime now = LocalDateTime.now();
-            if (visaEndDate != null) {
-                ApplicationWorkFlow applicationWorkFlow = applicationWorkFlowDAO.getApplicationWorkFlowByEmployee(employee);
-                if (applicationWorkFlow == null){
-                    applicationWorkFlow = ApplicationWorkFlow.builder()
-                            .createdDate(now.format(format))
-                            .modificationDate(now.format(format))
-                            .status(OPT_RECEIPT.getValue())
-                            .type("OPT")
-                            .build();
-                    applicationWorkFlowDAO.setApplicationWorkFlow(applicationWorkFlow);
-                }
-                LocalDateTime localDateTime = LocalDateTime.parse(visaEndDate, format);
-                Duration duration = Duration.between(now, localDateTime);
-                int diff = (int) duration.toDays();
-                if (diff < 100) {
-                    String workAuthorization = ApplicationWorkFlowStatusEnums.values()[applicationWorkFlow.getStatus()].getStr();
-                    Trouble trouble = Trouble.builder()
-                            .employeeId(employee.getId())
-                            .firstName(person.getFirstName())
-                            .middleName(person.getMiddleName())
-                            .lastName(person.getLastName())
-                            .workAuthorization(workAuthorization)
-                            .visaEndDate(visaEndDate)
-                            .dayLeft(diff)
-                            .build();
-                    notifyingList.add(trouble);
-                }
+            LocalDate now = LocalDate.now();
+            if (visaEndDate == null || visaEndDate.length() == 0)
+                continue;
+
+            ApplicationWorkFlow applicationWorkFlow = applicationWorkFlowDAO.getApplicationWorkFlowByEmployee(employee);
+            if (applicationWorkFlow == null){
+                applicationWorkFlow = ApplicationWorkFlow.builder()
+                        .createdDate(now.format(format))
+                        .modificationDate(now.format(format))
+                        .status(OPT_RECEIPT.getValue())
+                        .type("OPT")
+                        .build();
+                applicationWorkFlowDAO.setApplicationWorkFlow(applicationWorkFlow);
             }
+            LocalDate localDate = LocalDate.parse(visaEndDate, format);
+            Period period = Period.between(now, localDate);
+            int diff = period.getDays();
+            if (diff < 100) {
+                String workAuthorization = ApplicationWorkFlowStatusEnums.values()[applicationWorkFlow.getStatus()].getStr();
+                Trouble trouble = Trouble.builder()
+                        .employeeId(employee.getId())
+                        .firstName(person.getFirstName())
+                        .middleName(person.getMiddleName())
+                        .lastName(person.getLastName())
+                        .workAuthorization(workAuthorization)
+                        .visaEndDate(visaEndDate)
+                        .dayLeft(diff)
+                        .build();
+                notifyingList.add(trouble);
+            }
+
         }
         return  notifyingList;
     }
