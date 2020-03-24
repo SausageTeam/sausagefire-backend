@@ -1,6 +1,7 @@
 package com.sausage.app.dao.ApplicationWorkFlow.enums;
 
 public enum ApplicationWorkFlowStatusEnums {
+    ONBOARDING(0, "ONBOARDING"),
     OPT_RECEIPT(1, "OPT RECEIPT"),
     OPT_EAD(2, "OPT EAD"),
     I983(3, "I983"),

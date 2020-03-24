@@ -1,10 +1,12 @@
 package com.sausage.app.domain.employee.onboarding.onboardingPerson;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class OnboardingPerson {
 
     String firstName;

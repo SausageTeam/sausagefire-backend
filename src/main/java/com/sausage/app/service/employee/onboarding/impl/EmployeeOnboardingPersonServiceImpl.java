@@ -1,9 +1,9 @@
 package com.sausage.app.service.employee.onboarding.impl;
 
+import com.sausage.app.dao.ApplicationWorkFlow.ApplicationWorkFlowDAO;
 import com.sausage.app.dao.Person.PersonDAO;
 import com.sausage.app.dao.User.UserDAO;
 import com.sausage.app.domain.employee.onboarding.onboardingPerson.OnboardingPerson;
-import com.sausage.app.domain.employee.onboarding.onboardingPerson.OnboardingPersonRequest;
 import com.sausage.app.entity.Person;
 import com.sausage.app.entity.User;
 import com.sausage.app.service.employee.onboarding.EmployeeOnboardingPersonService;
@@ -18,6 +18,8 @@ public class EmployeeOnboardingPersonServiceImpl implements EmployeeOnboardingPe
 
     private PersonDAO personDAO;
 
+    private ApplicationWorkFlowDAO applicationWorkFlowDAO;
+
     @Autowired
     public void setUserDAO(UserDAO userDAO) {
         this.userDAO = userDAO;
@@ -26,6 +28,11 @@ public class EmployeeOnboardingPersonServiceImpl implements EmployeeOnboardingPe
     @Autowired
     public void setPersonDAO(PersonDAO personDAO) {
         this.personDAO = personDAO;
+    }
+
+    @Autowired
+    public void setApplicationWorkFlowDAO(ApplicationWorkFlowDAO applicationWorkFlowDAO) {
+        this.applicationWorkFlowDAO = applicationWorkFlowDAO;
     }
 
     private Person getPersonByUserId(int userId) {
@@ -39,17 +46,17 @@ public class EmployeeOnboardingPersonServiceImpl implements EmployeeOnboardingPe
     public OnboardingPerson getOnboardingPerson(int userId) {
         Person person = getPersonByUserId(userId);
         if (person != null) {
-            OnboardingPerson onboardingPerson = new OnboardingPerson();
-            onboardingPerson.setFirstName(person.getFirstName());
-            onboardingPerson.setLastName(person.getLastName());
-            onboardingPerson.setMiddleName(person.getMiddleName());
-            onboardingPerson.setEmail(person.getEmail());
-            onboardingPerson.setCellPhone(person.getCellphone());
-            onboardingPerson.setAlternatePhone(person.getAlternatePhone());
-            onboardingPerson.setGender(person.getGender());
-            onboardingPerson.setSsn(person.getSSN());
-            onboardingPerson.setDob(person.getDOB());
-            return onboardingPerson;
+            return OnboardingPerson.builder()
+                    .firstName(person.getFirstName())
+                    .middleName(person.getMiddleName())
+                    .lastName(person.getLastName())
+                    .email(person.getEmail())
+                    .cellPhone(person.getCellphone())
+                    .alternatePhone(person.getAlternatePhone())
+                    .gender(person.getGender())
+                    .ssn(person.getSSN())
+                    .dob(person.getDOB())
+                    .build();
         } else {
             return null;
         }
@@ -57,20 +64,19 @@ public class EmployeeOnboardingPersonServiceImpl implements EmployeeOnboardingPe
 
     @Override
     @Transactional
-    public void postOnboardingPerson(int userId, OnboardingPersonRequest onboardingPersonRequest) {
-        OnboardingPerson onboardingPerson = onboardingPersonRequest.getOnboardingPerson();
-        Person person = getPersonByUserId(userId);
-        person.setFirstName(onboardingPerson.getFirstName());
-        person.setLastName(onboardingPerson.getLastName());
-        person.setMiddleName(onboardingPerson.getMiddleName());
-        person.setEmail(onboardingPerson.getEmail());
-        person.setCellphone(onboardingPerson.getCellPhone());
-        person.setAlternatePhone(onboardingPerson.getAlternatePhone());
-        person.setGender(onboardingPerson.getGender());
-        person.setSSN(onboardingPerson.getSsn());
-        person.setDOB(onboardingPerson.getDob());
+    public void postOnboardingPerson(int userId, OnboardingPerson onboardingPerson) {
+        Person person = Person.builder()
+                .firstName(onboardingPerson.getFirstName())
+                .middleName(onboardingPerson.getMiddleName())
+                .lastName(onboardingPerson.getLastName())
+                .email(onboardingPerson.getEmail())
+                .cellphone(onboardingPerson.getCellPhone())
+                .alternatePhone(onboardingPerson.getAlternatePhone())
+                .gender(onboardingPerson.getGender())
+                .SSN(onboardingPerson.getSsn())
+                .DOB(onboardingPerson.getDob())
+                .build();
         personDAO.setPerson(person);
     }
-
 
 }

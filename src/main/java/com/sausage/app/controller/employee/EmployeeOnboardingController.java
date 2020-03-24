@@ -14,9 +14,7 @@ import com.sausage.app.domain.employee.onboarding.onboardingEmergency.Onboarding
 import com.sausage.app.domain.employee.onboarding.onboardingEmergency.OnboardingEmergencyGetResponse;
 import com.sausage.app.domain.employee.onboarding.onboardingEmergency.OnboardingEmergencyPostRequest;
 import com.sausage.app.domain.employee.onboarding.onboardingEmergency.OnboardingEmergencyPostResponse;
-import com.sausage.app.domain.employee.onboarding.onboardingPerson.OnboardingPerson;
-import com.sausage.app.domain.employee.onboarding.onboardingPerson.OnboardingPersonRequest;
-import com.sausage.app.domain.employee.onboarding.onboardingPerson.OnboardingPersonResponse;
+import com.sausage.app.domain.employee.onboarding.onboardingPerson.*;
 import com.sausage.app.domain.employee.onboarding.onboardingReference.OnboardingReference;
 import com.sausage.app.domain.employee.onboarding.onboardingReference.OnboardingReferenceGetResponse;
 import com.sausage.app.domain.employee.onboarding.onboardingReference.OnboardingReferencePostRequest;
@@ -83,27 +81,35 @@ public class EmployeeOnboardingController {
      */
     @GetMapping(value = "/person")
     public @ResponseBody
-    OnboardingPersonResponse getOnboardingPerson(HttpServletRequest httpServletRequest) {
-        OnboardingPersonResponse res = new OnboardingPersonResponse();
-
+    OnboardingPersonGetResponse getOnboardingPerson(HttpServletRequest httpServletRequest) {
+        OnboardingPersonGetResponse onboardingPersonGetResponse = new OnboardingPersonGetResponse();
 //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
         int userId = 9;
         OnboardingPerson onboardingPerson = employeeOnboardingPersonService.getOnboardingPerson(userId);
-        res.setOnboardingPerson(onboardingPerson);
-        prepareResponse(res, true, "");
-        return res;
+        if (onboardingPerson == null) {
+            prepareResponse(onboardingPersonGetResponse, false, "Unexpected Error. It might be caused by missing data");
+        } else {
+            onboardingPersonGetResponse.setOnboardingPerson(onboardingPerson);
+            prepareResponse(onboardingPersonGetResponse, true, "");
+        }
+        return onboardingPersonGetResponse;
     }
 
     @PostMapping(value = "/person", consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    OnboardingPersonResponse postOnboardingPerson(@RequestBody OnboardingPersonRequest req) {
-        OnboardingPersonResponse res = new OnboardingPersonResponse();
+    OnboardingPersonPostResponse postOnboardingPerson(@RequestBody OnboardingPersonPostRequest onboardingPersonPostRequest) {
+        OnboardingPersonPostResponse onboardingPersonPostResponse = new OnboardingPersonPostResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
         int userId = 9;
-        res.setOnboardingPerson(req.getOnboardingPerson());
-        employeeOnboardingPersonService.postOnboardingPerson(userId, req);
-        prepareResponse(res, true, "");
-        return res;
+        OnboardingPerson onboardingPerson = onboardingPersonPostRequest.getOnboardingPerson();
+        if (onboardingPerson == null) {
+            prepareResponse(onboardingPersonPostResponse, false, "Unexpected Error.");
+        } else {
+            onboardingPersonPostResponse.setOnboardingPerson(onboardingPerson);
+            employeeOnboardingPersonService.postOnboardingPerson(userId, onboardingPerson);
+            prepareResponse(onboardingPersonPostResponse, true, "");
+        }
+        return onboardingPersonPostResponse;
     }
 
     /**
