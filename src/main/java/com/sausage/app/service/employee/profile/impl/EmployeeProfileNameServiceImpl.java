@@ -10,6 +10,7 @@ import com.sausage.app.entity.Person;
 import com.sausage.app.entity.User;
 import com.sausage.app.fileIO.FileInput;
 import com.sausage.app.fileIO.FileOutput;
+import com.sausage.app.fileIO.URIConvert;
 import com.sausage.app.service.employee.profile.EmployeeProfileNameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,8 @@ public class EmployeeProfileNameServiceImpl implements EmployeeProfileNameServic
 
     private EmployeeDAO employeeDAO;
 
+    private URIConvert uriConvert;
+
     @Autowired
     public void setUserDAO(UserDAO userDAO) {
         this.userDAO = userDAO;
@@ -42,6 +45,11 @@ public class EmployeeProfileNameServiceImpl implements EmployeeProfileNameServic
     @Autowired
     public void setEmployeeDAO(EmployeeDAO employeeDAO) {
         this.employeeDAO = employeeDAO;
+    }
+
+    @Autowired
+    public void setUriConvert(URIConvert uriConvert) {
+        this.uriConvert = uriConvert;
     }
 
     private Person getPersonByUserId(int userId) {
@@ -59,12 +67,11 @@ public class EmployeeProfileNameServiceImpl implements EmployeeProfileNameServic
         String lastName = person.getLastName();
         String preferredName = person.getPreferredName();
 
-        String avatarPath = String.format(Constant.DEFAULT_FILE_PATH, employee.getId(), "avatar.jpg");
-        File avatar = FileOutput.getAvatar(avatarPath);
+        String uri = uriConvert.getUri(employee.getId(), "avatar.jpg");
 
         String dob = person.getDOB();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate localDate = LocalDate.parse(dob , format);
+        LocalDate localDate = LocalDate.parse(dob, format);
         int dob_year = localDate.getYear();
         LocalDateTime now = LocalDateTime.now();
         int now_year = now.getYear();
@@ -78,7 +85,7 @@ public class EmployeeProfileNameServiceImpl implements EmployeeProfileNameServic
                 .middleName(middleName)
                 .lastName(lastName)
                 .preferredName(preferredName)
-                .avatar(avatar)
+                .avatarUri(uri)
                 .dob(dob)
                 .age(age)
                 .gender(gender)
@@ -96,7 +103,6 @@ public class EmployeeProfileNameServiceImpl implements EmployeeProfileNameServic
         String middleName = profileName.getMiddleName();
         String lastName = profileName.getLastName();
         String preferredName = profileName.getPreferredName();
-        File avatar = profileName.getAvatar();
         String dob = profileName.getDob();
         int age = profileName.getAge();
         String gender = profileName.getGender();
@@ -110,9 +116,6 @@ public class EmployeeProfileNameServiceImpl implements EmployeeProfileNameServic
         person.setGender(gender);
         person.setSSN(ssn);
         personDAO.setPerson(person);
-
-        String avatarPath = String.format(Constant.DEFAULT_FILE_PATH, employee.getId(), "avatar.jpg");
-        FileInput.setAvatar(avatarPath, avatar);
     }
 
 }

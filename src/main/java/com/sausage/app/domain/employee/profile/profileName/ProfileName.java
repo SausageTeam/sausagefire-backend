@@ -19,7 +19,7 @@ public class ProfileName {
 
     String preferredName;
 
-    File avatar;
+    String avatarUri;
 
     String dob;
 
