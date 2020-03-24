@@ -67,7 +67,7 @@ public class EmployeeProfileNameServiceImpl implements EmployeeProfileNameServic
         String lastName = person.getLastName();
         String preferredName = person.getPreferredName();
 
-        String uri = uriConvert.getUri(employee.getId(), "avatar.jpg");
+        String uri = uriConvert.getUri(String.valueOf(employee.getId()), "avatar.jpg");
 
         String dob = person.getDOB();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");

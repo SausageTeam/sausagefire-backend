@@ -54,7 +54,7 @@ public class AppControllerServiceImpl implements AppControllerService {
     @Transactional
     public AppDomain getAppDomain(int userId) {
         Employee employee = getEmployeeByUserId(userId);
-        String uri = uriConvert.getUri(employee.getId(), "avatar.jpg");
+        String uri = uriConvert.getUri(String.valueOf(employee.getId()), "avatar.jpg");
         return AppDomain.builder()
                 .avatarUri(uri)
                 .build();

@@ -30,8 +30,8 @@ public class URIConvert {
         }
     }
 
-    public String getUri(int employeeId, String fileName){
-        String filePath = String.format("/api/downloadFile/%d/%s", employeeId, fileName);
+    public String getUri(String path, String fileName){
+        String filePath = String.format("/api/downloadFile/%s/%s", path, fileName);
         return ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(filePath)
                 .toUriString();

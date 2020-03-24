@@ -64,7 +64,7 @@ public class EmployeeOnboardingAvatarServiceImpl implements EmployeeOnboardingAv
         Employee employee = getEmployeeByUserId(userId);
         String avatarPath = String.format(Constant.DEFAULT_FILE_PATH, employee.getId(), "avatar.jpg");
         FileOutput.getAvatar(avatarPath);
-        String uri = uriConvert.getUri(employee.getId(), "avatar.jpg");
+        String uri = uriConvert.getUri(String.valueOf(employee.getId()), "avatar.jpg");
         return OnboardingAvatar.builder()
                 .avatarUri(uri)
                 .build();

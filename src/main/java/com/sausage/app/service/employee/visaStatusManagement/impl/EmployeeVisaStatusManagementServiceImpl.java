@@ -104,8 +104,8 @@ public class EmployeeVisaStatusManagementServiceImpl implements EmployeeVisaStat
         boolean ifEAD = (applicationWorkFlow.getStatus() == OPT_EAD.getValue());
         boolean ifExpired = (diff < 100);
         if (ifF1 && ifEAD && ifExpired){
-            String uri_empty = uriConvert.getUri(employee.getId(), "I983_empty");
-            String uri_sample = uriConvert.getUri(employee.getId(), "I983_sample");
+            String uri_empty = uriConvert.getUri("document", "I983_empty");
+            String uri_sample = uriConvert.getUri("document", "I983_sample");
             visaStatusManagement.setIfNeedDownload(true);
             visaStatusManagement.setStatus(applicationWorkFlow.getStatus());
             visaStatusManagement.setComments(applicationWorkFlow.getComments());
