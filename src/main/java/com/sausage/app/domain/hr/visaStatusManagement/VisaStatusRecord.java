@@ -12,6 +12,8 @@ import java.util.List;
 @AllArgsConstructor
 public class VisaStatusRecord {
 
+    int employeeId;
+
     String firstName;
 
     String middleName;
@@ -19,8 +21,6 @@ public class VisaStatusRecord {
     String lastName;
 
     String workAuthorization;
-
-    String expirationDate;
 
     int dayLeft;
 
@@ -34,6 +34,6 @@ public class VisaStatusRecord {
 
     List<File> documentReceivedList;
 
-    String fileName;
+    String nextStep;
 
 }

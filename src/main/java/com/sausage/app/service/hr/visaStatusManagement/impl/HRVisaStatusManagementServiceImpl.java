@@ -101,13 +101,13 @@ public class HRVisaStatusManagementServiceImpl implements HRVisaStatusManagement
                     .middleName(person.getMiddleName())
                     .lastName(person.getLastName())
                     .workAuthorization(workAuthorization)
-                    .expirationDate(visaEndDate)
                     .dayLeft(diff)
                     .visaStatus(visaType)
                     .visaStartDate(employee.getVisaStartDate())
                     .visaEndDate(employee.getVisaEndDate())
                     .documentTitleList(documentTitleList)
                     .documentReceivedList(documentReceivedList)
+                    .nextStep(ApplicationWorkFlowStatusEnums.values()[applicationWorkFlow.getStatus() + 1].getStr())
                     .build();
             visaStatusRecordList.add(visaStatusRecord);
         }
