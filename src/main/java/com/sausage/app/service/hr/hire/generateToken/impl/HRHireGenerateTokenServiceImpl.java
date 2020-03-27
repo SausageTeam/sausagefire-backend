@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import static com.sausage.app.constant.Constant.*;
 
 @Service
@@ -46,10 +49,17 @@ public class HRHireGenerateTokenServiceImpl implements HRHireGenerateTokenServic
             String decryptToken = String.format("%s %s %s %s", email, title, startDate, endDate);
             String encryptToken = AES.encrypt(decryptToken, SECRET_KEY);
 
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            String formatDateTime = now.format(format);
+
             registrationToken = RegistrationToken.builder()
                     .token(encryptToken)
+                    .validDuration(DEFAULT_REGISTRATION_TOKEN_VALID_DURATION)
                     .email(email)
                     .createdBy(userId)
+                    .activeFlag(ACTIVE_FLAG)
+                    .createDateTime(formatDateTime)
                     .build();
 
             registrationTokenDAO.setRegistrationToken(registrationToken);

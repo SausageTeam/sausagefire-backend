@@ -3,6 +3,9 @@ package com.sausage.app.constant;
 public interface Constant {
     String JWT_TOKEN_COOKIE_NAME = "JWT-TOKEN";
     String SIGNING_KEY = "signingKey";
+    int DEFAULT_REGISTRATION_TOKEN_VALID_DURATION = 3;
+    int ACTIVE_FLAG = 1;
+    int INACTIVE_FLAG = 0;
 
     String SECRET_KEY = "sausage";
 
