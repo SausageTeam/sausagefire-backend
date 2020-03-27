@@ -10,6 +10,10 @@ import com.sausage.app.fileIO.AES;
 import com.sausage.app.service.hr.hire.generateToken.HRHireGenerateTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static com.sausage.app.constant.Constant.*;
 
@@ -31,22 +35,33 @@ public class HRHireGenerateTokenServiceImpl implements HRHireGenerateTokenServic
     }
 
     @Override
+    @Transactional
     public boolean setHireGenerateToken(int userId, HireGenerateToken hireGenerateToken) {
         String email = hireGenerateToken.getEmail();
         String title = hireGenerateToken.getTitle();
         String startDate = hireGenerateToken.getStartDate();
         String endDate = hireGenerateToken.getEndDate();
         User user = userDAO.getUserByEmail(email);
-        if (user != null) {
+        RegistrationToken registrationToken = registrationTokenDAO.getRegistrationTokenByEmail(email);
+        if (user != null || registrationToken != null) {
             return false;
         } else {
             String decryptToken = String.format("%s %s %s %s", email, title, startDate, endDate);
             String encryptToken = AES.encrypt(decryptToken, SECRET_KEY);
-            RegistrationToken registrationToken = RegistrationToken.builder()
+
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            String formatDateTime = now.format(format);
+
+            registrationToken = RegistrationToken.builder()
                     .token(encryptToken)
+                    .validDuration(DEFAULT_REGISTRATION_TOKEN_VALID_DURATION)
                     .email(email)
                     .createdBy(userId)
+                    .activeFlag(ACTIVE_FLAG)
+                    .createDateTime(formatDateTime)
                     .build();
+
             registrationTokenDAO.setRegistrationToken(registrationToken);
             String text = String.format(GENERATE_TOKEN_NOTIFICATION, encryptToken);
             return true;

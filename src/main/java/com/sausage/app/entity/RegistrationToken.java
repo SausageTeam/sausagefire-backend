@@ -34,4 +34,7 @@ public class RegistrationToken implements Serializable {
     @Column(name = "ACTIVE_FLAG")
     private int activeFlag;
 
+    @Column(name = "CREATE_DATE_TIME")
+    private String createDateTime;
+
 }
