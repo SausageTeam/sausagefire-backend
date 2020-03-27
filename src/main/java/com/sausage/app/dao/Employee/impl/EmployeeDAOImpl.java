@@ -51,4 +51,13 @@ public class EmployeeDAOImpl extends AbstractHibernateDAO<Employee> implements E
         session.merge(employee);
     }
 
+    @Override
+    public List<Employee> getEmployeesFromTheHouse(int houseID) {
+        Session session = getCurrentSession();
+        Query query = session.createQuery(GET_EMPLOYEE_FROM_THE_HOUSE);
+        query.setParameter("houseID", houseID);
+        List<Employee> employeeList = query.getResultList();
+        return employeeList.size() > 0 ? employeeList : null;
+    }
+
 }
