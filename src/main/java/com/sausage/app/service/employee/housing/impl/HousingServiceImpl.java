@@ -1,8 +1,9 @@
 package com.sausage.app.service.employee.housing.impl;
 
+import com.sausage.app.dao.Employee.EmployeeDAO;
+import com.sausage.app.dao.House.HouseDAO;
 import com.sausage.app.dao.Person.PersonDAO;
-import com.sausage.app.dao.house.HouseDAO;
-import com.sausage.app.dao.user.UserDAO;
+import com.sausage.app.dao.User.UserDAO;
 import com.sausage.app.domain.housing.housingInfo.HousingInfo;
 import com.sausage.app.domain.housing.housingInfo.Resident;
 import com.sausage.app.entity.Employee;

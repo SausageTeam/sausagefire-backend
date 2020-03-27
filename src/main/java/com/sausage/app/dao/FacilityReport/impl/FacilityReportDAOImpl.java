@@ -1,12 +1,19 @@
 package com.sausage.app.dao.FacilityReport.impl;
 
 import com.sausage.app.dao.AbstractHibernateDAO;
-import com.sausage.app.dao.Facility.FacilityDAO;
+import com.sausage.app.dao.Employee.EmployeeDAO;
+import com.sausage.app.dao.FacilityReport.FacilityReportDAO;
+import com.sausage.app.dao.Person.PersonDAO;
 import com.sausage.app.entity.FacilityReport;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
-public class FacilityReportDAOImpl extends AbstractHibernateDAO<FacilityReport> implements FacilityDAO {
+public class FacilityReportDAOImpl extends AbstractHibernateDAO<FacilityReport> implements FacilityReportDAO {
   private PersonDAO personDAO;
   private EmployeeDAO employeeDAO;
 

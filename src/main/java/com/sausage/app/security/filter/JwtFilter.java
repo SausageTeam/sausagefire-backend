@@ -12,6 +12,7 @@ import java.io.IOException;
 
 //@Component
 public class JwtFilter {
+    // test if I have a filter
 //    @Override
 //    protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
 //        String userId = JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY);

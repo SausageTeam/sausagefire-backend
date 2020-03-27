@@ -1,8 +1,9 @@
 package com.sausage.app.service.employee.housing.impl;
 
+import com.sausage.app.dao.Employee.EmployeeDAO;
+import com.sausage.app.dao.FacilityReport.FacilityReportDAO;
 import com.sausage.app.dao.Person.PersonDAO;
-import com.sausage.app.dao.facilityReport.FacilityReportDAO;
-import com.sausage.app.dao.user.UserDAO;
+import com.sausage.app.dao.User.UserDAO;
 import com.sausage.app.domain.housing.maintenanceHistory.MaintenanceHistory;
 import com.sausage.app.entity.*;
 import com.sausage.app.service.employee.housing.FacilityReportService;

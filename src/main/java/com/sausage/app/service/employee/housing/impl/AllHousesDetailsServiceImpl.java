@@ -1,8 +1,9 @@
 package com.sausage.app.service.employee.housing.impl;
 
+import com.sausage.app.dao.Contact.ContactDAO;
+import com.sausage.app.dao.Employee.EmployeeDAO;
+import com.sausage.app.dao.House.HouseDAO;
 import com.sausage.app.dao.Person.PersonDAO;
-import com.sausage.app.dao.contact.ContactDAO;
-import com.sausage.app.dao.house.HouseDAO;
 import com.sausage.app.domain.housing.housesDetails.AllHousesDetails;
 import com.sausage.app.domain.housing.housesDetails.EmployeeInfo;
 import com.sausage.app.entity.Contact;
@@ -78,6 +79,7 @@ public class AllHousesDetailsServiceImpl implements AllHousesDetailsService {
         List<EmployeeInfo> employeeInfoList = new ArrayList<>();
         for(Employee e: employeeList) {
             EmployeeInfo employeeInfo = new EmployeeInfo();
+            System.out.println("First Name: " + e.getPerson().getFirstName());
             employeeInfo.setName(e.getPerson().getFirstName());
             employeeInfo.setCar(e.getCar());
             employeeInfo.setEmail(e.getPerson().getEmail());

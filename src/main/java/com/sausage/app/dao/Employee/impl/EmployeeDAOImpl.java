@@ -18,6 +18,8 @@ public class EmployeeDAOImpl extends AbstractHibernateDAO<Employee> implements E
 
     private static final String GET_EMPLOYEE = "FROM Employee WHERE person = :person";
 
+    private static final String GET_EMPLOYEE_FROM_THE_HOUSE = "FROM Employee WHERE houseId = :houseID";
+
     public EmployeeDAOImpl() { setClazz(Employee.class);}
 
     @Override

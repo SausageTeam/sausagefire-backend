@@ -25,6 +25,7 @@ public class EmployeeFilter {
 //
 //    @Override
 //    protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
+//        // check if the jwt valid
 //        String userId = JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY);
 //        if(userId == null){
 //            String authService = this.getFilterConfig().getInitParameter("services.auth");
