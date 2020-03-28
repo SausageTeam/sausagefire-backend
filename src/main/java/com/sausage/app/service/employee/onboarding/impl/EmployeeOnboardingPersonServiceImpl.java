@@ -81,6 +81,7 @@ public class EmployeeOnboardingPersonServiceImpl implements EmployeeOnboardingPe
                     .firstName(person.getFirstName())
                     .middleName(person.getMiddleName())
                     .lastName(person.getLastName())
+                    .preferredName(person.getPreferredName())
                     .email(person.getEmail())
                     .cellPhone(person.getCellphone())
                     .alternatePhone(person.getAlternatePhone())
@@ -101,6 +102,7 @@ public class EmployeeOnboardingPersonServiceImpl implements EmployeeOnboardingPe
         person.setFirstName(onboardingPerson.getFirstName());
         person.setMiddleName(onboardingPerson.getMiddleName());
         person.setLastName(onboardingPerson.getLastName());
+        person.setPreferredName(onboardingPerson.getPreferredName());
         person.setEmail(onboardingPerson.getEmail());
         person.setCellphone(onboardingPerson.getCellPhone());
         person.setAlternatePhone(onboardingPerson.getAlternatePhone());

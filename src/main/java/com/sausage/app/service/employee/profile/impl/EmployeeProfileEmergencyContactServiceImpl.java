@@ -65,7 +65,7 @@ public class EmployeeProfileEmergencyContactServiceImpl implements EmployeeProfi
                     .cellPhone(cellPhone)
                     .addressDomain(addressDomain)
                     .build();
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
     }

@@ -15,6 +15,8 @@ public class OnboardingPerson {
 
     String middleName;
 
+    String preferredName;
+
     String email;
 
     String cellPhone;
