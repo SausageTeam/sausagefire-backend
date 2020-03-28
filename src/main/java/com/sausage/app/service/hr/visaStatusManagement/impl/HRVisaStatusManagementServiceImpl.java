@@ -12,6 +12,7 @@ import com.sausage.app.entity.Employee;
 import com.sausage.app.entity.Person;
 import com.sausage.app.entity.PersonalDocument;
 import com.sausage.app.fileIO.FileOutput;
+import com.sausage.app.service.common.mail.EmailService;
 import com.sausage.app.service.hr.visaStatusManagement.HRVisaStatusManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.sausage.app.constant.Constant.VISA_NOTIFICATION;
+import static com.sausage.app.constant.Constant.*;
 import static com.sausage.app.constant.enums.ApplicationWorkFlow.ApplicationWorkFlowNotifyEnums.NOT_NOTIFIED;
 import static com.sausage.app.constant.enums.ApplicationWorkFlow.ApplicationWorkFlowOPTStatusEnums.OPT_RECEIPT;
 import static com.sausage.app.constant.enums.ApplicationWorkFlow.ApplicationWorkFlowTypeEnums.OPT;
@@ -41,6 +42,8 @@ public class HRVisaStatusManagementServiceImpl implements HRVisaStatusManagement
     private ApplicationWorkFlowDAO applicationWorkFlowDAO;
 
     private PersonalDocumentDAO personalDocumentDAO;
+
+    private EmailService emailService;
 
     @Autowired
     public void setEmployeeDAO(EmployeeDAO employeeDAO) {
@@ -60,6 +63,11 @@ public class HRVisaStatusManagementServiceImpl implements HRVisaStatusManagement
     @Autowired
     public void setPersonalDocumentDAO(PersonalDocumentDAO personalDocumentDAO) {
         this.personalDocumentDAO = personalDocumentDAO;
+    }
+
+    @Autowired
+    public void setEmailService(EmailService emailService) {
+        this.emailService = emailService;
     }
 
     @Override
@@ -141,7 +149,8 @@ public class HRVisaStatusManagementServiceImpl implements HRVisaStatusManagement
         String workAuthorization = ApplicationWorkFlowOPTStatusEnums.values()[applicationWorkFlow.getStatus()].getStr();
 
         String to = employee.getPerson().getEmail();
-        String text = String.format(VISA_NOTIFICATION, firstName, workAuthorization);
+        String body = String.format(VISA_NOTIFICATION_BODY, firstName, workAuthorization);
+        emailService.sendMail(to, VISA_NOTIFICATION_SUBJECT, body);
     }
 
 }

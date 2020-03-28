@@ -11,7 +11,7 @@ import com.sausage.app.domain.hr.hire.applicationReview.ApplicationResult;
 import com.sausage.app.domain.hr.hire.applicationReview.HireApplicationReview;
 import com.sausage.app.entity.*;
 import com.sausage.app.fileIO.FileOutput;
-import com.sausage.app.fileIO.URIConvert;
+import com.sausage.app.fileIO.URIHandler;
 import com.sausage.app.service.hr.hire.applicationReview.HRHireApplicationReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +37,7 @@ public class HRHireApplicationReviewServiceImpl implements HRHireApplicationRevi
 
     private ApplicationWorkFlowDAO applicationWorkFlowDAO;
 
-    private URIConvert uriConvert;
+    private URIHandler uriHandler;
 
     @Autowired
     public void setEmployeeDAO(EmployeeDAO employeeDAO) {
@@ -65,8 +65,8 @@ public class HRHireApplicationReviewServiceImpl implements HRHireApplicationRevi
     }
 
     @Autowired
-    public void setUriConvert(URIConvert uriConvert) {
-        this.uriConvert = uriConvert;
+    public void setUriHandler(URIHandler uriHandler) {
+        this.uriHandler = uriHandler;
     }
 
     @Override
@@ -115,7 +115,7 @@ public class HRHireApplicationReviewServiceImpl implements HRHireApplicationRevi
             String dob = person.getDOB();
 
             /* Avatar */
-            String avatarUri = uriConvert.getUri(String.valueOf(employee.getId()), "avatar.jpg");
+            String avatarUri = uriHandler.getUri(String.valueOf(employee.getId()), "avatar.jpg");
 
             /* Visa */
             String visaType = visaStatus.getVisaType();

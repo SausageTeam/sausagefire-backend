@@ -19,7 +19,14 @@ public interface Constant {
 
     String EMPLOYEE_DRIVER_LICENSE_TITLE = "driver_license";
 
-    String VISA_NOTIFICATION = "Hi %s, this is the email from sausage.com that reminds you to upload your %s.";
-    String GENERATE_TOKEN_NOTIFICATION = "Hi, this is the email from sausage.com that your registration token is %s, please use it in 3 hours. " +
-            "If the token is expired, please contact HR again.";
+    String VISA_NOTIFICATION_SUBJECT = "IMPORTANT! Files are required to be upload!";
+    String VISA_NOTIFICATION_BODY = "Hi %s,\n" +
+            "This is the email from sausage.com that reminds you to upload your %s.";
+
+    String GENERATE_TOKEN_NOTIFICATION_SUBJECT ="CONGRATS! You are accepted by SAUSAGE.COM, please register you work account";
+    String GENERATE_TOKEN_NOTIFICATION_BODY = "Congrats,\n" +
+            "You are hired as the position of %s, start from %s to %s.\n" +
+            "This is the email from sausage.com that your registration token is \n" +
+            "%s\n" +
+            "Please use it in 3 hours. If the token is expired, please contact HR again.";
 }

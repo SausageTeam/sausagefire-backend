@@ -6,6 +6,7 @@ import com.sausage.app.domain.hr.hire.generateToken.HireGenerateToken;
 import com.sausage.app.entity.RegistrationToken;
 import com.sausage.app.entity.User;
 import com.sausage.app.security.util.AES;
+import com.sausage.app.service.common.mail.EmailService;
 import com.sausage.app.service.hr.hire.generateToken.HRHireGenerateTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,8 @@ public class HRHireGenerateTokenServiceImpl implements HRHireGenerateTokenServic
 
     private RegistrationTokenDAO registrationTokenDAO;
 
+    private EmailService emailService;
+
     @Autowired
     public void setUserDAO(UserDAO userDAO) {
         this.userDAO = userDAO;
@@ -31,6 +34,11 @@ public class HRHireGenerateTokenServiceImpl implements HRHireGenerateTokenServic
     @Autowired
     public void setRegistrationTokenDAO(RegistrationTokenDAO registrationTokenDAO) {
         this.registrationTokenDAO = registrationTokenDAO;
+    }
+
+    @Autowired
+    public void setEmailService(EmailService emailService) {
+        this.emailService = emailService;
     }
 
     @Override
@@ -62,7 +70,9 @@ public class HRHireGenerateTokenServiceImpl implements HRHireGenerateTokenServic
                     .build();
 
             registrationTokenDAO.setRegistrationToken(registrationToken);
-            String text = String.format(GENERATE_TOKEN_NOTIFICATION, encryptToken);
+
+            String body = String.format(GENERATE_TOKEN_NOTIFICATION_BODY, title.toUpperCase(), startDate, endDate, encryptToken);
+            emailService.sendMail(email, GENERATE_TOKEN_NOTIFICATION_SUBJECT, body);
             return true;
         }
     }
