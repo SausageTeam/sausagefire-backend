@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public class UserRoleDAOImpl extends AbstractHibernateDAO<UserRole> implements UserRoleDAO {
 
-    private static final String GET_USER_ROLE = "FROM UserRole WHERE userID = :userId";
+    private static final String GET_USER_ROLE = "FROM UserRole WHERE userId = :userId";
 
     public UserRoleDAOImpl() {
         setClazz(UserRole.class);
