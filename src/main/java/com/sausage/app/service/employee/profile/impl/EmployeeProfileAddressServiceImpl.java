@@ -29,27 +29,27 @@ public class EmployeeProfileAddressServiceImpl implements EmployeeProfileAddress
     }
 
     private Address getAddressByUserId(int userId) {
-        try {
-            User user = userDAO.getUserById(userId);
-            Person person = user.getPerson();
-            return addressDAO.getAddressByPerson(person);
-        } catch (Exception e) {
-            return null;
-        }
+        User user = userDAO.getUserById(userId);
+        Person person = user.getPerson();
+        return addressDAO.getAddressByPerson(person);
     }
 
     @Override
     @Transactional
     public ProfileAddress getProfileAddress(int userId) {
-        Address address = getAddressByUserId(userId);
-        return ProfileAddress.builder()
-                .addressLineOne(address.getAddressLineOne())
-                .addressLineTwo(address.getAddressLineTwo())
-                .city(address.getCity())
-                .zipCode(address.getZipCode())
-                .stateName(address.getStateName())
-                .stateAbbr(address.getStateAbbr())
-                .build();
+        try {
+            Address address = getAddressByUserId(userId);
+            return ProfileAddress.builder()
+                    .addressLineOne(address.getAddressLineOne())
+                    .addressLineTwo(address.getAddressLineTwo())
+                    .city(address.getCity())
+                    .zipCode(address.getZipCode())
+                    .stateName(address.getStateName())
+                    .stateAbbr(address.getStateAbbr())
+                    .build();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
