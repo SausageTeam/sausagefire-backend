@@ -17,12 +17,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.sausage.app.constant.enums.ApplicationWorkFlow.ApplicationWorkFlowNotifyEnums.NOT_NOTIFIED;
 import static com.sausage.app.constant.enums.ApplicationWorkFlow.ApplicationWorkFlowOPTStatusEnums.OPT_RECEIPT;
+import static com.sausage.app.constant.enums.ApplicationWorkFlow.ApplicationWorkFlowTypeEnums.OPT;
+import static com.sausage.app.constant.enums.ApplicationWorkFlow.ApplicationWorkFlowUploadEnums.REQUIRE;
 
 @Service
 public class HRDashboardServiceImpl implements HRDashboardService {
@@ -70,27 +74,32 @@ public class HRDashboardServiceImpl implements HRDashboardService {
     private List<Trouble> buildNotifyTroubleList(){
         List<Trouble> notifyingList = new ArrayList<>();
         List<Employee> employeeList = employeeDAO.getAllEmployee();
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String formatDateTime = now.format(format);
 
         for (Employee employee : employeeList){
             Person person = employee.getPerson();
             String visaEndDate = employee.getVisaEndDate();
-            LocalDate now = LocalDate.now();
             if (visaEndDate == null || visaEndDate.length() == 0)
                 continue;
 
             ApplicationWorkFlow applicationWorkFlow = applicationWorkFlowDAO.getApplicationWorkFlowByEmployee(employee);
             if (applicationWorkFlow == null){
                 applicationWorkFlow = ApplicationWorkFlow.builder()
-                        .createdDate(now.format(format))
-                        .modificationDate(now.format(format))
+                        .employee(employee)
                         .status(OPT_RECEIPT.getValue())
-                        .type("OPT")
+                        .type(OPT.getStr())
+                        .upload(REQUIRE.getValue())
+                        .notify(NOT_NOTIFIED.getValue())
+                        .createdDateTime(formatDateTime)
+                        .modificationDateTime(formatDateTime)
                         .build();
                 applicationWorkFlowDAO.setApplicationWorkFlow(applicationWorkFlow);
             }
+            LocalDate dateNow = LocalDate.now();
             LocalDate localDate = LocalDate.parse(visaEndDate, format);
-            Period period = Period.between(now, localDate);
+            Period period = Period.between(dateNow, localDate);
             int diff = period.getDays();
             if (diff < 100) {
                 String workAuthorization = ApplicationWorkFlowOPTStatusEnums.values()[applicationWorkFlow.getStatus()].getStr();

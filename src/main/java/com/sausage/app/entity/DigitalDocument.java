@@ -11,6 +11,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "DigitalDocument")
 public class DigitalDocument implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -22,9 +23,10 @@ public class DigitalDocument implements Serializable {
     @Column(name = "REQUIRED")
     private int required;
 
+    @Column(name = "DESCRIPTION")
+    private String description;
+
     @Column(name = "TEMPLATE_LOCATION")
     private String templateLocation;
 
-    @Column(name = "DESCRIPTION")
-    private String description;
 }

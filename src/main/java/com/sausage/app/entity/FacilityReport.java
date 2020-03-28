@@ -12,6 +12,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "FacilityReport")
 public class FacilityReport implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -31,5 +32,6 @@ public class FacilityReport implements Serializable {
 
     @Column(name = "STATUS")
     private String status;
+
 }
 

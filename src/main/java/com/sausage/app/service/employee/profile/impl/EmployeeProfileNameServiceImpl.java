@@ -1,6 +1,5 @@
 package com.sausage.app.service.employee.profile.impl;
 
-import com.sausage.app.constant.Constant;
 import com.sausage.app.dao.Employee.EmployeeDAO;
 import com.sausage.app.dao.Person.PersonDAO;
 import com.sausage.app.dao.User.UserDAO;
@@ -8,17 +7,13 @@ import com.sausage.app.domain.employee.profile.profileName.ProfileName;
 import com.sausage.app.entity.Employee;
 import com.sausage.app.entity.Person;
 import com.sausage.app.entity.User;
-import com.sausage.app.fileIO.FileInput;
-import com.sausage.app.fileIO.FileOutput;
 import com.sausage.app.fileIO.URIConvert;
 import com.sausage.app.service.employee.profile.EmployeeProfileNameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Service
@@ -69,7 +64,7 @@ public class EmployeeProfileNameServiceImpl implements EmployeeProfileNameServic
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(dob, format);
         int dob_year = localDate.getYear();
-        LocalDateTime now = LocalDateTime.now();
+        LocalDate now = LocalDate.now();
         int now_year = now.getYear();
         int age = now_year - dob_year;
 
@@ -94,7 +89,6 @@ public class EmployeeProfileNameServiceImpl implements EmployeeProfileNameServic
     public void setProfileName(int userId, ProfileName profileName) {
         User user = userDAO.getUserById(userId);
         Person person = user.getPerson();
-        Employee employee = employeeDAO.getEmployeeByPerson(person);
 
         String firstName = profileName.getFirstName();
         String middleName = profileName.getMiddleName();

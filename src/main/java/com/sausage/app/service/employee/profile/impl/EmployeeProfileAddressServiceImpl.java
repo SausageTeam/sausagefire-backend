@@ -1,7 +1,6 @@
 package com.sausage.app.service.employee.profile.impl;
 
 import com.sausage.app.dao.Address.AddressDAO;
-import com.sausage.app.dao.Person.PersonDAO;
 import com.sausage.app.dao.User.UserDAO;
 import com.sausage.app.domain.employee.profile.profileAddress.ProfileAddress;
 import com.sausage.app.entity.Address;
@@ -17,18 +16,11 @@ public class EmployeeProfileAddressServiceImpl implements EmployeeProfileAddress
 
     private UserDAO userDAO;
 
-    private PersonDAO personDAO;
-
     private AddressDAO addressDAO;
 
     @Autowired
     public void setUserDAO(UserDAO userDAO) {
         this.userDAO = userDAO;
-    }
-
-    @Autowired
-    public void setPersonDAO(PersonDAO personDAO) {
-        this.personDAO = personDAO;
     }
 
     @Autowired

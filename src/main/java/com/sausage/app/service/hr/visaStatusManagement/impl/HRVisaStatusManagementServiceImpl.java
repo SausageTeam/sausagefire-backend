@@ -19,13 +19,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.sausage.app.constant.Constant.VISA_NOTIFICATION;
+import static com.sausage.app.constant.enums.ApplicationWorkFlow.ApplicationWorkFlowNotifyEnums.NOT_NOTIFIED;
 import static com.sausage.app.constant.enums.ApplicationWorkFlow.ApplicationWorkFlowOPTStatusEnums.OPT_RECEIPT;
+import static com.sausage.app.constant.enums.ApplicationWorkFlow.ApplicationWorkFlowTypeEnums.OPT;
+import static com.sausage.app.constant.enums.ApplicationWorkFlow.ApplicationWorkFlowUploadEnums.REQUIRE;
 
 @Service
 public class HRVisaStatusManagementServiceImpl implements HRVisaStatusManagementService {
@@ -63,31 +67,33 @@ public class HRVisaStatusManagementServiceImpl implements HRVisaStatusManagement
     public VisaStatusManagement getVisaStatusManagement() {
         List<VisaStatusRecord> visaStatusRecordList = new ArrayList<>();
         List<Employee> employeeList = employeeDAO.getAllEmployee();
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String formatDateTime = now.format(format);
 
         for (Employee employee : employeeList) {
             Person person = employee.getPerson();
-
             String visaEndDate = employee.getVisaEndDate();
 
             if(visaEndDate == null || visaEndDate.length() == 0)
                 continue;
-
-            LocalDate now = LocalDate.now();
             ApplicationWorkFlow applicationWorkFlow = applicationWorkFlowDAO.getApplicationWorkFlowByEmployee(employee);
-            int diff = 0;
-            if (applicationWorkFlow == null) {
+            if (applicationWorkFlow == null){
                 applicationWorkFlow = ApplicationWorkFlow.builder()
-                        .createdDate(now.format(format))
-                        .modificationDate(now.format(format))
+                        .employee(employee)
                         .status(OPT_RECEIPT.getValue())
-                        .type("OPT")
+                        .type(OPT.getStr())
+                        .upload(REQUIRE.getValue())
+                        .notify(NOT_NOTIFIED.getValue())
+                        .createdDateTime(formatDateTime)
+                        .modificationDateTime(formatDateTime)
                         .build();
                 applicationWorkFlowDAO.setApplicationWorkFlow(applicationWorkFlow);
             }
-            LocalDate localDate = LocalDate.parse(visaEndDate , format);
-            Period period = Period.between(now, localDate);
-            diff = period.getDays();
+            LocalDate dateNow = LocalDate.now();
+            LocalDate localDate = LocalDate.parse(visaEndDate, format);
+            Period period = Period.between(dateNow, localDate);
+            int diff = period.getDays();
 
             List<PersonalDocument> personalDocumentList = personalDocumentDAO.getPersonalDocumentByEmployee(employee);
             List<String> documentTitleList = new ArrayList<>();

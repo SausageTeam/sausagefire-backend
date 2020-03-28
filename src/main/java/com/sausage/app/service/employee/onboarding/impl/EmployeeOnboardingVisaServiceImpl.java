@@ -1,9 +1,8 @@
 package com.sausage.app.service.employee.onboarding.impl;
 
 import com.sausage.app.dao.Employee.EmployeeDAO;
-import com.sausage.app.dao.Person.PersonDAO;
-import com.sausage.app.dao.VisaStatus.VisaStatusDAO;
 import com.sausage.app.dao.User.UserDAO;
+import com.sausage.app.dao.VisaStatus.VisaStatusDAO;
 import com.sausage.app.domain.employee.onboarding.onboardingVisa.OnboardingVisa;
 import com.sausage.app.entity.Employee;
 import com.sausage.app.entity.Person;
@@ -22,8 +21,6 @@ public class EmployeeOnboardingVisaServiceImpl implements EmployeeOnboardingVisa
 
     private UserDAO userDAO;
 
-    private PersonDAO personDAO;
-
     private EmployeeDAO employeeDAO;
 
     private VisaStatusDAO visaStatusDAO;
@@ -31,11 +28,6 @@ public class EmployeeOnboardingVisaServiceImpl implements EmployeeOnboardingVisa
     @Autowired
     public void setUserDAO(UserDAO userDAO) {
         this.userDAO = userDAO;
-    }
-
-    @Autowired
-    public void setPersonDAO(PersonDAO personDAO) {
-        this.personDAO = personDAO;
     }
 
     @Autowired
@@ -82,8 +74,9 @@ public class EmployeeOnboardingVisaServiceImpl implements EmployeeOnboardingVisa
             String formatDateTime = now.format(format);
             visaStatus = VisaStatus.builder()
                     .visaType(visaType)
-                    .modificationDate(formatDateTime)
-                    .createUser(userId)
+                    .createdDateTime(formatDateTime)
+                    .modificationDateTime(formatDateTime)
+                    .createdUser(userId)
                     .build();
             visaStatus = visaStatusDAO.setVisaStatus(visaStatus);
         }

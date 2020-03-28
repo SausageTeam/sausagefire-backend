@@ -12,6 +12,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "House")
 public class House implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -25,4 +26,5 @@ public class House implements Serializable {
 
     @Column(name = "NUMBER_OF_PERSON")
     private int numberOfPerson;
+
 }

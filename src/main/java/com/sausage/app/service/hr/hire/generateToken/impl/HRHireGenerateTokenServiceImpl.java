@@ -56,9 +56,9 @@ public class HRHireGenerateTokenServiceImpl implements HRHireGenerateTokenServic
                     .token(encryptToken)
                     .validDuration(DEFAULT_REGISTRATION_TOKEN_VALID_DURATION)
                     .email(email)
-                    .createdBy(userId)
                     .activeFlag(ACTIVE_FLAG)
-                    .createDateTime(formatDateTime)
+                    .createdDateTime(formatDateTime)
+                    .createdUser(userId)
                     .build();
 
             registrationTokenDAO.setRegistrationToken(registrationToken);

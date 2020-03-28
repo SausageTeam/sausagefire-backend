@@ -32,10 +32,10 @@ public class User implements Serializable {
     @JoinColumn(name = "PERSON_ID")
     private Person person;
 
-    @Column(name = "CREATE_DATE")
-    private String createDate;
+    @Column(name = "CREATED_DATE_TIME")
+    private String createdDateTime;
 
-    @Column(name = "MODIFICATION_DATE")
-    private String modificationDate;
+    @Column(name = "MODIFICATION_DATE_TIME")
+    private String modificationDateTime;
 
 }

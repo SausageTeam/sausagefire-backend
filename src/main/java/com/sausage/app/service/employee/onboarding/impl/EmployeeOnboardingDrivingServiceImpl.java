@@ -66,7 +66,6 @@ public class EmployeeOnboardingDrivingServiceImpl implements EmployeeOnboardingD
 
         if(car != null){
             String[] arr_car = car.split("_");
-
             if (arr_car.length >= 3) {
                 maker = arr_car[0];
                 model = arr_car[1];
@@ -90,9 +89,9 @@ public class EmployeeOnboardingDrivingServiceImpl implements EmployeeOnboardingD
         User user = userDAO.getUserById(userId);
         Person person = user.getPerson();
         Employee employee = employeeDAO.getEmployeeByPerson(person);
+        employee.setCar(car);
         employee.setDriverLicense(onboardingDriving.getDriverLicense());
         employee.setDriverLicenseExpirationDate(onboardingDriving.getDriverLicenseExpirationDate());
-        employee.setCar(car);
         employeeDAO.setEmployee(employee);
     }
 

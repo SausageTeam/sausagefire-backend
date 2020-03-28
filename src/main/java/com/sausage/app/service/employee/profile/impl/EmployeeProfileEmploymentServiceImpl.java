@@ -1,9 +1,8 @@
 package com.sausage.app.service.employee.profile.impl;
 
 import com.sausage.app.dao.Employee.EmployeeDAO;
-import com.sausage.app.dao.Person.PersonDAO;
-import com.sausage.app.dao.VisaStatus.VisaStatusDAO;
 import com.sausage.app.dao.User.UserDAO;
+import com.sausage.app.dao.VisaStatus.VisaStatusDAO;
 import com.sausage.app.domain.employee.profile.profileEmployment.ProfileEmployment;
 import com.sausage.app.entity.Employee;
 import com.sausage.app.entity.Person;
@@ -17,12 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import static com.sausage.app.constant.Constant.ACTIVE_FLAG;
+
 @Service
 public class EmployeeProfileEmploymentServiceImpl implements EmployeeProfileEmploymentService {
 
     private UserDAO userDAO;
-
-    private PersonDAO personDAO;
 
     private EmployeeDAO employeeDAO;
 
@@ -31,11 +30,6 @@ public class EmployeeProfileEmploymentServiceImpl implements EmployeeProfileEmpl
     @Autowired
     public void setUserDAO(UserDAO userDAO) {
         this.userDAO = userDAO;
-    }
-
-    @Autowired
-    public void setPersonDAO(PersonDAO personDAO) {
-        this.personDAO = personDAO;
     }
 
     @Autowired
@@ -81,8 +75,10 @@ public class EmployeeProfileEmploymentServiceImpl implements EmployeeProfileEmpl
             String formatDateTime = now.format(format);
             visaStatus = VisaStatus.builder()
                     .visaType(visaType)
-                    .modificationDate(formatDateTime)
-                    .createUser(userId)
+                    .activeFlag(ACTIVE_FLAG)
+                    .createdDateTime(formatDateTime)
+                    .modificationDateTime(formatDateTime)
+                    .createdUser(userId)
                     .build();
             visaStatus = visaStatusDAO.setVisaStatus(visaStatus);
         }

@@ -1,13 +1,13 @@
 package com.sausage.app.service.employee.profile.impl;
 
 import com.sausage.app.dao.Address.AddressDAO;
-import com.sausage.app.dao.Contact.ContactDAO;
-import com.sausage.app.dao.Employee.EmployeeDAO;
 import com.sausage.app.dao.Person.PersonDAO;
 import com.sausage.app.dao.User.UserDAO;
 import com.sausage.app.domain.common.AddressDomain;
 import com.sausage.app.domain.employee.profile.profileEmergencyContact.ProfileEmergencyContact;
-import com.sausage.app.entity.*;
+import com.sausage.app.entity.Address;
+import com.sausage.app.entity.Person;
+import com.sausage.app.entity.User;
 import com.sausage.app.service.employee.profile.EmployeeProfileEmergencyContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,10 +20,6 @@ public class EmployeeProfileEmergencyContactServiceImpl implements EmployeeProfi
 
     private PersonDAO personDAO;
 
-    private EmployeeDAO employeeDAO;
-
-    private ContactDAO contactDAO;
-
     private AddressDAO addressDAO;
 
     @Autowired
@@ -34,16 +30,6 @@ public class EmployeeProfileEmergencyContactServiceImpl implements EmployeeProfi
     @Autowired
     public void setPersonDAO(PersonDAO personDAO) {
         this.personDAO = personDAO;
-    }
-
-    @Autowired
-    public void setEmployeeDAO(EmployeeDAO employeeDAO) {
-        this.employeeDAO = employeeDAO;
-    }
-
-    @Autowired
-    public void setContactDAO(ContactDAO contactDAO) {
-        this.contactDAO = contactDAO;
     }
 
     @Autowired

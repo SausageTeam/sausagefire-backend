@@ -65,7 +65,7 @@ public class AuthServiceImpl implements AuthService {
             UserRole userRole = userRoleDAO.getUserRoleByUserId(userId);
             return Auth.builder()
                     .applicationWorkFlowType(applicationWorkFlowType)
-                    .roleId(userRole.getRoleID())
+                    .roleId(userRole.getRoleId())
                     .build();
         } catch (NullPointerException e) {
             return null;

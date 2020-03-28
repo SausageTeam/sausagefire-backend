@@ -65,13 +65,13 @@ public class EmployeeOnboardingPersonServiceImpl implements EmployeeOnboardingPe
         if (applicationWorkFlow == null) {
             applicationWorkFlow = ApplicationWorkFlow.builder()
                     .employee(employee)
-                    .createdDate(formatDateTime)
-                    .modificationDate(formatDateTime)
                     .status(ONBOARDING.getValue())
                     .comments(null)
                     .type(ONBOARDING.getStr())
                     .upload(REQUIRE.getValue())
                     .notify(NOT_NOTIFIED.getValue())
+                    .createdDateTime(formatDateTime)
+                    .modificationDateTime(formatDateTime)
                     .build();
             applicationWorkFlowDAO.setApplicationWorkFlow(applicationWorkFlow);
         }
