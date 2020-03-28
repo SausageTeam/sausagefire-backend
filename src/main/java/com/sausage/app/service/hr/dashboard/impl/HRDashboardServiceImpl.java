@@ -52,10 +52,10 @@ public class HRDashboardServiceImpl implements HRDashboardService {
         this.personalDocumentDAO = personalDocumentDAO;
     }
 
-    private List<Trouble> buildWaitingTroubleList (){
+    private List<Trouble> buildWaitingTroubleList() {
         List<Trouble> waitingList = new ArrayList<>();
         List<ApplicationWorkFlow> applicationWorkFlowList = applicationWorkFlowDAO.getAllWaitingApplicationWorkFlow();
-        for (ApplicationWorkFlow applicationWorkFlow : applicationWorkFlowList){
+        for (ApplicationWorkFlow applicationWorkFlow : applicationWorkFlowList) {
             Employee employee = applicationWorkFlow.getEmployee();
             Person person = employee.getPerson();
             PersonalDocument personalDocument = personalDocumentDAO.getLatestDocumentByEmployee(employee);
@@ -71,21 +71,21 @@ public class HRDashboardServiceImpl implements HRDashboardService {
         return waitingList;
     }
 
-    private List<Trouble> buildNotifyTroubleList(){
+    private List<Trouble> buildNotifyTroubleList() {
         List<Trouble> notifyingList = new ArrayList<>();
         List<Employee> employeeList = employeeDAO.getAllEmployee();
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formatDateTime = now.format(format);
 
-        for (Employee employee : employeeList){
+        for (Employee employee : employeeList) {
             Person person = employee.getPerson();
             String visaEndDate = employee.getVisaEndDate();
             if (visaEndDate == null || visaEndDate.length() == 0)
                 continue;
 
             ApplicationWorkFlow applicationWorkFlow = applicationWorkFlowDAO.getApplicationWorkFlowByEmployee(employee);
-            if (applicationWorkFlow == null){
+            if (applicationWorkFlow == null) {
                 applicationWorkFlow = ApplicationWorkFlow.builder()
                         .employee(employee)
                         .status(OPT_RECEIPT.getValue())
@@ -117,16 +117,20 @@ public class HRDashboardServiceImpl implements HRDashboardService {
             }
 
         }
-        return  notifyingList;
+        return notifyingList;
     }
 
     @Override
     @Transactional
     public Dashboard getHRDashboard() {
-        return Dashboard.builder()
-                .waitingList(buildWaitingTroubleList())
-                .notifyList(buildNotifyTroubleList())
-                .build();
+        try {
+            return Dashboard.builder()
+                    .waitingList(buildWaitingTroubleList())
+                    .notifyList(buildNotifyTroubleList())
+                    .build();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
