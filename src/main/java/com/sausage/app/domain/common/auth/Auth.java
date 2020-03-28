@@ -13,4 +13,6 @@ public class Auth {
 
     int onboardingStatus;
 
+    boolean ifNeedVisa;
+
 }

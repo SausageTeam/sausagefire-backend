@@ -13,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.sausage.app.constant.enums.VisaStatus.VisaStatusVisaTypeEnums.CITIZEN;
+import static com.sausage.app.constant.enums.VisaStatus.VisaStatusVisaTypeEnums.GREEN_CARD;
+
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -61,9 +64,16 @@ public class AuthServiceImpl implements AuthService {
             Employee employee = employeeDAO.getEmployeeByPerson(person);
             ApplicationWorkFlow applicationWorkFlow = applicationWorkFlowDAO.getApplicationWorkFlowByEmployee(employee);
             UserRole userRole = userRoleDAO.getUserRoleByUserId(userId);
+
+            boolean ifNeedVisa = true;
+            if (employee.getVisaStatusId() == CITIZEN.getValue() || employee.getVisaStatusId() == GREEN_CARD.getValue()){
+                ifNeedVisa = false;
+            }
+
             return Auth.builder()
                     .onboardingStatus(applicationWorkFlow.getStatus())
                     .roleId(userRole.getRoleId())
+                    .ifNeedVisa(ifNeedVisa)
                     .build();
         } catch (Exception e) {
             return null;
