@@ -49,9 +49,20 @@ public class HRHireGenerateTokenServiceImpl implements HRHireGenerateTokenServic
         String startDate = hireGenerateToken.getStartDate();
         String endDate = hireGenerateToken.getEndDate();
         User user = userDAO.getUserByEmail(email);
+
         RegistrationToken registrationToken = registrationTokenDAO.getRegistrationTokenByEmail(email);
-        if (user != null || registrationToken != null) {
+        if (user != null) {
             return false;
+        }
+
+        if (registrationToken != null) {
+            String createDateTime = registrationToken.getCreatedDateTime();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DEFAULT_DATE_TIME_FORMAT);
+            LocalDateTime expiryDate = LocalDateTime.parse(createDateTime, formatter).plusHours(registrationToken.getValidDuration());
+            boolean usable = expiryDate.isAfter(LocalDateTime.now());
+            if (registrationToken.getActiveFlag() == INACTIVE_FLAG || !usable) {
+                return false;
+            }
         } else {
             String decryptToken = String.format("%s %s %s %s", email, title, startDate, endDate);
             String encryptToken = AES.encrypt(decryptToken, SECRET_KEY);
@@ -70,13 +81,12 @@ public class HRHireGenerateTokenServiceImpl implements HRHireGenerateTokenServic
                     .build();
 
             registrationTokenDAO.setRegistrationToken(registrationToken);
-
-            String body = String.format(GENERATE_TOKEN_NOTIFICATION_BODY, title.toUpperCase(), startDate, endDate, encryptToken);
-            emailService.sendMail(email, GENERATE_TOKEN_NOTIFICATION_SUBJECT, body);
-            return true;
         }
+        String body = String.format(GENERATE_TOKEN_NOTIFICATION_BODY, title.toUpperCase(), startDate, endDate, registrationToken.getToken());
+        emailService.sendMail(email, GENERATE_TOKEN_NOTIFICATION_SUBJECT, body);
+        return true;
     }
-
 }
+
 
 

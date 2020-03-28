@@ -17,6 +17,8 @@ public interface Constant {
     int DEFAULT_AVATAR_WIDTH = 64;
     int DEFAULT_AVATAR_HEIGHT = 64;
 
+    String DEFAULT_DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
     String EMPLOYEE_DRIVER_LICENSE_TITLE = "driver_license";
 
     String VISA_NOTIFICATION_SUBJECT = "IMPORTANT! Files are required to be upload!";
