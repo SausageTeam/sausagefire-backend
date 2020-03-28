@@ -47,13 +47,18 @@ public class NavServiceImpl implements NavService {
     @Override
     @Transactional
     public Nav getNav(int userId) {
-        User user = userDAO.getUserById(userId);
-        Person person = user.getPerson();
-        Employee employee = employeeDAO.getEmployeeByPerson(person);
-        String uri = uriConvert.getUri(String.valueOf(employee.getId()), "avatar.jpg");
-        return Nav.builder()
-                .avatarUri(uri)
-                .build();
+        try {
+            User user = userDAO.getUserById(userId);
+            Person person = user.getPerson();
+            Employee employee = employeeDAO.getEmployeeByPerson(person);
+            String uri = uriConvert.getUri(String.valueOf(employee.getId()), "avatar.jpg");
+            return Nav.builder()
+                    .firstName(person.getFirstName())
+                    .avatarUri(uri)
+                    .build();
+        }catch (NullPointerException e) {
+            return null;
+        }
     }
 
 }
