@@ -98,7 +98,8 @@ public class HRDashboardServiceImpl implements HRDashboardService {
                 applicationWorkFlowDAO.setApplicationWorkFlow(applicationWorkFlow);
             }
             LocalDate dateNow = LocalDate.now();
-            LocalDate localDate = LocalDate.parse(visaEndDate, format);
+            DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate localDate = LocalDate.parse(visaEndDate, dateFormat);
             Period period = Period.between(dateNow, localDate);
             int diff = period.getDays();
             if (diff < 100) {
