@@ -4,7 +4,6 @@ import com.sausage.app.domain.common.GenericResponse;
 import com.sausage.app.domain.common.ServiceStatus;
 import com.sausage.app.domain.employee.onboarding.onboardingAvatar.OnboardingAvatar;
 import com.sausage.app.domain.employee.onboarding.onboardingAvatar.OnboardingAvatarGetResponse;
-import com.sausage.app.domain.employee.onboarding.onboardingAvatar.OnboardingAvatarPostRequest;
 import com.sausage.app.domain.employee.onboarding.onboardingAvatar.OnboardingAvatarPostResponse;
 import com.sausage.app.domain.employee.onboarding.onboardingDriving.OnboardingDriving;
 import com.sausage.app.domain.employee.onboarding.onboardingDriving.OnboardingDrivingGetResponse;
@@ -14,7 +13,10 @@ import com.sausage.app.domain.employee.onboarding.onboardingEmergency.Onboarding
 import com.sausage.app.domain.employee.onboarding.onboardingEmergency.OnboardingEmergencyGetResponse;
 import com.sausage.app.domain.employee.onboarding.onboardingEmergency.OnboardingEmergencyPostRequest;
 import com.sausage.app.domain.employee.onboarding.onboardingEmergency.OnboardingEmergencyPostResponse;
-import com.sausage.app.domain.employee.onboarding.onboardingPerson.*;
+import com.sausage.app.domain.employee.onboarding.onboardingPerson.OnboardingPerson;
+import com.sausage.app.domain.employee.onboarding.onboardingPerson.OnboardingPersonGetResponse;
+import com.sausage.app.domain.employee.onboarding.onboardingPerson.OnboardingPersonPostRequest;
+import com.sausage.app.domain.employee.onboarding.onboardingPerson.OnboardingPersonPostResponse;
 import com.sausage.app.domain.employee.onboarding.onboardingReference.OnboardingReference;
 import com.sausage.app.domain.employee.onboarding.onboardingReference.OnboardingReferenceGetResponse;
 import com.sausage.app.domain.employee.onboarding.onboardingReference.OnboardingReferencePostRequest;
@@ -23,20 +25,17 @@ import com.sausage.app.domain.employee.onboarding.onboardingVisa.OnboardingVisa;
 import com.sausage.app.domain.employee.onboarding.onboardingVisa.OnboardingVisaGetResponse;
 import com.sausage.app.domain.employee.onboarding.onboardingVisa.OnboardingVisaPostRequest;
 import com.sausage.app.domain.employee.onboarding.onboardingVisa.OnboardingVisaPostResponse;
-import com.sausage.app.fileIO.URIConvert;
-import com.sausage.app.service.common.FileStorageService;
+import com.sausage.app.security.util.JwtUtil;
 import com.sausage.app.service.employee.onboarding.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
+
+import static com.sausage.app.constant.Constant.JWT_TOKEN_COOKIE_NAME;
+import static com.sausage.app.constant.Constant.SIGNING_KEY;
 
 @RestController
 @RequestMapping("/employee/onboarding")
@@ -91,31 +90,39 @@ public class EmployeeOnboardingController {
     public @ResponseBody
     OnboardingPersonGetResponse getOnboardingPerson(HttpServletRequest httpServletRequest) {
         OnboardingPersonGetResponse onboardingPersonGetResponse = new OnboardingPersonGetResponse();
-//        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 2;
-        OnboardingPerson onboardingPerson = employeeOnboardingPersonService.getOnboardingPerson(userId);
-        if (onboardingPerson == null) {
-            prepareResponse(onboardingPersonGetResponse, false, "Unexpected Error. It might be caused by missing data");
+        String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
+        if (id == null) {
+            prepareResponse(onboardingPersonGetResponse, "401", false, "User not Found");
         } else {
-            onboardingPersonGetResponse.setOnboardingPerson(onboardingPerson);
-            prepareResponse(onboardingPersonGetResponse, true, "");
+            int userId = Integer.parseInt(id);
+            OnboardingPerson onboardingPerson = employeeOnboardingPersonService.getOnboardingPerson(userId);
+            if (onboardingPerson == null) {
+                prepareResponse(onboardingPersonGetResponse, "500", false, "Unexpected Error");
+            } else {
+                onboardingPersonGetResponse.setOnboardingPerson(onboardingPerson);
+                prepareResponse(onboardingPersonGetResponse, "200", true, "");
+            }
         }
         return onboardingPersonGetResponse;
     }
 
     @PostMapping(value = "/person", consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    OnboardingPersonPostResponse setOnboardingPerson(@RequestBody OnboardingPersonPostRequest onboardingPersonPostRequest) {
+    OnboardingPersonPostResponse setOnboardingPerson(HttpServletRequest httpServletRequest, @RequestBody OnboardingPersonPostRequest onboardingPersonPostRequest) {
         OnboardingPersonPostResponse onboardingPersonPostResponse = new OnboardingPersonPostResponse();
-        //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 2;
-        OnboardingPerson onboardingPerson = onboardingPersonPostRequest.getOnboardingPerson();
-        if (onboardingPerson == null) {
-            prepareResponse(onboardingPersonPostResponse, false, "Unexpected Error.");
+        String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
+        if (id == null) {
+            prepareResponse(onboardingPersonPostResponse, "401", false, "User not Found");
         } else {
-            onboardingPersonPostResponse.setOnboardingPerson(onboardingPerson);
-            employeeOnboardingPersonService.setOnboardingPerson(userId, onboardingPerson);
-            prepareResponse(onboardingPersonPostResponse, true, "");
+            int userId = Integer.parseInt(id);
+            OnboardingPerson onboardingPerson = onboardingPersonPostRequest.getOnboardingPerson();
+            if (onboardingPerson == null) {
+                prepareResponse(onboardingPersonPostResponse, "500", false, "Unexpected Error");
+            } else {
+                onboardingPersonPostResponse.setOnboardingPerson(onboardingPerson);
+                employeeOnboardingPersonService.setOnboardingPerson(userId, onboardingPerson);
+                prepareResponse(onboardingPersonPostResponse, "200", true, "");
+            }
         }
         return onboardingPersonPostResponse;
     }
@@ -125,24 +132,35 @@ public class EmployeeOnboardingController {
      */
     @GetMapping(value = "/avatar")
     public @ResponseBody
-    OnboardingAvatarGetResponse getOnboardingAvatar(HttpServletRequest httpServletRequest) throws IOException {
+    OnboardingAvatarGetResponse getOnboardingAvatar(HttpServletRequest httpServletRequest) {
         OnboardingAvatarGetResponse onboardingAvatarGetResponse = new OnboardingAvatarGetResponse();
-        //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 2;
-        OnboardingAvatar onboardingAvatar = employeeOnboardingAvatarService.getOnboardingAvatar(userId);
-        onboardingAvatarGetResponse.setOnboardingAvatar(onboardingAvatar);
-        prepareResponse(onboardingAvatarGetResponse, true, "");
+        String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
+        if (id == null) {
+            prepareResponse(onboardingAvatarGetResponse, "401", false, "User not Found");
+        } else {
+            int userId = Integer.parseInt(id);
+            OnboardingAvatar onboardingAvatar = employeeOnboardingAvatarService.getOnboardingAvatar(userId);
+            if (onboardingAvatar == null) {
+                prepareResponse(onboardingAvatarGetResponse, "500", false, "Unexpected Error");
+            } else
+                onboardingAvatarGetResponse.setOnboardingAvatar(onboardingAvatar);
+            prepareResponse(onboardingAvatarGetResponse, "200", true, "");
+        }
         return onboardingAvatarGetResponse;
     }
 
     @PostMapping(value = "/avatar")
     public @ResponseBody
-    OnboardingAvatarPostResponse postOnboardingAvatar(@RequestParam("avatar") MultipartFile file) {
+    OnboardingAvatarPostResponse postOnboardingAvatar(HttpServletRequest httpServletRequest, @RequestParam("avatar") MultipartFile file) {
         OnboardingAvatarPostResponse onboardingAvatarPostResponse = new OnboardingAvatarPostResponse();
-        //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 2;
-        employeeOnboardingAvatarService.setOnboardingAvatar(userId, file);
-        prepareResponse(onboardingAvatarPostResponse, true, "");
+        String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
+        if (id == null) {
+            prepareResponse(onboardingAvatarPostResponse, "401", false, "User not Found");
+        } else {
+            int userId = Integer.parseInt(id);
+            employeeOnboardingAvatarService.setOnboardingAvatar(userId, file);
+            prepareResponse(onboardingAvatarPostResponse, "200", true, "");
+        }
         return onboardingAvatarPostResponse;
     }
 
@@ -153,23 +171,39 @@ public class EmployeeOnboardingController {
     public @ResponseBody
     OnboardingVisaGetResponse getOnboardingVisa(HttpServletRequest httpServletRequest) {
         OnboardingVisaGetResponse onboardingVisaGetResponse = new OnboardingVisaGetResponse();
-        //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 2;
-        OnboardingVisa onboardingVisa = employeeOnboardingVisaService.getOnboardingVisa(userId);
-        onboardingVisaGetResponse.setOnboardingVisa(onboardingVisa);
-        prepareResponse(onboardingVisaGetResponse, true, "");
+        String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
+        if (id == null) {
+            prepareResponse(onboardingVisaGetResponse, "401", false, "User not Found");
+        } else {
+            int userId = Integer.parseInt(id);
+            OnboardingVisa onboardingVisa = employeeOnboardingVisaService.getOnboardingVisa(userId);
+            if (onboardingVisa == null) {
+                prepareResponse(onboardingVisaGetResponse, "500", false, "Unexpected Error");
+            } else {
+                onboardingVisaGetResponse.setOnboardingVisa(onboardingVisa);
+                prepareResponse(onboardingVisaGetResponse, "200", true, "");
+            }
+        }
         return onboardingVisaGetResponse;
     }
 
     @PostMapping(value = "/visa", consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    OnboardingVisaPostResponse postOnboardingVisa(@RequestBody OnboardingVisaPostRequest onboardingVisaPostRequest) {
+    OnboardingVisaPostResponse postOnboardingVisa(HttpServletRequest httpServletRequest, @RequestBody OnboardingVisaPostRequest onboardingVisaPostRequest) {
         OnboardingVisaPostResponse onboardingVisaPostResponse = new OnboardingVisaPostResponse();
-        //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 2;
-        OnboardingVisa onboardingVisa = onboardingVisaPostRequest.getOnboardingVisa();
-        employeeOnboardingVisaService.setOnboardingVisa(userId, onboardingVisa);
-        prepareResponse(onboardingVisaPostResponse, true, "");
+        String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
+        if (id == null) {
+            prepareResponse(onboardingVisaPostResponse, "401", false, "User not Found");
+        } else {
+            int userId = Integer.parseInt(id);
+            OnboardingVisa onboardingVisa = onboardingVisaPostRequest.getOnboardingVisa();
+            if (onboardingVisa == null) {
+                prepareResponse(onboardingVisaPostResponse, "500", false, "Unexpected Error");
+            } else {
+                employeeOnboardingVisaService.setOnboardingVisa(userId, onboardingVisa);
+                prepareResponse(onboardingVisaPostResponse, "200", true, "");
+            }
+        }
         return onboardingVisaPostResponse;
     }
 
@@ -180,23 +214,39 @@ public class EmployeeOnboardingController {
     public @ResponseBody
     OnboardingDrivingGetResponse getOnboardingDriving(HttpServletRequest httpServletRequest) {
         OnboardingDrivingGetResponse onboardingDrivingGetResponse = new OnboardingDrivingGetResponse();
-        //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 2;
-        OnboardingDriving onboardingDriving = employeeOnboardingDrivingService.getOnboardingDriving(userId);
-        onboardingDrivingGetResponse.setOnboardingDriving(onboardingDriving);
-        prepareResponse(onboardingDrivingGetResponse, true, "");
+        String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
+        if (id == null) {
+            prepareResponse(onboardingDrivingGetResponse, "401", false, "User not Found");
+        } else {
+            int userId = Integer.parseInt(id);
+            OnboardingDriving onboardingDriving = employeeOnboardingDrivingService.getOnboardingDriving(userId);
+            if (onboardingDriving == null) {
+                prepareResponse(onboardingDrivingGetResponse, "500", false, "Unexpected Error");
+            } else {
+                onboardingDrivingGetResponse.setOnboardingDriving(onboardingDriving);
+                prepareResponse(onboardingDrivingGetResponse, "200", true, "");
+            }
+        }
         return onboardingDrivingGetResponse;
     }
 
     @PostMapping(value = "/driving", consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    OnboardingDrivingPostResponse postOnboardingDriving(@RequestBody OnboardingDrivingPostRequest onboardingDrivingPostRequest) {
+    OnboardingDrivingPostResponse postOnboardingDriving(HttpServletRequest httpServletRequest, @RequestBody OnboardingDrivingPostRequest onboardingDrivingPostRequest) {
         OnboardingDrivingPostResponse onboardingDrivingPostResponse = new OnboardingDrivingPostResponse();
-        //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 2;
-        OnboardingDriving onboardingDriving = onboardingDrivingPostRequest.getOnboardingDriving();
-        employeeOnboardingDrivingService.setOnboardingDriving(userId, onboardingDriving);
-        prepareResponse(onboardingDrivingPostResponse, true, "");
+        String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
+        if (id == null) {
+            prepareResponse(onboardingDrivingPostResponse, "401", false, "User not Found");
+        } else {
+            int userId = Integer.parseInt(id);
+            OnboardingDriving onboardingDriving = onboardingDrivingPostRequest.getOnboardingDriving();
+            if (onboardingDriving == null) {
+                prepareResponse(onboardingDrivingPostResponse, "500", false, "Unexpected Error");
+            } else {
+                employeeOnboardingDrivingService.setOnboardingDriving(userId, onboardingDriving);
+                prepareResponse(onboardingDrivingPostResponse, "200", true, "");
+            }
+        }
         return onboardingDrivingPostResponse;
     }
 
@@ -207,23 +257,39 @@ public class EmployeeOnboardingController {
     public @ResponseBody
     OnboardingReferenceGetResponse getOnboardingReference(HttpServletRequest httpServletRequest) {
         OnboardingReferenceGetResponse onboardingReferenceGetResponse = new OnboardingReferenceGetResponse();
-        //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 2;
-        OnboardingReference onboardingReference = employeeOnboardingReferenceService.getOnboardingReference(userId);
-        onboardingReferenceGetResponse.setOnboardingReference(onboardingReference);
-        prepareResponse(onboardingReferenceGetResponse, true, "");
+        String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
+        if (id == null) {
+            prepareResponse(onboardingReferenceGetResponse, "401", false, "User not Found");
+        } else {
+            int userId = Integer.parseInt(id);
+            OnboardingReference onboardingReference = employeeOnboardingReferenceService.getOnboardingReference(userId);
+            if (onboardingReference == null) {
+                prepareResponse(onboardingReferenceGetResponse, "500", false, "Unexpected Error");
+            } else {
+                onboardingReferenceGetResponse.setOnboardingReference(onboardingReference);
+                prepareResponse(onboardingReferenceGetResponse, "200", true, "");
+            }
+        }
         return onboardingReferenceGetResponse;
     }
 
     @PostMapping(value = "/reference", consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    OnboardingReferencePostResponse postOnboardingReference(@RequestBody OnboardingReferencePostRequest onboardingReferencePostRequest) {
+    OnboardingReferencePostResponse postOnboardingReference(HttpServletRequest httpServletRequest, @RequestBody OnboardingReferencePostRequest onboardingReferencePostRequest) {
         OnboardingReferencePostResponse onboardingReferencePostResponse = new OnboardingReferencePostResponse();
-        //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 2;
-        OnboardingReference onboardingReference = onboardingReferencePostRequest.getOnboardingReference();
-        employeeOnboardingReferenceService.setOnboardingReference(userId, onboardingReference);
-        prepareResponse(onboardingReferencePostResponse, true, "");
+        String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
+        if (id == null) {
+            prepareResponse(onboardingReferencePostResponse, "401", false, "User not Found");
+        } else {
+            int userId = Integer.parseInt(id);
+            OnboardingReference onboardingReference = onboardingReferencePostRequest.getOnboardingReference();
+            if (onboardingReference == null) {
+                prepareResponse(onboardingReferencePostResponse, "500", false, "Unexpected Error");
+            } else {
+                employeeOnboardingReferenceService.setOnboardingReference(userId, onboardingReference);
+                prepareResponse(onboardingReferencePostResponse, "200", true, "");
+            }
+        }
         return onboardingReferencePostResponse;
     }
 
@@ -234,28 +300,44 @@ public class EmployeeOnboardingController {
     public @ResponseBody
     OnboardingEmergencyGetResponse getOnboardingEmergency(HttpServletRequest httpServletRequest) {
         OnboardingEmergencyGetResponse onboardingEmergencyGetResponse = new OnboardingEmergencyGetResponse();
-        //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 2;
-        OnboardingEmergency onboardingEmergency = employeeOnboardingEmergencyService.getOnboardingEmergency(userId);
-        onboardingEmergencyGetResponse.setOnboardingEmergency(onboardingEmergency);
-        prepareResponse(onboardingEmergencyGetResponse, true, "");
+        String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
+        if (id == null) {
+            prepareResponse(onboardingEmergencyGetResponse, "401", false, "User not Found");
+        } else {
+            int userId = Integer.parseInt(id);
+            OnboardingEmergency onboardingEmergency = employeeOnboardingEmergencyService.getOnboardingEmergency(userId);
+            if (onboardingEmergency == null) {
+                prepareResponse(onboardingEmergencyGetResponse, "500", false, "Unexpected Error");
+            } else {
+                onboardingEmergencyGetResponse.setOnboardingEmergency(onboardingEmergency);
+                prepareResponse(onboardingEmergencyGetResponse, "200", true, "");
+            }
+        }
         return onboardingEmergencyGetResponse;
     }
 
     @PostMapping(value = "/emergency", consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    OnboardingEmergencyPostResponse postOnboardingEmergency(@RequestBody OnboardingEmergencyPostRequest onboardingEmergencyPostRequest) {
+    OnboardingEmergencyPostResponse postOnboardingEmergency(HttpServletRequest httpServletRequest, @RequestBody OnboardingEmergencyPostRequest onboardingEmergencyPostRequest) {
         OnboardingEmergencyPostResponse onboardingEmergencyPostResponse = new OnboardingEmergencyPostResponse();
-        //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 2;
-        OnboardingEmergency onboardingEmergency = onboardingEmergencyPostRequest.getOnboardingEmergency();
-        employeeOnboardingEmergencyService.setOnboardingEmergency(userId, onboardingEmergency);
-        prepareResponse(onboardingEmergencyPostResponse, true, "");
+        String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
+        if (id == null) {
+            prepareResponse(onboardingEmergencyPostResponse, "401", false, "User not Found");
+        } else {
+            int userId = Integer.parseInt(id);
+            OnboardingEmergency onboardingEmergency = onboardingEmergencyPostRequest.getOnboardingEmergency();
+            if (onboardingEmergency == null) {
+                prepareResponse(onboardingEmergencyPostResponse, "500", false, "Unexpected Error");
+            } else {
+                employeeOnboardingEmergencyService.setOnboardingEmergency(userId, onboardingEmergency);
+                prepareResponse(onboardingEmergencyPostResponse, "200", true, "");
+            }
+        }
         return onboardingEmergencyPostResponse;
     }
 
-    private void prepareResponse(GenericResponse response, boolean success, String errorMessage) {
-        response.setServiceStatus(new ServiceStatus(success ? "SUCCESS" : "FAILED", success, errorMessage));
+    private void prepareResponse(GenericResponse response, String statusCode, boolean success, String errorMessage) {
+        response.setServiceStatus(new ServiceStatus(statusCode, success, errorMessage));
     }
 
 }

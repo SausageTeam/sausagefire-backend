@@ -26,9 +26,10 @@ public class FacilityReportDetail implements Serializable {
     @Column(name = "COMMENTS")
     private String comments;
 
-    @Column(name = "CREATED_DATE")
+    @Column(name = "CREATED_DATE_TIME")
     private String createdDate;
 
-    @Column(name = "LAST_MODIFICATION_DATE")
+    @Column(name = "MODIFICATION_DATE_TIME")
     private String lastModificationDate;
+
 }

@@ -23,12 +23,6 @@ public class ApplicationWorkFlow implements Serializable {
     @JoinColumn(name = "EMPLOYEE_ID")
     private Employee employee;
 
-    @Column(name = "CREATED_DATE")
-    private String createdDate;
-
-    @Column(name = "MODIFICATION_DATE")
-    private String modificationDate;
-
     @Column(name = "STATUS")
     private int status;
 
@@ -43,5 +37,11 @@ public class ApplicationWorkFlow implements Serializable {
 
     @Column(name = "NOTIFY")
     private int notify;
+
+    @Column(name = "CREATED_DATE_TIME")
+    private String createdDateTime;
+
+    @Column(name = "MODIFICATION_DATE_TIME")
+    private String modificationDateTime;
 
 }

@@ -12,6 +12,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "PersonalDocument")
 public class PersonalDocument implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -30,9 +31,10 @@ public class PersonalDocument implements Serializable {
     @Column(name = "COMMENT")
     private String comment;
 
-    @Column(name = "CREATED_DATE")
-    private String createdDate;
+    @Column(name = "CREATED_DATE_TIME")
+    private String createdDateTime;
 
-    @Column(name = "CREATED_BY")
-    private String createdBy;
+    @Column(name = "CREATED_USER")
+    private String createdUser;
+
 }

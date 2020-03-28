@@ -1,7 +1,7 @@
 package com.sausage.app.service.hr.visaStatusManagement.impl;
 
 import com.sausage.app.dao.ApplicationWorkFlow.ApplicationWorkFlowDAO;
-import com.sausage.app.dao.ApplicationWorkFlow.enums.ApplicationWorkFlowStatusEnums;
+import com.sausage.app.constant.enums.ApplicationWorkFlow.ApplicationWorkFlowOPTStatusEnums;
 import com.sausage.app.dao.Employee.EmployeeDAO;
 import com.sausage.app.dao.PersonalDocument.PersonalDocumentDAO;
 import com.sausage.app.dao.VisaStatus.VisaStatusDAO;
@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
@@ -27,7 +26,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.sausage.app.constant.Constant.VISA_NOTIFICATION;
-import static com.sausage.app.dao.ApplicationWorkFlow.enums.ApplicationWorkFlowStatusEnums.OPT_RECEIPT;
+import static com.sausage.app.constant.enums.ApplicationWorkFlow.ApplicationWorkFlowNotifyEnums.NOT_NOTIFIED;
+import static com.sausage.app.constant.enums.ApplicationWorkFlow.ApplicationWorkFlowOPTStatusEnums.OPT_RECEIPT;
+import static com.sausage.app.constant.enums.ApplicationWorkFlow.ApplicationWorkFlowTypeEnums.OPT;
+import static com.sausage.app.constant.enums.ApplicationWorkFlow.ApplicationWorkFlowUploadEnums.REQUIRE;
 
 @Service
 public class HRVisaStatusManagementServiceImpl implements HRVisaStatusManagementService {
@@ -63,64 +65,70 @@ public class HRVisaStatusManagementServiceImpl implements HRVisaStatusManagement
     @Override
     @Transactional
     public VisaStatusManagement getVisaStatusManagement() {
-        List<VisaStatusRecord> visaStatusRecordList = new ArrayList<>();
-        List<Employee> employeeList = employeeDAO.getAllEmployee();
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        try {
+            List<VisaStatusRecord> visaStatusRecordList = new ArrayList<>();
+            List<Employee> employeeList = employeeDAO.getAllEmployee();
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formatDateTime = now.format(format);
 
-        for (Employee employee : employeeList) {
-            Person person = employee.getPerson();
+            for (Employee employee : employeeList) {
+                Person person = employee.getPerson();
+                String visaEndDate = employee.getVisaEndDate();
 
-            String visaEndDate = employee.getVisaEndDate();
+                if (visaEndDate == null || visaEndDate.length() == 0)
+                    continue;
+                ApplicationWorkFlow applicationWorkFlow = applicationWorkFlowDAO.getApplicationWorkFlowByEmployee(employee);
+                if (applicationWorkFlow == null) {
+                    applicationWorkFlow = ApplicationWorkFlow.builder()
+                            .employee(employee)
+                            .status(OPT_RECEIPT.getValue())
+                            .type(OPT.getStr())
+                            .upload(REQUIRE.getValue())
+                            .notify(NOT_NOTIFIED.getValue())
+                            .createdDateTime(formatDateTime)
+                            .modificationDateTime(formatDateTime)
+                            .build();
+                    applicationWorkFlowDAO.setApplicationWorkFlow(applicationWorkFlow);
+                }
+                LocalDate dateNow = LocalDate.now();
+                LocalDate localDate = LocalDate.parse(visaEndDate, format);
+                Period period = Period.between(dateNow, localDate);
+                int diff = period.getDays();
 
-            if(visaEndDate == null || visaEndDate.length() == 0)
-                continue;
+                List<PersonalDocument> personalDocumentList = personalDocumentDAO.getPersonalDocumentByEmployee(employee);
+                List<String> documentTitleList = new ArrayList<>();
+                List<File> documentReceivedList = new ArrayList<>();
+                for (PersonalDocument personalDocument : personalDocumentList) {
+                    documentTitleList.add(personalDocument.getTitle());
+                    documentReceivedList.add(FileOutput.getFile(personalDocument.getPath()));
+                }
 
-            LocalDate now = LocalDate.now();
-            ApplicationWorkFlow applicationWorkFlow = applicationWorkFlowDAO.getApplicationWorkFlowByEmployee(employee);
-            int diff = 0;
-            if (applicationWorkFlow == null) {
-                applicationWorkFlow = ApplicationWorkFlow.builder()
-                        .createdDate(now.format(format))
-                        .modificationDate(now.format(format))
-                        .status(OPT_RECEIPT.getValue())
-                        .type("OPT")
+                String workAuthorization = ApplicationWorkFlowOPTStatusEnums.values()[applicationWorkFlow.getStatus()].getStr();
+                String visaType = visaStatusDAO.getVisaStatusById(employee.getVisaStatusId()).getVisaType();
+
+                VisaStatusRecord visaStatusRecord = VisaStatusRecord.builder()
+                        .firstName(person.getFirstName())
+                        .middleName(person.getMiddleName())
+                        .lastName(person.getLastName())
+                        .workAuthorization(workAuthorization)
+                        .dayLeft(diff)
+                        .visaStatus(visaType)
+                        .visaStartDate(employee.getVisaStartDate())
+                        .visaEndDate(employee.getVisaEndDate())
+                        .documentTitleList(documentTitleList)
+                        .documentReceivedList(documentReceivedList)
+                        .nextStep(ApplicationWorkFlowOPTStatusEnums.values()[applicationWorkFlow.getStatus() + 1].getStr())
                         .build();
-                applicationWorkFlowDAO.setApplicationWorkFlow(applicationWorkFlow);
-            }
-            LocalDate localDate = LocalDate.parse(visaEndDate , format);
-            Period period = Period.between(now, localDate);
-            diff = period.getDays();
-
-            List<PersonalDocument> personalDocumentList = personalDocumentDAO.getPersonalDocumentByEmployee(employee);
-            List<String> documentTitleList = new ArrayList<>();
-            List<File> documentReceivedList = new ArrayList<>();
-            for (PersonalDocument personalDocument : personalDocumentList) {
-                documentTitleList.add(personalDocument.getTitle());
-                documentReceivedList.add(FileOutput.getFile(personalDocument.getPath()));
+                visaStatusRecordList.add(visaStatusRecord);
             }
 
-            String workAuthorization = ApplicationWorkFlowStatusEnums.values()[applicationWorkFlow.getStatus()].getStr();
-            String visaType = visaStatusDAO.getVisaStatusById(employee.getVisaStatusId()).getVisaType();
-
-            VisaStatusRecord visaStatusRecord = VisaStatusRecord.builder()
-                    .firstName(person.getFirstName())
-                    .middleName(person.getMiddleName())
-                    .lastName(person.getLastName())
-                    .workAuthorization(workAuthorization)
-                    .dayLeft(diff)
-                    .visaStatus(visaType)
-                    .visaStartDate(employee.getVisaStartDate())
-                    .visaEndDate(employee.getVisaEndDate())
-                    .documentTitleList(documentTitleList)
-                    .documentReceivedList(documentReceivedList)
-                    .nextStep(ApplicationWorkFlowStatusEnums.values()[applicationWorkFlow.getStatus() + 1].getStr())
+            return VisaStatusManagement.builder()
+                    .visaStatusRecordList(visaStatusRecordList)
                     .build();
-            visaStatusRecordList.add(visaStatusRecord);
+        } catch (Exception e) {
+            return null;
         }
-
-        return VisaStatusManagement.builder()
-                .visaStatusRecordList(visaStatusRecordList)
-                .build();
     }
 
     @Override
@@ -130,7 +138,7 @@ public class HRVisaStatusManagementServiceImpl implements HRVisaStatusManagement
         ApplicationWorkFlow applicationWorkFlow = applicationWorkFlowDAO.getApplicationWorkFlowByEmployee(employee);
 
         String firstName = employee.getPerson().getFirstName();
-        String workAuthorization = ApplicationWorkFlowStatusEnums.values()[applicationWorkFlow.getStatus()].getStr();
+        String workAuthorization = ApplicationWorkFlowOPTStatusEnums.values()[applicationWorkFlow.getStatus()].getStr();
 
         String to = employee.getPerson().getEmail();
         String text = String.format(VISA_NOTIFICATION, firstName, workAuthorization);

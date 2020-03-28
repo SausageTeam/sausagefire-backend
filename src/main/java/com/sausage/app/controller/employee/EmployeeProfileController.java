@@ -25,11 +25,14 @@ import com.sausage.app.domain.employee.profile.profileName.ProfileName;
 import com.sausage.app.domain.employee.profile.profileName.ProfileNameGetResponse;
 import com.sausage.app.domain.employee.profile.profileName.ProfileNamePostRequest;
 import com.sausage.app.domain.employee.profile.profileName.ProfileNamePostResponse;
+import com.sausage.app.security.util.JwtUtil;
 import com.sausage.app.service.employee.profile.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+
+import static com.sausage.app.constant.Constant.*;
 
 @RestController
 @RequestMapping("/employee/profile")
@@ -81,24 +84,40 @@ public class EmployeeProfileController {
      * Name section
      */
     @GetMapping(value = "/name")
-    public ProfileNameGetResponse getProfileName(HttpServletRequest httpServletRequest){
+    public ProfileNameGetResponse getProfileName(HttpServletRequest httpServletRequest) {
         ProfileNameGetResponse profileNameGetResponse = new ProfileNameGetResponse();
-        //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 2;
-        ProfileName profileName = employeeProfileNameService.getProfileName(userId);
-        profileNameGetResponse.setProfileName(profileName);
-        prepareResponse(profileNameGetResponse, true, "");
+        String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
+        if (id == null) {
+            prepareResponse(profileNameGetResponse, "401", false, "User not Found");
+        } else {
+            int userId = Integer.parseInt(id);
+            ProfileName profileName = employeeProfileNameService.getProfileName(userId);
+            if (profileName == null) {
+                prepareResponse(profileNameGetResponse, "500", false, "Unexpected Error");
+            } else {
+                profileNameGetResponse.setProfileName(profileName);
+                prepareResponse(profileNameGetResponse, "200", true, "");
+            }
+        }
         return profileNameGetResponse;
     }
 
     @PostMapping(value = "/name")
-    public ProfileNamePostResponse postProfileName(@RequestBody ProfileNamePostRequest profileNamePostRequest){
+    public ProfileNamePostResponse postProfileName(HttpServletRequest httpServletRequest, @RequestBody ProfileNamePostRequest profileNamePostRequest) {
         ProfileNamePostResponse profileNamePostResponse = new ProfileNamePostResponse();
-        //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 2;
-        ProfileName profileName = profileNamePostRequest.getProfileName();
-        employeeProfileNameService.setProfileName(userId, profileName);
-        prepareResponse(profileNamePostResponse, true, "");
+        String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
+        if (id == null) {
+            prepareResponse(profileNamePostResponse, "401", false, "User not Found");
+        } else {
+            int userId = Integer.parseInt(id);
+            ProfileName profileName = profileNamePostRequest.getProfileName();
+            if (profileName == null) {
+                prepareResponse(profileNamePostResponse, "500", false, "Unexpected Error");
+            } else {
+                employeeProfileNameService.setProfileName(userId, profileName);
+                prepareResponse(profileNamePostResponse, "200", true, "");
+            }
+        }
         return profileNamePostResponse;
     }
 
@@ -106,24 +125,40 @@ public class EmployeeProfileController {
      * Address section
      */
     @GetMapping(value = "/address")
-    public ProfileAddressGetResponse getProfileAddress(HttpServletRequest httpServletRequest){
+    public ProfileAddressGetResponse getProfileAddress(HttpServletRequest httpServletRequest) {
         ProfileAddressGetResponse profileAddressGetResponse = new ProfileAddressGetResponse();
-        //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 2;
-        ProfileAddress profileAddress = employeeProfileAddressService.getProfileAddress(userId);
-        profileAddressGetResponse.setProfileAddress(profileAddress);
-        prepareResponse(profileAddressGetResponse, true, "");
+        String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
+        if (id == null) {
+            prepareResponse(profileAddressGetResponse, "401", false, "User not Found");
+        } else {
+            int userId = Integer.parseInt(id);
+            ProfileAddress profileAddress = employeeProfileAddressService.getProfileAddress(userId);
+            if (profileAddress == null) {
+                prepareResponse(profileAddressGetResponse, "500", false, "Unexpected Error");
+            } else {
+                profileAddressGetResponse.setProfileAddress(profileAddress);
+                prepareResponse(profileAddressGetResponse, "200", true, "");
+            }
+        }
         return profileAddressGetResponse;
     }
 
     @PostMapping(value = "/address")
-    public ProfileAddressPostResponse postProfileAddress(@RequestBody ProfileAddressPostRequest profileAddressPostRequest){
+    public ProfileAddressPostResponse postProfileAddress(HttpServletRequest httpServletRequest, @RequestBody ProfileAddressPostRequest profileAddressPostRequest) {
         ProfileAddressPostResponse profileAddressPostResponse = new ProfileAddressPostResponse();
-        //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 2;
-        ProfileAddress profileAddress = profileAddressPostRequest.getProfileAddress();
-        employeeProfileAddressService.setProfileAddress(userId, profileAddress);
-        prepareResponse(profileAddressPostResponse, true, "");
+        String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
+        if (id == null) {
+            prepareResponse(profileAddressPostResponse, "401", false, "User not Found");
+        } else {
+            int userId = Integer.parseInt(id);
+            ProfileAddress profileAddress = profileAddressPostRequest.getProfileAddress();
+            if (profileAddress == null) {
+                prepareResponse(profileAddressPostResponse, "500", true, "Unexpected Error");
+            } else {
+                employeeProfileAddressService.setProfileAddress(userId, profileAddress);
+                prepareResponse(profileAddressPostResponse, "200", true, "");
+            }
+        }
         return profileAddressPostResponse;
     }
 
@@ -131,24 +166,40 @@ public class EmployeeProfileController {
      * Contact section
      */
     @GetMapping(value = "/contact")
-    public ProfileContactGetResponse getProfileContact(HttpServletRequest httpServletRequest){
+    public ProfileContactGetResponse getProfileContact(HttpServletRequest httpServletRequest) {
         ProfileContactGetResponse profileContactGetResponse = new ProfileContactGetResponse();
-        //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 2;
-        ProfileContact profileContact = employeeProfileContactService.getProfileContact(userId);
-        profileContactGetResponse.setProfileContact(profileContact);
-        prepareResponse(profileContactGetResponse, true, "");
+        String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
+        if (id == null) {
+            prepareResponse(profileContactGetResponse, "401", false, "User not Found");
+        } else {
+            int userId = Integer.parseInt(id);
+            ProfileContact profileContact = employeeProfileContactService.getProfileContact(userId);
+            if (profileContact == null) {
+                prepareResponse(profileContactGetResponse, "500", false, "Unexpected Error");
+            } else {
+                profileContactGetResponse.setProfileContact(profileContact);
+                prepareResponse(profileContactGetResponse, "200", true, "");
+            }
+        }
         return profileContactGetResponse;
     }
 
     @PostMapping(value = "/contact")
-    public ProfileContactPostResponse postProfileContact(@RequestBody ProfileContactPostRequest profileContactPostRequest){
+    public ProfileContactPostResponse postProfileContact(HttpServletRequest httpServletRequest, @RequestBody ProfileContactPostRequest profileContactPostRequest) {
         ProfileContactPostResponse profileContactPostResponse = new ProfileContactPostResponse();
-        //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 2;
-        ProfileContact profileContact = profileContactPostRequest.getProfileContact();
-        employeeProfileContactService.setProfileContact(userId, profileContact);
-        prepareResponse(profileContactPostResponse, true, "");
+        String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
+        if (id == null) {
+            prepareResponse(profileContactPostResponse, "401", false, "User not Found");
+        } else {
+            int userId = Integer.parseInt(id);
+            ProfileContact profileContact = profileContactPostRequest.getProfileContact();
+            if (profileContact == null) {
+                prepareResponse(profileContactPostResponse, "500", false, "Unexpected Error");
+            } else {
+                employeeProfileContactService.setProfileContact(userId, profileContact);
+                prepareResponse(profileContactPostResponse, "200", true, "");
+            }
+        }
         return profileContactPostResponse;
     }
 
@@ -156,24 +207,39 @@ public class EmployeeProfileController {
      * Employment section
      */
     @GetMapping(value = "/employment")
-    public ProfileEmploymentGetResponse getProfileEmployment(HttpServletRequest httpServletRequest){
+    public ProfileEmploymentGetResponse getProfileEmployment(HttpServletRequest httpServletRequest) {
         ProfileEmploymentGetResponse profileEmploymentGetResponse = new ProfileEmploymentGetResponse();
-        //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 2;
-        ProfileEmployment profileEmployment = employeeProfileEmploymentService.getProfileEmployment(userId);
-        profileEmploymentGetResponse.setProfileEmployment(profileEmployment);
-        prepareResponse(profileEmploymentGetResponse, true, "");
+        String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
+        if (id == null) {
+            prepareResponse(profileEmploymentGetResponse, "401", false, "User not Found");
+        } else {
+            int userId = Integer.parseInt(id);
+            ProfileEmployment profileEmployment = employeeProfileEmploymentService.getProfileEmployment(userId);
+            if (profileEmployment == null) {
+                prepareResponse(profileEmploymentGetResponse, "500", false, "Unexpected Error");
+            } else {
+                profileEmploymentGetResponse.setProfileEmployment(profileEmployment);
+                prepareResponse(profileEmploymentGetResponse, "200", true, "");
+            }
+        }
         return profileEmploymentGetResponse;
     }
 
     @PostMapping(value = "/employment")
-    public ProfileEmploymentPostResponse postProfileEmployment(@RequestBody ProfileEmploymentPostRequest profileEmploymentPostRequest){
+    public ProfileEmploymentPostResponse postProfileEmployment(HttpServletRequest httpServletRequest, @RequestBody ProfileEmploymentPostRequest profileEmploymentPostRequest) {
         ProfileEmploymentPostResponse profileEmploymentPostResponse = new ProfileEmploymentPostResponse();
-        //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 2;
-        ProfileEmployment profileEmployment = profileEmploymentPostRequest.getProfileEmployment();
-        employeeProfileEmploymentService.setProfileEmployment(userId, profileEmployment);
-        prepareResponse(profileEmploymentPostResponse, true, "");
+        String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
+        if (id == null) {
+            prepareResponse(profileEmploymentPostResponse, "401", false, "User not Found");
+        } else {
+            int userId = Integer.parseInt(id);
+            ProfileEmployment profileEmployment = profileEmploymentPostRequest.getProfileEmployment();
+            if (profileEmployment == null) {
+                prepareResponse(profileEmploymentPostResponse, "500", false, "Unexpected Error");
+            }
+            employeeProfileEmploymentService.setProfileEmployment(userId, profileEmployment);
+            prepareResponse(profileEmploymentPostResponse, "200", true, "");
+        }
         return profileEmploymentPostResponse;
     }
 
@@ -181,24 +247,40 @@ public class EmployeeProfileController {
      * Emergency Contact section
      */
     @GetMapping(value = "/emergencyContact")
-    public ProfileEmergencyContactGetResponse getProfileEmergencyContact(HttpServletRequest httpServletRequest){
+    public ProfileEmergencyContactGetResponse getProfileEmergencyContact(HttpServletRequest httpServletRequest) {
         ProfileEmergencyContactGetResponse profileEmergencyContactGetResponse = new ProfileEmergencyContactGetResponse();
-        //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 2;
-        ProfileEmergencyContact profileEmergencyContact = employeeProfileEmergencyContactService.getProfileEmergencyContact(userId);
-        profileEmergencyContactGetResponse.setProfileEmergencyContact(profileEmergencyContact);
-        prepareResponse(profileEmergencyContactGetResponse, true, "");
+        String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
+        if (id == null) {
+            prepareResponse(profileEmergencyContactGetResponse, "401", false, "User not Found");
+        } else {
+            int userId = Integer.parseInt(id);
+            ProfileEmergencyContact profileEmergencyContact = employeeProfileEmergencyContactService.getProfileEmergencyContact(userId);
+            if (profileEmergencyContact == null) {
+                prepareResponse(profileEmergencyContactGetResponse, "500", false, "Unexpected Error");
+            } else {
+                profileEmergencyContactGetResponse.setProfileEmergencyContact(profileEmergencyContact);
+                prepareResponse(profileEmergencyContactGetResponse, "200", true, "");
+            }
+        }
         return profileEmergencyContactGetResponse;
     }
 
     @PostMapping(value = "/emergencyContact")
-    public ProfileEmergencyContactPostResponse postProfileEmergencyContact(@RequestBody ProfileEmergencyContactPostRequest profileEmergencyContactPostRequest){
+    public ProfileEmergencyContactPostResponse postProfileEmergencyContact(HttpServletRequest httpServletRequest, @RequestBody ProfileEmergencyContactPostRequest profileEmergencyContactPostRequest) {
         ProfileEmergencyContactPostResponse profileEmergencyContactPostResponse = new ProfileEmergencyContactPostResponse();
-        //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 2;
-        ProfileEmergencyContact profileEmergencyContact = profileEmergencyContactPostRequest.getProfileEmergencyContact();
-        employeeProfileEmergencyContactService.setProfileEmergencyContact(userId, profileEmergencyContact);
-        prepareResponse(profileEmergencyContactPostResponse, true, "");
+        String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
+        if (id == null) {
+            prepareResponse(profileEmergencyContactPostResponse, "401", false, "User not Found");
+        } else {
+            int userId = Integer.parseInt(id);
+            ProfileEmergencyContact profileEmergencyContact = profileEmergencyContactPostRequest.getProfileEmergencyContact();
+            if (profileEmergencyContact == null) {
+                prepareResponse(profileEmergencyContactPostResponse, "500", false, "Unexpected Error");
+            } else {
+                employeeProfileEmergencyContactService.setProfileEmergencyContact(userId, profileEmergencyContact);
+                prepareResponse(profileEmergencyContactPostResponse, "200", true, "");
+            }
+        }
         return profileEmergencyContactPostResponse;
     }
 
@@ -206,26 +288,33 @@ public class EmployeeProfileController {
      * Document section
      */
     @GetMapping(value = "/document")
-    public ProfileDocumentGetResponse getProfileDocument(HttpServletRequest httpServletRequest){
+    public ProfileDocumentGetResponse getProfileDocument(HttpServletRequest httpServletRequest) {
         ProfileDocumentGetResponse profileDocumentGetResponse = new ProfileDocumentGetResponse();
-        //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 2;
-
-        prepareResponse(profileDocumentGetResponse, true, "");
+        String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
+        if (id == null) {
+            prepareResponse(profileDocumentGetResponse, "401", false, "User not Found");
+        } else {
+            int userId = Integer.parseInt(id);
+            prepareResponse(profileDocumentGetResponse, "200",true, "");
+        }
         return profileDocumentGetResponse;
     }
 
     @PostMapping(value = "/document")
-    public ProfileDocumentPostResponse postProfileDocument(@RequestBody ProfileDocumentPostRequest profileDocumentPostRequest){
+    public ProfileDocumentPostResponse postProfileDocument(HttpServletRequest httpServletRequest, @RequestBody ProfileDocumentPostRequest profileDocumentPostRequest) {
         ProfileDocumentPostResponse profileDocumentPostResponse = new ProfileDocumentPostResponse();
-        //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 2;
-
-        prepareResponse(profileDocumentPostResponse, true, "");
+        String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
+        if (id == null) {
+            prepareResponse(profileDocumentPostResponse, "401", false, "User not Found");
+        } else {
+            int userId = Integer.parseInt(id);
+            prepareResponse(profileDocumentPostResponse, "200",true, "");
+        }
         return profileDocumentPostResponse;
     }
 
-    private void prepareResponse(GenericResponse response, boolean success, String errorMessage) {
-        response.setServiceStatus(new ServiceStatus(success ? "SUCCESS" : "FAILED", success, errorMessage));
+    private void prepareResponse(GenericResponse response, String statusCode, boolean success, String errorMessage) {
+        response.setServiceStatus(new ServiceStatus(statusCode, success, errorMessage));
     }
+
 }

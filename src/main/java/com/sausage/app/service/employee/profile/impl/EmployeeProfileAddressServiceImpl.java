@@ -1,7 +1,6 @@
 package com.sausage.app.service.employee.profile.impl;
 
 import com.sausage.app.dao.Address.AddressDAO;
-import com.sausage.app.dao.Person.PersonDAO;
 import com.sausage.app.dao.User.UserDAO;
 import com.sausage.app.domain.employee.profile.profileAddress.ProfileAddress;
 import com.sausage.app.entity.Address;
@@ -17,18 +16,11 @@ public class EmployeeProfileAddressServiceImpl implements EmployeeProfileAddress
 
     private UserDAO userDAO;
 
-    private PersonDAO personDAO;
-
     private AddressDAO addressDAO;
 
     @Autowired
     public void setUserDAO(UserDAO userDAO) {
         this.userDAO = userDAO;
-    }
-
-    @Autowired
-    public void setPersonDAO(PersonDAO personDAO) {
-        this.personDAO = personDAO;
     }
 
     @Autowired
@@ -38,22 +30,26 @@ public class EmployeeProfileAddressServiceImpl implements EmployeeProfileAddress
 
     private Address getAddressByUserId(int userId) {
         User user = userDAO.getUserById(userId);
-        Person person = personDAO.getPersonById(user.getPersonId());
+        Person person = user.getPerson();
         return addressDAO.getAddressByPerson(person);
     }
 
     @Override
     @Transactional
     public ProfileAddress getProfileAddress(int userId) {
-        Address address = getAddressByUserId(userId);
-        return ProfileAddress.builder()
-                .addressLineOne(address.getAddressLineOne())
-                .addressLineTwo(address.getAddressLineTwo())
-                .city(address.getCity())
-                .zipCode(address.getZipCode())
-                .stateName(address.getStateName())
-                .stateAbbr(address.getStateAbbr())
-                .build();
+        try {
+            Address address = getAddressByUserId(userId);
+            return ProfileAddress.builder()
+                    .addressLineOne(address.getAddressLineOne())
+                    .addressLineTwo(address.getAddressLineTwo())
+                    .city(address.getCity())
+                    .zipCode(address.getZipCode())
+                    .stateName(address.getStateName())
+                    .stateAbbr(address.getStateAbbr())
+                    .build();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override

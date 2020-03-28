@@ -10,6 +10,9 @@ import lombok.Setter;
 public class ServiceStatus {
 
     private String statusCode;
+
     private boolean success;
+
     private String errorMessage;
+
 }

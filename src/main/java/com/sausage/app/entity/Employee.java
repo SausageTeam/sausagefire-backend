@@ -27,7 +27,7 @@ public class Employee implements Serializable {
     private String title;
 
     @Column(name = "MANAGER_ID")
-    private int managerID;
+    private int managerId;
 
     @Column(name = "START_DATE")
     private String startDate;
@@ -38,9 +38,6 @@ public class Employee implements Serializable {
     @Column(name = "AVATAR")
     private String avatar;
 
-    @Column(name = "CAR")
-    private String car;
-
     @Column(name = "VISA_STATUS_ID")
     private int visaStatusId;
 
@@ -49,6 +46,9 @@ public class Employee implements Serializable {
 
     @Column(name = "VISA_END_DATE")
     private String visaEndDate;
+
+    @Column(name = "CAR")
+    private String car;
 
     @Column(name = "DRIVER_LICENSE")
     private String driverLicense;

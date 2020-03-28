@@ -23,11 +23,11 @@ public class Permission implements Serializable {
     @Column(name = "PERMISSION_DESCRIPTION")
     private String permissionDescription;
 
-    @Column(name = "CREATE_DATE")
-    private String createDate;
+    @Column(name = "CREATED_DATE_TIME")
+    private String createdDateTime;
 
-    @Column(name = "MODIFICATION_DATE")
-    private String modificationDate;
+    @Column(name = "MODIFICATION_DATE_TIME")
+    private String modificationDateTime;
 
     @Column(name = "LAST_MODIFICATION_USER")
     private String lastModificationUser;
