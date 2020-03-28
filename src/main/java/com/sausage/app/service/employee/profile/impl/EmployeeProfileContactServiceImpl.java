@@ -30,13 +30,17 @@ public class EmployeeProfileContactServiceImpl implements EmployeeProfileContact
     @Override
     @Transactional
     public ProfileContact getProfileContact(int userId) {
-        User user = userDAO.getUserById(userId);
-        Person person = user.getPerson();
-        return ProfileContact.builder()
-                .personalEmail(person.getEmail())
-                .cellPhone(person.getCellphone())
-                .alternatePhone(person.getAlternatePhone())
-                .build();
+        try {
+            User user = userDAO.getUserById(userId);
+            Person person = user.getPerson();
+            return ProfileContact.builder()
+                    .personalEmail(person.getEmail())
+                    .cellPhone(person.getCellphone())
+                    .alternatePhone(person.getAlternatePhone())
+                    .build();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override

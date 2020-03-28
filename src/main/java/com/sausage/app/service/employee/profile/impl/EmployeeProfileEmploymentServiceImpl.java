@@ -45,19 +45,23 @@ public class EmployeeProfileEmploymentServiceImpl implements EmployeeProfileEmpl
     @Override
     @Transactional
     public ProfileEmployment getProfileEmployment(int userId) {
-        User user = userDAO.getUserById(userId);
-        Person person = user.getPerson();
-        Employee employee = employeeDAO.getEmployeeByPerson(person);
-        VisaStatus visaStatus = visaStatusDAO.getVisaStatusById(employee.getVisaStatusId());
+        try {
+            User user = userDAO.getUserById(userId);
+            Person person = user.getPerson();
+            Employee employee = employeeDAO.getEmployeeByPerson(person);
+            VisaStatus visaStatus = visaStatusDAO.getVisaStatusById(employee.getVisaStatusId());
 
-        return ProfileEmployment.builder()
-                .title(employee.getTitle())
-                .startDate(employee.getStartDate())
-                .endDate(employee.getEndDate())
-                .visaType(visaStatus.getVisaType())
-                .visaStartDate(employee.getVisaStartDate())
-                .visaEndDate(employee.getVisaEndDate())
-                .build();
+            return ProfileEmployment.builder()
+                    .title(employee.getTitle())
+                    .startDate(employee.getStartDate())
+                    .endDate(employee.getEndDate())
+                    .visaType(visaStatus.getVisaType())
+                    .visaStartDate(employee.getVisaStartDate())
+                    .visaEndDate(employee.getVisaEndDate())
+                    .build();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override

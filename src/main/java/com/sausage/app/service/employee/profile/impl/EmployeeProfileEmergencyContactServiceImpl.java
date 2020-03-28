@@ -40,30 +40,34 @@ public class EmployeeProfileEmergencyContactServiceImpl implements EmployeeProfi
     @Override
     @Transactional
     public ProfileEmergencyContact getProfileEmergencyContact(int userId) {
-        User user = userDAO.getUserById(userId);
-        Person person = user.getPerson();
-        String firstName = person.getFirstName();
-        String middleName = person.getMiddleName();
-        String lastName = person.getLastName();
-        String cellPhone = person.getCellphone();
+        try {
+            User user = userDAO.getUserById(userId);
+            Person person = user.getPerson();
+            String firstName = person.getFirstName();
+            String middleName = person.getMiddleName();
+            String lastName = person.getLastName();
+            String cellPhone = person.getCellphone();
 
-        Address address = addressDAO.getAddressByPerson(person);
-        AddressDomain addressDomain = AddressDomain.builder()
-                .addressLineOne(address.getAddressLineOne())
-                .addressLineTwo(address.getAddressLineTwo())
-                .city(address.getCity())
-                .zipCode(address.getZipCode())
-                .stateName(address.getStateName())
-                .stateAbbr(address.getStateAbbr())
-                .build();
+            Address address = addressDAO.getAddressByPerson(person);
+            AddressDomain addressDomain = AddressDomain.builder()
+                    .addressLineOne(address.getAddressLineOne())
+                    .addressLineTwo(address.getAddressLineTwo())
+                    .city(address.getCity())
+                    .zipCode(address.getZipCode())
+                    .stateName(address.getStateName())
+                    .stateAbbr(address.getStateAbbr())
+                    .build();
 
-        return ProfileEmergencyContact.builder()
-                .firstName(firstName)
-                .middleName(middleName)
-                .lastName(lastName)
-                .cellPhone(cellPhone)
-                .addressDomain(addressDomain)
-                .build();
+            return ProfileEmergencyContact.builder()
+                    .firstName(firstName)
+                    .middleName(middleName)
+                    .lastName(lastName)
+                    .cellPhone(cellPhone)
+                    .addressDomain(addressDomain)
+                    .build();
+        }catch (Exception e){
+            return null;
+        }
     }
 
     @Override

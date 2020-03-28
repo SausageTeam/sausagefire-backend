@@ -56,7 +56,7 @@ public class NavServiceImpl implements NavService {
                     .firstName(person.getFirstName())
                     .avatarUri(uri)
                     .build();
-        }catch (NullPointerException e) {
+        }catch (Exception e) {
             return null;
         }
     }

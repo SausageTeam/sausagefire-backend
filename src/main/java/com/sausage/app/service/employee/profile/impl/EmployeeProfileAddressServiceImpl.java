@@ -29,9 +29,13 @@ public class EmployeeProfileAddressServiceImpl implements EmployeeProfileAddress
     }
 
     private Address getAddressByUserId(int userId) {
-        User user = userDAO.getUserById(userId);
-        Person person = user.getPerson();
-        return addressDAO.getAddressByPerson(person);
+        try {
+            User user = userDAO.getUserById(userId);
+            Person person = user.getPerson();
+            return addressDAO.getAddressByPerson(person);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override

@@ -50,38 +50,42 @@ public class EmployeeProfileNameServiceImpl implements EmployeeProfileNameServic
     @Override
     @Transactional
     public ProfileName getProfileName(int userId) {
-        User user = userDAO.getUserById(userId);
-        Person person = user.getPerson();
-        Employee employee = employeeDAO.getEmployeeByPerson(person);
-        String firstName = person.getFirstName();
-        String middleName = person.getMiddleName();
-        String lastName = person.getLastName();
-        String preferredName = person.getPreferredName();
+        try {
+            User user = userDAO.getUserById(userId);
+            Person person = user.getPerson();
+            Employee employee = employeeDAO.getEmployeeByPerson(person);
+            String firstName = person.getFirstName();
+            String middleName = person.getMiddleName();
+            String lastName = person.getLastName();
+            String preferredName = person.getPreferredName();
 
-        String uri = uriConvert.getUri(String.valueOf(employee.getId()), "avatar.jpg");
+            String uri = uriConvert.getUri(String.valueOf(employee.getId()), "avatar.jpg");
 
-        String dob = person.getDOB();
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate localDate = LocalDate.parse(dob, format);
-        int dob_year = localDate.getYear();
-        LocalDate now = LocalDate.now();
-        int now_year = now.getYear();
-        int age = now_year - dob_year;
+            String dob = person.getDOB();
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate localDate = LocalDate.parse(dob, format);
+            int dob_year = localDate.getYear();
+            LocalDate now = LocalDate.now();
+            int now_year = now.getYear();
+            int age = now_year - dob_year;
 
-        String gender = person.getGender();
-        String ssn = person.getSSN();
+            String gender = person.getGender();
+            String ssn = person.getSSN();
 
-        return ProfileName.builder()
-                .firstName(firstName)
-                .middleName(middleName)
-                .lastName(lastName)
-                .preferredName(preferredName)
-                .avatarUri(uri)
-                .dob(dob)
-                .age(age)
-                .gender(gender)
-                .ssn(ssn)
-                .build();
+            return ProfileName.builder()
+                    .firstName(firstName)
+                    .middleName(middleName)
+                    .lastName(lastName)
+                    .preferredName(preferredName)
+                    .avatarUri(uri)
+                    .dob(dob)
+                    .age(age)
+                    .gender(gender)
+                    .ssn(ssn)
+                    .build();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override

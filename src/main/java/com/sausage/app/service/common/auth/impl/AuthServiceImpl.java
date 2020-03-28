@@ -65,7 +65,7 @@ public class AuthServiceImpl implements AuthService {
                     .onboardingStatus(applicationWorkFlow.getStatus())
                     .roleId(userRole.getRoleId())
                     .build();
-        } catch (NullPointerException e) {
+        } catch (Exception e) {
             return null;
         }
     }
