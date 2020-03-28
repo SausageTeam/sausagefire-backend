@@ -72,40 +72,44 @@ public class EmployeeVisaStatusManagementServiceImpl implements EmployeeVisaStat
     @Override
     @Transactional
     public VisaStatusManagement getVisaStatusManagement(int userId) {
-        VisaStatusManagement visaStatusManagement = new VisaStatusManagement();
+        try {
+            VisaStatusManagement visaStatusManagement = new VisaStatusManagement();
 
-        User user = userDAO.getUserById(userId);
-        Person person = user.getPerson();
-        Employee employee = employeeDAO.getEmployeeByPerson(person);
-        ApplicationWorkFlow applicationWorkFlow = applicationWorkFlowDAO.getApplicationWorkFlowByEmployee(employee);
-        VisaStatus visaStatus = visaStatusDAO.getVisaStatusById(employee.getVisaStatusId());
+            User user = userDAO.getUserById(userId);
+            Person person = user.getPerson();
+            Employee employee = employeeDAO.getEmployeeByPerson(person);
+            ApplicationWorkFlow applicationWorkFlow = applicationWorkFlowDAO.getApplicationWorkFlowByEmployee(employee);
+            VisaStatus visaStatus = visaStatusDAO.getVisaStatusById(employee.getVisaStatusId());
 
-        String visaEndDate = employee.getVisaEndDate();
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate localDate = LocalDate.parse(visaEndDate , format);
-        LocalDate now = LocalDate.now();
-        Period period = Period.between(now, localDate);
-        long diff = period.getDays();
+            String visaEndDate = employee.getVisaEndDate();
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate localDate = LocalDate.parse(visaEndDate, format);
+            LocalDate now = LocalDate.now();
+            Period period = Period.between(now, localDate);
+            long diff = period.getDays();
 
-        boolean ifF1 = (visaStatus.getId() == F1.getValue());
-        boolean ifEAD = (applicationWorkFlow.getStatus() == OPT_EAD.getValue());
-        boolean ifExpired = (diff < 100);
-        if (ifF1 && ifEAD && ifExpired){
-            String uri_empty = uriConvert.getUri("document", "I983_empty.pdf");
-            String uri_sample = uriConvert.getUri("document", "I983_sample.pdf");
-            visaStatusManagement.setIfNeedDownload(true);
-            visaStatusManagement.setStatus(applicationWorkFlow.getStatus());
-            visaStatusManagement.setComments(applicationWorkFlow.getComments());
-            visaStatusManagement.setEmptyForm(uri_empty);
-            visaStatusManagement.setSampleForm(uri_sample);
-        }else{
-            visaStatusManagement.setIfNeedDownload(false);
-            visaStatusManagement.setStatus(applicationWorkFlow.getStatus());
-            visaStatusManagement.setComments(applicationWorkFlow.getComments());
-            visaStatusManagement.setEmptyForm(null);
-            visaStatusManagement.setSampleForm(null);
+            boolean ifF1 = (visaStatus.getId() == F1.getValue());
+            boolean ifEAD = (applicationWorkFlow.getStatus() == OPT_EAD.getValue());
+            boolean ifExpired = (diff < 100);
+            if (ifF1 && ifEAD && ifExpired) {
+                String uri_empty = uriConvert.getUri("document", "I983_empty.pdf");
+                String uri_sample = uriConvert.getUri("document", "I983_sample.pdf");
+                visaStatusManagement.setIfNeedDownload(true);
+                visaStatusManagement.setStatus(applicationWorkFlow.getStatus());
+                visaStatusManagement.setComments(applicationWorkFlow.getComments());
+                visaStatusManagement.setEmptyForm(uri_empty);
+                visaStatusManagement.setSampleForm(uri_sample);
+            } else {
+                visaStatusManagement.setIfNeedDownload(false);
+                visaStatusManagement.setStatus(applicationWorkFlow.getStatus());
+                visaStatusManagement.setComments(applicationWorkFlow.getComments());
+                visaStatusManagement.setEmptyForm(null);
+                visaStatusManagement.setSampleForm(null);
+            }
+            return visaStatusManagement;
+        } catch (Exception e) {
+            return null;
         }
-        return visaStatusManagement;
     }
 
     @Override

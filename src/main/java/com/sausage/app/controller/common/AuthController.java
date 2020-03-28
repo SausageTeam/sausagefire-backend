@@ -34,7 +34,7 @@ public class AuthController {
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
             authGetResponse.setRedirectUrl(AUTH_SERVICE);
-            prepareResponse(authGetResponse, "401", false, "User not found");
+            prepareResponse(authGetResponse, "401", false, "User not Found");
         } else {
             int userId = Integer.parseInt(id);
             Auth auth = authService.getAuth(userId);

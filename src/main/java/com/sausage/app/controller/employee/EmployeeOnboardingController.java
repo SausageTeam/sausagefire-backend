@@ -92,7 +92,7 @@ public class EmployeeOnboardingController {
         OnboardingPersonGetResponse onboardingPersonGetResponse = new OnboardingPersonGetResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
-            prepareResponse(onboardingPersonGetResponse, "401", false, "User not found");
+            prepareResponse(onboardingPersonGetResponse, "401", false, "User not Found");
         } else {
             int userId = Integer.parseInt(id);
             OnboardingPerson onboardingPerson = employeeOnboardingPersonService.getOnboardingPerson(userId);
@@ -112,7 +112,7 @@ public class EmployeeOnboardingController {
         OnboardingPersonPostResponse onboardingPersonPostResponse = new OnboardingPersonPostResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
-            prepareResponse(onboardingPersonPostResponse, "401", false, "User not found");
+            prepareResponse(onboardingPersonPostResponse, "401", false, "User not Found");
         } else {
             int userId = Integer.parseInt(id);
             OnboardingPerson onboardingPerson = onboardingPersonPostRequest.getOnboardingPerson();
@@ -136,7 +136,7 @@ public class EmployeeOnboardingController {
         OnboardingAvatarGetResponse onboardingAvatarGetResponse = new OnboardingAvatarGetResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
-            prepareResponse(onboardingAvatarGetResponse, "401", false, "User not found");
+            prepareResponse(onboardingAvatarGetResponse, "401", false, "User not Found");
         } else {
             int userId = Integer.parseInt(id);
             OnboardingAvatar onboardingAvatar = employeeOnboardingAvatarService.getOnboardingAvatar(userId);
@@ -155,7 +155,7 @@ public class EmployeeOnboardingController {
         OnboardingAvatarPostResponse onboardingAvatarPostResponse = new OnboardingAvatarPostResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
-            prepareResponse(onboardingAvatarPostResponse, "401", false, "User not found");
+            prepareResponse(onboardingAvatarPostResponse, "401", false, "User not Found");
         } else {
             int userId = Integer.parseInt(id);
             employeeOnboardingAvatarService.setOnboardingAvatar(userId, file);
@@ -173,7 +173,7 @@ public class EmployeeOnboardingController {
         OnboardingVisaGetResponse onboardingVisaGetResponse = new OnboardingVisaGetResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
-            prepareResponse(onboardingVisaGetResponse, "401", false, "User not found");
+            prepareResponse(onboardingVisaGetResponse, "401", false, "User not Found");
         } else {
             int userId = Integer.parseInt(id);
             OnboardingVisa onboardingVisa = employeeOnboardingVisaService.getOnboardingVisa(userId);
@@ -193,7 +193,7 @@ public class EmployeeOnboardingController {
         OnboardingVisaPostResponse onboardingVisaPostResponse = new OnboardingVisaPostResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
-            prepareResponse(onboardingVisaPostResponse, "401", false, "User not found");
+            prepareResponse(onboardingVisaPostResponse, "401", false, "User not Found");
         } else {
             int userId = Integer.parseInt(id);
             OnboardingVisa onboardingVisa = onboardingVisaPostRequest.getOnboardingVisa();
@@ -216,7 +216,7 @@ public class EmployeeOnboardingController {
         OnboardingDrivingGetResponse onboardingDrivingGetResponse = new OnboardingDrivingGetResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
-            prepareResponse(onboardingDrivingGetResponse, "401", false, "User not found");
+            prepareResponse(onboardingDrivingGetResponse, "401", false, "User not Found");
         } else {
             int userId = Integer.parseInt(id);
             OnboardingDriving onboardingDriving = employeeOnboardingDrivingService.getOnboardingDriving(userId);
@@ -236,7 +236,7 @@ public class EmployeeOnboardingController {
         OnboardingDrivingPostResponse onboardingDrivingPostResponse = new OnboardingDrivingPostResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
-            prepareResponse(onboardingDrivingPostResponse, "401", false, "User not found");
+            prepareResponse(onboardingDrivingPostResponse, "401", false, "User not Found");
         } else {
             int userId = Integer.parseInt(id);
             OnboardingDriving onboardingDriving = onboardingDrivingPostRequest.getOnboardingDriving();
@@ -259,7 +259,7 @@ public class EmployeeOnboardingController {
         OnboardingReferenceGetResponse onboardingReferenceGetResponse = new OnboardingReferenceGetResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
-            prepareResponse(onboardingReferenceGetResponse, "401", false, "User not found");
+            prepareResponse(onboardingReferenceGetResponse, "401", false, "User not Found");
         } else {
             int userId = Integer.parseInt(id);
             OnboardingReference onboardingReference = employeeOnboardingReferenceService.getOnboardingReference(userId);
@@ -279,7 +279,7 @@ public class EmployeeOnboardingController {
         OnboardingReferencePostResponse onboardingReferencePostResponse = new OnboardingReferencePostResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
-            prepareResponse(onboardingReferencePostResponse, "401", false, "User not found");
+            prepareResponse(onboardingReferencePostResponse, "401", false, "User not Found");
         } else {
             int userId = Integer.parseInt(id);
             OnboardingReference onboardingReference = onboardingReferencePostRequest.getOnboardingReference();
@@ -302,7 +302,7 @@ public class EmployeeOnboardingController {
         OnboardingEmergencyGetResponse onboardingEmergencyGetResponse = new OnboardingEmergencyGetResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
-            prepareResponse(onboardingEmergencyGetResponse, "401", false, "User not found");
+            prepareResponse(onboardingEmergencyGetResponse, "401", false, "User not Found");
         } else {
             int userId = Integer.parseInt(id);
             OnboardingEmergency onboardingEmergency = employeeOnboardingEmergencyService.getOnboardingEmergency(userId);
@@ -322,7 +322,7 @@ public class EmployeeOnboardingController {
         OnboardingEmergencyPostResponse onboardingEmergencyPostResponse = new OnboardingEmergencyPostResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
-            prepareResponse(onboardingEmergencyPostResponse, "401", false, "User not found");
+            prepareResponse(onboardingEmergencyPostResponse, "401", false, "User not Found");
         } else {
             int userId = Integer.parseInt(id);
             OnboardingEmergency onboardingEmergency = onboardingEmergencyPostRequest.getOnboardingEmergency();
