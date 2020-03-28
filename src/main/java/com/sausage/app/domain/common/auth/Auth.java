@@ -11,6 +11,6 @@ public class Auth {
 
     int roleId;
 
-    int applicationWorkFlowType;
+    int onboardingStatus;
 
 }

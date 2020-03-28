@@ -1,5 +1,9 @@
 package com.sausage.app.controller.common;
 
+import com.sausage.app.domain.common.GenericResponse;
+import com.sausage.app.domain.common.ServiceStatus;
+import com.sausage.app.domain.common.auth.Auth;
+import com.sausage.app.domain.common.auth.AuthGetResponse;
 import com.sausage.app.domain.common.nav.Nav;
 import com.sausage.app.domain.common.nav.NavGetResponse;
 import com.sausage.app.security.util.JwtUtil;
@@ -30,13 +34,27 @@ public class NavController {
     NavGetResponse getNavAvatar(HttpServletRequest httpServletRequest) {
         NavGetResponse navGetResponse = new NavGetResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
-        System.out.println("id" + id);
-        if (id != null) {
+        if (id == null) {
+            navGetResponse.setRedirectUrl(AUTH_SERVICE);
+            prepareResponse(navGetResponse, "401", false, "User not login");
+        }
+        else{
             int userId = Integer.parseInt(id);
-            System.out.println(userId);
             Nav nav = navService.getNav(userId);
-            navGetResponse.setNav(nav);
+            if (nav == null){
+                navGetResponse.setRedirectUrl(AUTH_SERVICE);
+                prepareResponse(navGetResponse, "500", false, "Database Missing data");
+            }
+            else{
+                navGetResponse.setNav(nav);
+                prepareResponse(navGetResponse,"200", true, "");
+            }
         }
         return navGetResponse;
     }
+
+    private void prepareResponse(GenericResponse response, String statusCode, boolean success, String errorMessage) {
+        response.setServiceStatus(new ServiceStatus(statusCode, success, errorMessage));
+    }
+
 }

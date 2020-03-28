@@ -1,5 +1,6 @@
 package com.sausage.app.domain.common.nav;
 
+import com.sausage.app.domain.common.GenericResponse;
 import lombok.*;
 
 @Getter
@@ -7,7 +8,9 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class NavGetResponse {
+public class NavGetResponse extends GenericResponse {
+
+    String redirectUrl;
 
     Nav nav;
 

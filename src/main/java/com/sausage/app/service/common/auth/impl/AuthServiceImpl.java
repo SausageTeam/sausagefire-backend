@@ -60,11 +60,9 @@ public class AuthServiceImpl implements AuthService {
             Person person = user.getPerson();
             Employee employee = employeeDAO.getEmployeeByPerson(person);
             ApplicationWorkFlow applicationWorkFlow = applicationWorkFlowDAO.getApplicationWorkFlowByEmployee(employee);
-            String type = applicationWorkFlow.getType();
-            int applicationWorkFlowType = ApplicationWorkFlowTypeEnums.valueOf(type).getValue();
             UserRole userRole = userRoleDAO.getUserRoleByUserId(userId);
             return Auth.builder()
-                    .applicationWorkFlowType(applicationWorkFlowType)
+                    .onboardingStatus(applicationWorkFlow.getStatus())
                     .roleId(userRole.getRoleId())
                     .build();
         } catch (NullPointerException e) {

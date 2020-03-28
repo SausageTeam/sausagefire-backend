@@ -30,8 +30,8 @@ public class AuthController {
     @GetMapping("/auth")
     public @ResponseBody
     AuthGetResponse getAuth(HttpServletRequest httpServletRequest){
-        String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         AuthGetResponse authGetResponse = new AuthGetResponse();
+        String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
             authGetResponse.setRedirectUrl(AUTH_SERVICE);
             prepareResponse(authGetResponse, "401", false, "User not login");
@@ -41,7 +41,7 @@ public class AuthController {
             Auth auth = authService.getAuth(userId);
             if (auth == null){
                 authGetResponse.setRedirectUrl(AUTH_SERVICE);
-                prepareResponse(authGetResponse, "401", false, "Database Missing data");
+                prepareResponse(authGetResponse, "500", false, "Database Missing data");
             }
             else{
                 authGetResponse.setAuth(auth);
