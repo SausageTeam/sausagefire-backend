@@ -1,7 +1,7 @@
 package com.sausage.app.service.hr.visaStatusManagement.impl;
 
 import com.sausage.app.dao.ApplicationWorkFlow.ApplicationWorkFlowDAO;
-import com.sausage.app.dao.ApplicationWorkFlow.enums.ApplicationWorkFlowStatusEnums;
+import com.sausage.app.constant.enums.ApplicationWorkFlow.ApplicationWorkFlowOPTStatusEnums;
 import com.sausage.app.dao.Employee.EmployeeDAO;
 import com.sausage.app.dao.PersonalDocument.PersonalDocumentDAO;
 import com.sausage.app.dao.VisaStatus.VisaStatusDAO;
@@ -18,16 +18,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
-import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.sausage.app.constant.Constant.VISA_NOTIFICATION;
-import static com.sausage.app.dao.ApplicationWorkFlow.enums.ApplicationWorkFlowStatusEnums.OPT_RECEIPT;
+import static com.sausage.app.constant.enums.ApplicationWorkFlow.ApplicationWorkFlowOPTStatusEnums.OPT_RECEIPT;
 
 @Service
 public class HRVisaStatusManagementServiceImpl implements HRVisaStatusManagementService {
@@ -99,7 +97,7 @@ public class HRVisaStatusManagementServiceImpl implements HRVisaStatusManagement
                 documentReceivedList.add(FileOutput.getFile(personalDocument.getPath()));
             }
 
-            String workAuthorization = ApplicationWorkFlowStatusEnums.values()[applicationWorkFlow.getStatus()].getStr();
+            String workAuthorization = ApplicationWorkFlowOPTStatusEnums.values()[applicationWorkFlow.getStatus()].getStr();
             String visaType = visaStatusDAO.getVisaStatusById(employee.getVisaStatusId()).getVisaType();
 
             VisaStatusRecord visaStatusRecord = VisaStatusRecord.builder()
@@ -113,7 +111,7 @@ public class HRVisaStatusManagementServiceImpl implements HRVisaStatusManagement
                     .visaEndDate(employee.getVisaEndDate())
                     .documentTitleList(documentTitleList)
                     .documentReceivedList(documentReceivedList)
-                    .nextStep(ApplicationWorkFlowStatusEnums.values()[applicationWorkFlow.getStatus() + 1].getStr())
+                    .nextStep(ApplicationWorkFlowOPTStatusEnums.values()[applicationWorkFlow.getStatus() + 1].getStr())
                     .build();
             visaStatusRecordList.add(visaStatusRecord);
         }
@@ -130,7 +128,7 @@ public class HRVisaStatusManagementServiceImpl implements HRVisaStatusManagement
         ApplicationWorkFlow applicationWorkFlow = applicationWorkFlowDAO.getApplicationWorkFlowByEmployee(employee);
 
         String firstName = employee.getPerson().getFirstName();
-        String workAuthorization = ApplicationWorkFlowStatusEnums.values()[applicationWorkFlow.getStatus()].getStr();
+        String workAuthorization = ApplicationWorkFlowOPTStatusEnums.values()[applicationWorkFlow.getStatus()].getStr();
 
         String to = employee.getPerson().getEmail();
         String text = String.format(VISA_NOTIFICATION, firstName, workAuthorization);

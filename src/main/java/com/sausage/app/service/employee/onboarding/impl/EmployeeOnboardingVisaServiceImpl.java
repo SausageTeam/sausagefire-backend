@@ -48,17 +48,13 @@ public class EmployeeOnboardingVisaServiceImpl implements EmployeeOnboardingVisa
         this.visaStatusDAO = visaStatusDAO;
     }
 
-    private Employee getEmployeeByUserId(int userId) {
-        User user = userDAO.getUserById(userId);
-        Person person = personDAO.getPersonById(user.getPersonId());
-        return employeeDAO.getEmployeeByPerson(person);
-    }
-
     @Override
     @Transactional
     public OnboardingVisa getOnboardingVisa(int userId) {
         OnboardingVisa onboardingVisa = new OnboardingVisa();
-        Employee employee = getEmployeeByUserId(userId);
+        User user = userDAO.getUserById(userId);
+        Person person = user.getPerson();
+        Employee employee = employeeDAO.getEmployeeByPerson(person);
         int visaStatusId = employee.getVisaStatusId();
         VisaStatus visaStatus = visaStatusDAO.getVisaStatusById(visaStatusId);
         if (visaStatus != null) {
@@ -72,7 +68,9 @@ public class EmployeeOnboardingVisaServiceImpl implements EmployeeOnboardingVisa
     @Override
     @Transactional
     public void setOnboardingVisa(int userId, OnboardingVisa onboardingVisa) {
-        Employee employee = getEmployeeByUserId(userId);
+        User user = userDAO.getUserById(userId);
+        Person person = user.getPerson();
+        Employee employee = employeeDAO.getEmployeeByPerson(person);
         String visaType = onboardingVisa.getVisaType();
         String visaStartDate = onboardingVisa.getVisaStartDate();
         String visaEndDate = onboardingVisa.getVisaEndDate();

@@ -17,10 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static com.sausage.app.dao.ApplicationWorkFlow.enums.ApplicationWorkFlowStatusEnums.ONBOARDING;
-import static com.sausage.app.dao.ApplicationWorkFlow.enums.ApplicationWorkFlowNotifyEnums.NOT_NOTIFIED;
-import static com.sausage.app.dao.ApplicationWorkFlow.enums.ApplicationWorkFlowUploadEnums.REQUIRE;
-import static com.sausage.app.dao.ApplicationWorkFlow.enums.ApplicationWorkFlowTypeEnums.ONBOARDING_TYPE;
+import static com.sausage.app.constant.enums.ApplicationWorkFlow.ApplicationWorkFlowNotifyEnums.NOT_NOTIFIED;
+import static com.sausage.app.constant.enums.ApplicationWorkFlow.ApplicationWorkFlowUploadEnums.REQUIRE;
+import static com.sausage.app.constant.enums.ApplicationWorkFlow.ApplicationWorkFlowTypeEnums.*;
 
 @Service
 public class EmployeeOnboardingPersonServiceImpl implements EmployeeOnboardingPersonService {
@@ -53,56 +52,49 @@ public class EmployeeOnboardingPersonServiceImpl implements EmployeeOnboardingPe
         this.applicationWorkFlowDAO = applicationWorkFlowDAO;
     }
 
-    private Person getPersonByUserId(int userId) {
-        User user = userDAO.getUserById(userId);
-        int personId = user.getPersonId();
-        return personDAO.getPersonById(personId);
-    }
-
     @Override
     @Transactional
     public OnboardingPerson getOnboardingPerson(int userId) {
-        Person person = getPersonByUserId(userId);
-        if (person != null) {
-            Employee employee = employeeDAO.getEmployeeByPerson(person);
-            LocalDateTime now = LocalDateTime.now();
-            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-            String formatDateTime = now.format(format);
-            ApplicationWorkFlow applicationWorkFlow = applicationWorkFlowDAO.getApplicationWorkFlowByEmployee(employee);
-            if (applicationWorkFlow == null) {
-                applicationWorkFlow = ApplicationWorkFlow.builder()
-                        .employee(employee)
-                        .createdDate(formatDateTime)
-                        .modificationDate(formatDateTime)
-                        .status(ONBOARDING.getValue())
-                        .comments(null)
-                        .type(ONBOARDING_TYPE.getStr())
-                        .upload(REQUIRE.getValue())
-                        .notify(NOT_NOTIFIED.getValue())
-                        .build();
-                applicationWorkFlowDAO.setApplicationWorkFlow(applicationWorkFlow);
-            }
-
-            return OnboardingPerson.builder()
-                    .firstName(person.getFirstName())
-                    .middleName(person.getMiddleName())
-                    .lastName(person.getLastName())
-                    .email(person.getEmail())
-                    .cellPhone(person.getCellphone())
-                    .alternatePhone(person.getAlternatePhone())
-                    .gender(person.getGender())
-                    .ssn(person.getSSN())
-                    .dob(person.getDOB())
+        User user = userDAO.getUserById(userId);
+        Person person = user.getPerson();
+        Employee employee = employeeDAO.getEmployeeByPerson(person);
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String formatDateTime = now.format(format);
+        ApplicationWorkFlow applicationWorkFlow = applicationWorkFlowDAO.getApplicationWorkFlowByEmployee(employee);
+        if (applicationWorkFlow == null) {
+            applicationWorkFlow = ApplicationWorkFlow.builder()
+                    .employee(employee)
+                    .createdDate(formatDateTime)
+                    .modificationDate(formatDateTime)
+                    .status(ONBOARDING.getValue())
+                    .comments(null)
+                    .type(ONBOARDING.getStr())
+                    .upload(REQUIRE.getValue())
+                    .notify(NOT_NOTIFIED.getValue())
                     .build();
-        } else {
-            return null;
+            applicationWorkFlowDAO.setApplicationWorkFlow(applicationWorkFlow);
         }
+
+        return OnboardingPerson.builder()
+                .firstName(person.getFirstName())
+                .middleName(person.getMiddleName())
+                .lastName(person.getLastName())
+                .email(person.getEmail())
+                .cellPhone(person.getCellphone())
+                .alternatePhone(person.getAlternatePhone())
+                .gender(person.getGender())
+                .ssn(person.getSSN())
+                .dob(person.getDOB())
+                .build();
+
     }
 
     @Override
     @Transactional
     public void setOnboardingPerson(int userId, OnboardingPerson onboardingPerson) {
-        Person person = getPersonByUserId(userId);
+        User user = userDAO.getUserById(userId);
+        Person person = user.getPerson();
         person.setFirstName(onboardingPerson.getFirstName());
         person.setMiddleName(onboardingPerson.getMiddleName());
         person.setLastName(onboardingPerson.getLastName());

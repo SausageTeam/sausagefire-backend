@@ -1,13 +1,13 @@
-package com.sausage.app.dao.ApplicationWorkFlow.enums;
+package com.sausage.app.constant.enums.ApplicationWorkFlow;
 
-public enum ApplicationWorkFlowTypeEnums {
-    ONBOARDING_TYPE(1, "ONBOARDING"),
-    OPT_TYPE(2, "OPT");
+public enum ApplicationWorkFlowNotifyEnums {
+    NOTIFIED(1, "NOTIFIED"),
+    NOT_NOTIFIED(0, "NOT_NOTIFIED");
 
     private final int value;
     private final String str;
 
-    ApplicationWorkFlowTypeEnums(int value, String str) {
+    ApplicationWorkFlowNotifyEnums(int value, String str) {
         this.value = value;
         this.str = str;
     }

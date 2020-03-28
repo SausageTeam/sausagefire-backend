@@ -1,12 +1,11 @@
 package com.sausage.app.service.hr.hire.generateToken.impl;
 
-import com.sausage.app.constant.Constant;
 import com.sausage.app.dao.RegistrationToken.RegistrationTokenDAO;
 import com.sausage.app.dao.User.UserDAO;
 import com.sausage.app.domain.hr.hire.generateToken.HireGenerateToken;
 import com.sausage.app.entity.RegistrationToken;
 import com.sausage.app.entity.User;
-import com.sausage.app.fileIO.AES;
+import com.sausage.app.security.util.AES;
 import com.sausage.app.service.hr.hire.generateToken.HRHireGenerateTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

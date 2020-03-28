@@ -48,16 +48,12 @@ public class EmployeeProfileEmploymentServiceImpl implements EmployeeProfileEmpl
         this.visaStatusDAO = visaStatusDAO;
     }
 
-    private Employee getEmployeeByUserId(int userId) {
-        User user = userDAO.getUserById(userId);
-        Person person = personDAO.getPersonById(user.getPersonId());
-        return employeeDAO.getEmployeeByPerson(person);
-    }
-
     @Override
     @Transactional
     public ProfileEmployment getProfileEmployment(int userId) {
-        Employee employee = getEmployeeByUserId(userId);
+        User user = userDAO.getUserById(userId);
+        Person person = user.getPerson();
+        Employee employee = employeeDAO.getEmployeeByPerson(person);
         VisaStatus visaStatus = visaStatusDAO.getVisaStatusById(employee.getVisaStatusId());
 
         return ProfileEmployment.builder()
@@ -73,7 +69,9 @@ public class EmployeeProfileEmploymentServiceImpl implements EmployeeProfileEmpl
     @Override
     @Transactional
     public void setProfileEmployment(int userId, ProfileEmployment profileEmployment) {
-        Employee employee = getEmployeeByUserId(userId);
+        User user = userDAO.getUserById(userId);
+        Person person = user.getPerson();
+        Employee employee = employeeDAO.getEmployeeByPerson(person);
 
         String visaType = profileEmployment.getVisaType();
         VisaStatus visaStatus = visaStatusDAO.setOtherVisaStatus(visaType);

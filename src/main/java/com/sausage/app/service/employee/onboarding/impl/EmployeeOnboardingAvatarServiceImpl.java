@@ -52,16 +52,12 @@ public class EmployeeOnboardingAvatarServiceImpl implements EmployeeOnboardingAv
         this.uriConvert = uriConvert;
     }
 
-    private Employee getEmployeeByUserId(int userId) {
-        User user = userDAO.getUserById(userId);
-        Person person = personDAO.getPersonById(user.getPersonId());
-        return employeeDAO.getEmployeeByPerson(person);
-    }
-
     @Override
     @Transactional
     public OnboardingAvatar getOnboardingAvatar(int userId) {
-        Employee employee = getEmployeeByUserId(userId);
+        User user = userDAO.getUserById(userId);
+        Person person = user.getPerson();
+        Employee employee = employeeDAO.getEmployeeByPerson(person);
         String avatarPath = String.format(Constant.DEFAULT_FILE_PATH, employee.getId(), "avatar.jpg");
         FileOutput.getAvatar(avatarPath);
         String uri = uriConvert.getUri(String.valueOf(employee.getId()), "avatar.jpg");
@@ -73,7 +69,9 @@ public class EmployeeOnboardingAvatarServiceImpl implements EmployeeOnboardingAv
     @Override
     @Transactional
     public void setOnboardingAvatar(int userId, MultipartFile file) {
-        Employee employee = getEmployeeByUserId(userId);
+        User user = userDAO.getUserById(userId);
+        Person person = user.getPerson();
+        Employee employee = employeeDAO.getEmployeeByPerson(person);
         uriConvert.storeFile(employee.getId(), file);
     }
 

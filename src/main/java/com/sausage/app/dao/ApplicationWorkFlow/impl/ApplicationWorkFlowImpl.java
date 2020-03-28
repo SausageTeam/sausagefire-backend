@@ -10,9 +10,9 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.Query;
 import java.util.List;
 
-import static com.sausage.app.dao.ApplicationWorkFlow.enums.ApplicationWorkFlowNotifyEnums.*;
-import static com.sausage.app.dao.ApplicationWorkFlow.enums.ApplicationWorkFlowUploadEnums.*;
-import static com.sausage.app.dao.ApplicationWorkFlow.enums.ApplicationWorkFlowTypeEnums.OPT_TYPE;
+import static com.sausage.app.constant.enums.ApplicationWorkFlow.ApplicationWorkFlowNotifyEnums.*;
+import static com.sausage.app.constant.enums.ApplicationWorkFlow.ApplicationWorkFlowUploadEnums.*;
+import static com.sausage.app.constant.enums.ApplicationWorkFlow.ApplicationWorkFlowTypeEnums.*;
 
 @Repository
 public class ApplicationWorkFlowImpl extends AbstractHibernateDAO<ApplicationWorkFlow> implements ApplicationWorkFlowDAO {
@@ -45,7 +45,7 @@ public class ApplicationWorkFlowImpl extends AbstractHibernateDAO<ApplicationWor
     public List<ApplicationWorkFlow> getAllWaitingApplicationWorkFlow() {
         Session session = getCurrentSession();
         Query query = session.createQuery(GET_WAITING_APPLICATION_WORK_FLOW);
-        query.setParameter("type", OPT_TYPE.getStr());
+        query.setParameter("type", OPT.getStr());
         query.setParameter("waiting", WAITING.getValue());
 
         @SuppressWarnings("unchecked")

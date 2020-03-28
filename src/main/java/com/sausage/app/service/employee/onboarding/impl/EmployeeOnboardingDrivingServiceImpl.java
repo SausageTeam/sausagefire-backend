@@ -51,16 +51,12 @@ public class EmployeeOnboardingDrivingServiceImpl implements EmployeeOnboardingD
         this.personalDocumentDAO = personalDocumentDAO;
     }
 
-    private Employee getEmployeeByUserId(int userId) {
-        User user = userDAO.getUserById(userId);
-        Person person = personDAO.getPersonById(user.getPersonId());
-        return employeeDAO.getEmployeeByPerson(person);
-    }
-
     @Override
     @Transactional
     public OnboardingDriving getOnboardingDriving(int userId) {
-        Employee employee = getEmployeeByUserId(userId);
+        User user = userDAO.getUserById(userId);
+        Person person = user.getPerson();
+        Employee employee = employeeDAO.getEmployeeByPerson(person);
         String driverLicense = employee.getDriverLicense();
         String driverLicenseExpirationDate = employee.getDriverLicenseExpirationDate();
         String car = employee.getCar();
@@ -91,7 +87,9 @@ public class EmployeeOnboardingDrivingServiceImpl implements EmployeeOnboardingD
     @Transactional
     public void setOnboardingDriving(int userId, OnboardingDriving onboardingDriving) {
         String car = String.format("%s_%s_%s", onboardingDriving.getMaker(), onboardingDriving.getModel(), onboardingDriving.getColor());
-        Employee employee = getEmployeeByUserId(userId);
+        User user = userDAO.getUserById(userId);
+        Person person = user.getPerson();
+        Employee employee = employeeDAO.getEmployeeByPerson(person);
         employee.setDriverLicense(onboardingDriving.getDriverLicense());
         employee.setDriverLicenseExpirationDate(onboardingDriving.getDriverLicenseExpirationDate());
         employee.setCar(car);

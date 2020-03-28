@@ -25,7 +25,7 @@ public class UserRoleDAOImpl extends AbstractHibernateDAO<UserRole> implements U
         query.setParameter("userId", userId);
 
         @SuppressWarnings("unchecked")
-        List<UserRole> userRoles = (List<UserRole>) query.getResultList();
+        List<UserRole> userRoles = query.getResultList();
         return (userRoles.size() > 0) ? userRoles.get(0) : null;
     }
 }

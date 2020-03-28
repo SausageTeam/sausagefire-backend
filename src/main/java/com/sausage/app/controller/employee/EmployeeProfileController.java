@@ -25,11 +25,14 @@ import com.sausage.app.domain.employee.profile.profileName.ProfileName;
 import com.sausage.app.domain.employee.profile.profileName.ProfileNameGetResponse;
 import com.sausage.app.domain.employee.profile.profileName.ProfileNamePostRequest;
 import com.sausage.app.domain.employee.profile.profileName.ProfileNamePostResponse;
+import com.sausage.app.security.util.JwtUtil;
 import com.sausage.app.service.employee.profile.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+
+import static com.sausage.app.constant.Constant.*;
 
 @RestController
 @RequestMapping("/employee/profile")
@@ -81,10 +84,11 @@ public class EmployeeProfileController {
      * Name section
      */
     @GetMapping(value = "/name")
-    public ProfileNameGetResponse getProfileName(HttpServletRequest httpServletRequest){
+    public ProfileNameGetResponse getProfileName(HttpServletRequest httpServletRequest) {
         ProfileNameGetResponse profileNameGetResponse = new ProfileNameGetResponse();
-        //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 2;
+        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY));
+        System.out.println("userID:" + userId);
+//        int userId = 2;
         ProfileName profileName = employeeProfileNameService.getProfileName(userId);
         profileNameGetResponse.setProfileName(profileName);
         prepareResponse(profileNameGetResponse, true, "");
@@ -92,7 +96,7 @@ public class EmployeeProfileController {
     }
 
     @PostMapping(value = "/name")
-    public ProfileNamePostResponse postProfileName(@RequestBody ProfileNamePostRequest profileNamePostRequest){
+    public ProfileNamePostResponse postProfileName(@RequestBody ProfileNamePostRequest profileNamePostRequest) {
         ProfileNamePostResponse profileNamePostResponse = new ProfileNamePostResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
         int userId = 2;
@@ -106,7 +110,7 @@ public class EmployeeProfileController {
      * Address section
      */
     @GetMapping(value = "/address")
-    public ProfileAddressGetResponse getProfileAddress(HttpServletRequest httpServletRequest){
+    public ProfileAddressGetResponse getProfileAddress(HttpServletRequest httpServletRequest) {
         ProfileAddressGetResponse profileAddressGetResponse = new ProfileAddressGetResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
         int userId = 2;
@@ -117,7 +121,7 @@ public class EmployeeProfileController {
     }
 
     @PostMapping(value = "/address")
-    public ProfileAddressPostResponse postProfileAddress(@RequestBody ProfileAddressPostRequest profileAddressPostRequest){
+    public ProfileAddressPostResponse postProfileAddress(@RequestBody ProfileAddressPostRequest profileAddressPostRequest) {
         ProfileAddressPostResponse profileAddressPostResponse = new ProfileAddressPostResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
         int userId = 2;
@@ -131,7 +135,7 @@ public class EmployeeProfileController {
      * Contact section
      */
     @GetMapping(value = "/contact")
-    public ProfileContactGetResponse getProfileContact(HttpServletRequest httpServletRequest){
+    public ProfileContactGetResponse getProfileContact(HttpServletRequest httpServletRequest) {
         ProfileContactGetResponse profileContactGetResponse = new ProfileContactGetResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
         int userId = 2;
@@ -142,7 +146,7 @@ public class EmployeeProfileController {
     }
 
     @PostMapping(value = "/contact")
-    public ProfileContactPostResponse postProfileContact(@RequestBody ProfileContactPostRequest profileContactPostRequest){
+    public ProfileContactPostResponse postProfileContact(@RequestBody ProfileContactPostRequest profileContactPostRequest) {
         ProfileContactPostResponse profileContactPostResponse = new ProfileContactPostResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
         int userId = 2;
@@ -156,7 +160,7 @@ public class EmployeeProfileController {
      * Employment section
      */
     @GetMapping(value = "/employment")
-    public ProfileEmploymentGetResponse getProfileEmployment(HttpServletRequest httpServletRequest){
+    public ProfileEmploymentGetResponse getProfileEmployment(HttpServletRequest httpServletRequest) {
         ProfileEmploymentGetResponse profileEmploymentGetResponse = new ProfileEmploymentGetResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
         int userId = 2;
@@ -167,7 +171,7 @@ public class EmployeeProfileController {
     }
 
     @PostMapping(value = "/employment")
-    public ProfileEmploymentPostResponse postProfileEmployment(@RequestBody ProfileEmploymentPostRequest profileEmploymentPostRequest){
+    public ProfileEmploymentPostResponse postProfileEmployment(@RequestBody ProfileEmploymentPostRequest profileEmploymentPostRequest) {
         ProfileEmploymentPostResponse profileEmploymentPostResponse = new ProfileEmploymentPostResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
         int userId = 2;
@@ -181,7 +185,7 @@ public class EmployeeProfileController {
      * Emergency Contact section
      */
     @GetMapping(value = "/emergencyContact")
-    public ProfileEmergencyContactGetResponse getProfileEmergencyContact(HttpServletRequest httpServletRequest){
+    public ProfileEmergencyContactGetResponse getProfileEmergencyContact(HttpServletRequest httpServletRequest) {
         ProfileEmergencyContactGetResponse profileEmergencyContactGetResponse = new ProfileEmergencyContactGetResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
         int userId = 2;
@@ -192,7 +196,7 @@ public class EmployeeProfileController {
     }
 
     @PostMapping(value = "/emergencyContact")
-    public ProfileEmergencyContactPostResponse postProfileEmergencyContact(@RequestBody ProfileEmergencyContactPostRequest profileEmergencyContactPostRequest){
+    public ProfileEmergencyContactPostResponse postProfileEmergencyContact(@RequestBody ProfileEmergencyContactPostRequest profileEmergencyContactPostRequest) {
         ProfileEmergencyContactPostResponse profileEmergencyContactPostResponse = new ProfileEmergencyContactPostResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
         int userId = 2;
@@ -206,7 +210,7 @@ public class EmployeeProfileController {
      * Document section
      */
     @GetMapping(value = "/document")
-    public ProfileDocumentGetResponse getProfileDocument(HttpServletRequest httpServletRequest){
+    public ProfileDocumentGetResponse getProfileDocument(HttpServletRequest httpServletRequest) {
         ProfileDocumentGetResponse profileDocumentGetResponse = new ProfileDocumentGetResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
         int userId = 2;
@@ -216,7 +220,7 @@ public class EmployeeProfileController {
     }
 
     @PostMapping(value = "/document")
-    public ProfileDocumentPostResponse postProfileDocument(@RequestBody ProfileDocumentPostRequest profileDocumentPostRequest){
+    public ProfileDocumentPostResponse postProfileDocument(@RequestBody ProfileDocumentPostRequest profileDocumentPostRequest) {
         ProfileDocumentPostResponse profileDocumentPostResponse = new ProfileDocumentPostResponse();
         //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
         int userId = 2;

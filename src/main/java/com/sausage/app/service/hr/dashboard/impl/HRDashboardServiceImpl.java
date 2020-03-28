@@ -2,7 +2,7 @@ package com.sausage.app.service.hr.dashboard.impl;
 
 import com.sausage.app.constant.Constant;
 import com.sausage.app.dao.ApplicationWorkFlow.ApplicationWorkFlowDAO;
-import com.sausage.app.dao.ApplicationWorkFlow.enums.ApplicationWorkFlowStatusEnums;
+import com.sausage.app.constant.enums.ApplicationWorkFlow.ApplicationWorkFlowOPTStatusEnums;
 import com.sausage.app.dao.Employee.EmployeeDAO;
 import com.sausage.app.dao.PersonalDocument.PersonalDocumentDAO;
 import com.sausage.app.domain.hr.dashboard.Dashboard;
@@ -22,7 +22,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.sausage.app.dao.ApplicationWorkFlow.enums.ApplicationWorkFlowStatusEnums.OPT_RECEIPT;
+import static com.sausage.app.constant.enums.ApplicationWorkFlow.ApplicationWorkFlowOPTStatusEnums.OPT_RECEIPT;
 
 @Service
 public class HRDashboardServiceImpl implements HRDashboardService {
@@ -93,7 +93,7 @@ public class HRDashboardServiceImpl implements HRDashboardService {
             Period period = Period.between(now, localDate);
             int diff = period.getDays();
             if (diff < 100) {
-                String workAuthorization = ApplicationWorkFlowStatusEnums.values()[applicationWorkFlow.getStatus()].getStr();
+                String workAuthorization = ApplicationWorkFlowOPTStatusEnums.values()[applicationWorkFlow.getStatus()].getStr();
                 Trouble trouble = Trouble.builder()
                         .employeeId(employee.getId())
                         .firstName(person.getFirstName())
@@ -126,7 +126,7 @@ public class HRDashboardServiceImpl implements HRDashboardService {
         ApplicationWorkFlow applicationWorkFlow = applicationWorkFlowDAO.getApplicationWorkFlowByEmployee(employee);
 
         String firstName = employee.getPerson().getFirstName();
-        String workAuthorization = ApplicationWorkFlowStatusEnums.values()[applicationWorkFlow.getStatus()].getStr();
+        String workAuthorization = ApplicationWorkFlowOPTStatusEnums.values()[applicationWorkFlow.getStatus()].getStr();
 
         String to = employee.getPerson().getEmail();
         String text = String.format(Constant.VISA_NOTIFICATION, firstName, workAuthorization);

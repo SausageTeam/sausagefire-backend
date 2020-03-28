@@ -51,16 +51,12 @@ public class EmployeeOnboardingReferenceServiceImpl implements EmployeeOnboardin
         this.addressDAO = addressDAO;
     }
 
-    private Employee getEmployeeByUserId(int userId) {
-        User user = userDAO.getUserById(userId);
-        Person person = personDAO.getPersonById(user.getPersonId());
-        return employeeDAO.getEmployeeByPerson(person);
-    }
-
     @Override
     @Transactional
     public OnboardingReference getOnboardingReference(int userId) {
-        Employee employee = getEmployeeByUserId(userId);
+        User user = userDAO.getUserById(userId);
+        Person person = user.getPerson();
+        Employee employee = employeeDAO.getEmployeeByPerson(person);
         if (employee.getReferenceId() == 0){
             return OnboardingReference.builder()
                     .addressDomain(AddressDomain.builder().build()).build();
@@ -93,20 +89,22 @@ public class EmployeeOnboardingReferenceServiceImpl implements EmployeeOnboardin
     @Override
     @Transactional
     public void setOnboardingReference(int userId, OnboardingReference onboardingReference) {
-        Employee employee = getEmployeeByUserId(userId);
+        User user = userDAO.getUserById(userId);
+        Person person = user.getPerson();
+        Employee employee = employeeDAO.getEmployeeByPerson(person);
         AddressDomain addressDomain = onboardingReference.getAddressDomain();
         Contact contact;
-        Person person;
+        Person referencePerson;
         Address address;
         if (employee.getReferenceId() == 0) {
-            person = Person.builder()
+            referencePerson = Person.builder()
                     .firstName(onboardingReference.getFirstName())
                     .lastName(onboardingReference.getLastName())
                     .middleName(onboardingReference.getMiddleName())
                     .email(onboardingReference.getEmail())
                     .cellphone(onboardingReference.getCellPhone())
                     .build();
-            person = personDAO.setPerson(person);
+            referencePerson = personDAO.setPerson(referencePerson);
 
 
             address = Address.builder()
@@ -116,13 +114,13 @@ public class EmployeeOnboardingReferenceServiceImpl implements EmployeeOnboardin
                     .zipCode(addressDomain.getZipCode())
                     .stateName(addressDomain.getStateName())
                     .stateAbbr(addressDomain.getStateAbbr())
-                    .person(person)
+                    .person(referencePerson)
                     .build();
             addressDAO.setAddress(address);
 
 
             contact = Contact.builder()
-                    .person(person)
+                    .person(referencePerson)
                     .relationship(onboardingReference.getRelationship())
                     .title(onboardingReference.getTitle())
                     .isReference(1)
@@ -131,15 +129,15 @@ public class EmployeeOnboardingReferenceServiceImpl implements EmployeeOnboardin
             contact = contactDAO.setContact(contact);
         } else{
            contact = contactDAO.getContactById(employee.getReferenceId());
-           person = contact.getPerson();
-           address = addressDAO.getAddressByPerson(person);
+           referencePerson = contact.getPerson();
+           address = addressDAO.getAddressByPerson(referencePerson);
 
-           person.setFirstName(onboardingReference.getFirstName());
-           person.setMiddleName(onboardingReference.getMiddleName());
-           person.setLastName(onboardingReference.getLastName());
-           person.setEmail(onboardingReference.getEmail());
-           person.setCellphone(onboardingReference.getCellPhone());
-           person = personDAO.setPerson(person);
+           referencePerson.setFirstName(onboardingReference.getFirstName());
+           referencePerson.setMiddleName(onboardingReference.getMiddleName());
+           referencePerson.setLastName(onboardingReference.getLastName());
+           referencePerson.setEmail(onboardingReference.getEmail());
+           referencePerson.setCellphone(onboardingReference.getCellPhone());
+           referencePerson = personDAO.setPerson(referencePerson);
 
            address.setAddressLineOne(addressDomain.getAddressLineOne());
            address.setAddressLineTwo(addressDomain.getAddressLineTwo());
@@ -147,10 +145,10 @@ public class EmployeeOnboardingReferenceServiceImpl implements EmployeeOnboardin
            address.setZipCode(addressDomain.getZipCode());
            address.setStateName(addressDomain.getStateName());
            address.setStateAbbr(addressDomain.getStateAbbr());
-           address.setPerson(person);
+           address.setPerson(referencePerson);
            addressDAO.setAddress(address);
 
-           contact.setPerson(person);
+           contact.setPerson(referencePerson);
            contactDAO.setContact(contact);
         }
 

@@ -1,4 +1,4 @@
-package com.sausage.app.fileIO;
+package com.sausage.app.security.util;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;

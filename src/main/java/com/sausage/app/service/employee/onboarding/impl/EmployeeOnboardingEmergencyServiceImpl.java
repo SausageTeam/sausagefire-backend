@@ -51,16 +51,12 @@ public class EmployeeOnboardingEmergencyServiceImpl implements EmployeeOnboardin
         this.addressDAO = addressDAO;
     }
 
-    private Employee getEmployeeByUserId(int userId) {
-        User user = userDAO.getUserById(userId);
-        Person person = personDAO.getPersonById(user.getPersonId());
-        return employeeDAO.getEmployeeByPerson(person);
-    }
-
     @Override
     @Transactional
     public OnboardingEmergency getOnboardingEmergency(int userId) {
-        Employee employee = getEmployeeByUserId(userId);
+        User user = userDAO.getUserById(userId);
+        Person person = user.getPerson();
+        Employee employee = employeeDAO.getEmployeeByPerson(person);
         if (employee.getEmergencyId() == 0){
             return OnboardingEmergency.builder()
                     .addressDomain(AddressDomain.builder().build()).build();
@@ -93,20 +89,22 @@ public class EmployeeOnboardingEmergencyServiceImpl implements EmployeeOnboardin
     @Override
     @Transactional
     public void setOnboardingEmergency(int userId, OnboardingEmergency onboardingEmergency) {
-        Employee employee = getEmployeeByUserId(userId);
+        User user = userDAO.getUserById(userId);
+        Person person = user.getPerson();
+        Employee employee = employeeDAO.getEmployeeByPerson(person);
         AddressDomain addressDomain = onboardingEmergency.getAddressDomain();
         Contact contact;
-        Person person;
+        Person emergencyPerson;
         Address address;
         if (employee.getEmergencyId() == 0) {
-            person = Person.builder()
+            emergencyPerson = Person.builder()
                     .firstName(onboardingEmergency.getFirstName())
                     .lastName(onboardingEmergency.getLastName())
                     .middleName(onboardingEmergency.getMiddleName())
                     .email(onboardingEmergency.getEmail())
                     .cellphone(onboardingEmergency.getCellPhone())
                     .build();
-            person = personDAO.setPerson(person);
+            emergencyPerson = personDAO.setPerson(emergencyPerson);
 
 
             address = Address.builder()
@@ -116,7 +114,7 @@ public class EmployeeOnboardingEmergencyServiceImpl implements EmployeeOnboardin
                     .zipCode(addressDomain.getZipCode())
                     .stateName(addressDomain.getStateName())
                     .stateAbbr(addressDomain.getStateAbbr())
-                    .person(person)
+                    .person(emergencyPerson)
                     .build();
             addressDAO.setAddress(address);
 
@@ -131,15 +129,15 @@ public class EmployeeOnboardingEmergencyServiceImpl implements EmployeeOnboardin
             contact = contactDAO.setContact(contact);
         } else{
             contact = contactDAO.getContactById(employee.getEmergencyId());
-            person = contact.getPerson();
-            address = addressDAO.getAddressByPerson(person);
+            emergencyPerson = contact.getPerson();
+            address = addressDAO.getAddressByPerson(emergencyPerson);
 
-            person.setFirstName(onboardingEmergency.getFirstName());
-            person.setMiddleName(onboardingEmergency.getMiddleName());
-            person.setLastName(onboardingEmergency.getLastName());
-            person.setEmail(onboardingEmergency.getEmail());
-            person.setCellphone(onboardingEmergency.getCellPhone());
-            person = personDAO.setPerson(person);
+            emergencyPerson.setFirstName(onboardingEmergency.getFirstName());
+            emergencyPerson.setMiddleName(onboardingEmergency.getMiddleName());
+            emergencyPerson.setLastName(onboardingEmergency.getLastName());
+            emergencyPerson.setEmail(onboardingEmergency.getEmail());
+            emergencyPerson.setCellphone(onboardingEmergency.getCellPhone());
+            emergencyPerson = personDAO.setPerson(emergencyPerson);
 
             address.setAddressLineOne(addressDomain.getAddressLineOne());
             address.setAddressLineTwo(addressDomain.getAddressLineTwo());
@@ -147,10 +145,10 @@ public class EmployeeOnboardingEmergencyServiceImpl implements EmployeeOnboardin
             address.setZipCode(addressDomain.getZipCode());
             address.setStateName(addressDomain.getStateName());
             address.setStateAbbr(addressDomain.getStateAbbr());
-            address.setPerson(person);
+            address.setPerson(emergencyPerson);
             addressDAO.setAddress(address);
 
-            contact.setPerson(person);
+            contact.setPerson(emergencyPerson);
             contactDAO.setContact(contact);
         }
 

@@ -52,15 +52,11 @@ public class EmployeeProfileNameServiceImpl implements EmployeeProfileNameServic
         this.uriConvert = uriConvert;
     }
 
-    private Person getPersonByUserId(int userId) {
-        User user = userDAO.getUserById(userId);
-        return personDAO.getPersonById(user.getPersonId());
-    }
-
     @Override
     @Transactional
     public ProfileName getProfileName(int userId) {
-        Person person = getPersonByUserId(userId);
+        User user = userDAO.getUserById(userId);
+        Person person = user.getPerson();
         Employee employee = employeeDAO.getEmployeeByPerson(person);
         String firstName = person.getFirstName();
         String middleName = person.getMiddleName();
@@ -96,7 +92,8 @@ public class EmployeeProfileNameServiceImpl implements EmployeeProfileNameServic
     @Override
     @Transactional
     public void setProfileName(int userId, ProfileName profileName) {
-        Person person = getPersonByUserId(userId);
+        User user = userDAO.getUserById(userId);
+        Person person = user.getPerson();
         Employee employee = employeeDAO.getEmployeeByPerson(person);
 
         String firstName = profileName.getFirstName();

@@ -51,18 +51,11 @@ public class EmployeeProfileEmergencyContactServiceImpl implements EmployeeProfi
         this.addressDAO = addressDAO;
     }
 
-    private Person getContactPersonByUserId(int userId) {
-        User user = userDAO.getUserById(userId);
-        Person person = personDAO.getPersonById(user.getPersonId());
-        Employee employee = employeeDAO.getEmployeeByPerson(person);
-        Contact contact = contactDAO.getContactById(employee.getEmergencyId());
-        return contact.getPerson();
-    }
-
     @Override
     @Transactional
     public ProfileEmergencyContact getProfileEmergencyContact(int userId) {
-        Person person = getContactPersonByUserId(userId);
+        User user = userDAO.getUserById(userId);
+        Person person = user.getPerson();
         String firstName = person.getFirstName();
         String middleName = person.getMiddleName();
         String lastName = person.getLastName();
@@ -90,7 +83,8 @@ public class EmployeeProfileEmergencyContactServiceImpl implements EmployeeProfi
     @Override
     @Transactional
     public void setProfileEmergencyContact(int userId, ProfileEmergencyContact profileEmergencyContact) {
-        Person person = getContactPersonByUserId(userId);
+        User user = userDAO.getUserById(userId);
+        Person person = user.getPerson();
         String firstName = profileEmergencyContact.getFirstName();
         String middleName = profileEmergencyContact.getMiddleName();
         String lastName = profileEmergencyContact.getLastName();

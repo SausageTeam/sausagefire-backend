@@ -28,8 +28,9 @@ public class User implements Serializable {
     @Column(name = "PASSWORD")
     private String userPassword;
 
-    @Column(name = "PERSON_ID")
-    private int personId;
+    @OneToOne
+    @JoinColumn(name = "PERSON_ID")
+    private Person person;
 
     @Column(name = "CREATE_DATE")
     private String createDate;

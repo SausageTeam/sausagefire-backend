@@ -36,12 +36,6 @@ public class EmployeeProfileDocumentServiceImpl implements EmployeeProfileDocume
         this.employeeDAO = employeeDAO;
     }
 
-    private Employee getEmployeeByUserId(int userId) {
-        User user = userDAO.getUserById(userId);
-        Person person = personDAO.getPersonById(user.getPersonId());
-        return employeeDAO.getEmployeeByPerson(person);
-    }
-
     @Override
     @Transactional
     public ProfileDocument getProfileDocument(int userId) {

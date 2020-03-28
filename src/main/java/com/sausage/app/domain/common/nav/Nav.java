@@ -1,4 +1,4 @@
-package com.sausage.app.domain.common.app;
+package com.sausage.app.domain.common.nav;
 
 import lombok.*;
 
@@ -7,8 +7,10 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AppDomain {
+public class Nav {
 
     String avatarUri;
+
+    String firstName;
 
 }
