@@ -37,17 +37,15 @@ public class NavController {
         if (id == null) {
             navGetResponse.setRedirectUrl(AUTH_SERVICE);
             prepareResponse(navGetResponse, "401", false, "User not login");
-        }
-        else{
+        } else {
             int userId = Integer.parseInt(id);
             Nav nav = navService.getNav(userId);
-            if (nav == null){
+            if (nav == null) {
                 navGetResponse.setRedirectUrl(AUTH_SERVICE);
-                prepareResponse(navGetResponse, "500", false, "Database Missing data");
-            }
-            else{
+                prepareResponse(navGetResponse, "500", false, "Unexpected Error");
+            } else {
                 navGetResponse.setNav(nav);
-                prepareResponse(navGetResponse,"200", true, "");
+                prepareResponse(navGetResponse, "200", true, "");
             }
         }
         return navGetResponse;

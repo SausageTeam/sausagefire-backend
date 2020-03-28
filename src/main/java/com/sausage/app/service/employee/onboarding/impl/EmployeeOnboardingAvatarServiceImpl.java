@@ -42,15 +42,19 @@ public class EmployeeOnboardingAvatarServiceImpl implements EmployeeOnboardingAv
     @Override
     @Transactional
     public OnboardingAvatar getOnboardingAvatar(int userId) {
-        User user = userDAO.getUserById(userId);
-        Person person = user.getPerson();
-        Employee employee = employeeDAO.getEmployeeByPerson(person);
-        String avatarPath = String.format(Constant.DEFAULT_FILE_PATH, employee.getId(), "avatar.jpg");
-        FileOutput.getAvatar(avatarPath);
-        String uri = uriConvert.getUri(String.valueOf(employee.getId()), "avatar.jpg");
-        return OnboardingAvatar.builder()
-                .avatarUri(uri)
-                .build();
+        try {
+            User user = userDAO.getUserById(userId);
+            Person person = user.getPerson();
+            Employee employee = employeeDAO.getEmployeeByPerson(person);
+            String avatarPath = String.format(Constant.DEFAULT_FILE_PATH, employee.getId(), "avatar.jpg");
+            FileOutput.getAvatar(avatarPath);
+            String uri = uriConvert.getUri(String.valueOf(employee.getId()), "avatar.jpg");
+            return OnboardingAvatar.builder()
+                    .avatarUri(uri)
+                    .build();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override

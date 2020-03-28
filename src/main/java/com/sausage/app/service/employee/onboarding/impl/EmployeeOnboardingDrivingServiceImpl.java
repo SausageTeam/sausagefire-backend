@@ -54,32 +54,36 @@ public class EmployeeOnboardingDrivingServiceImpl implements EmployeeOnboardingD
     @Override
     @Transactional
     public OnboardingDriving getOnboardingDriving(int userId) {
-        User user = userDAO.getUserById(userId);
-        Person person = user.getPerson();
-        Employee employee = employeeDAO.getEmployeeByPerson(person);
-        String driverLicense = employee.getDriverLicense();
-        String driverLicenseExpirationDate = employee.getDriverLicenseExpirationDate();
-        String car = employee.getCar();
-        String maker = null;
-        String model = null;
-        String color = null;
+        try {
+            User user = userDAO.getUserById(userId);
+            Person person = user.getPerson();
+            Employee employee = employeeDAO.getEmployeeByPerson(person);
+            String driverLicense = employee.getDriverLicense();
+            String driverLicenseExpirationDate = employee.getDriverLicenseExpirationDate();
+            String car = employee.getCar();
+            String maker = null;
+            String model = null;
+            String color = null;
 
-        if(car != null){
-            String[] arr_car = car.split("_");
-            if (arr_car.length >= 3) {
-                maker = arr_car[0];
-                model = arr_car[1];
-                color = arr_car[2];
+            if (car != null) {
+                String[] arr_car = car.split("_");
+                if (arr_car.length >= 3) {
+                    maker = arr_car[0];
+                    model = arr_car[1];
+                    color = arr_car[2];
+                }
             }
+            return OnboardingDriving.builder()
+                    .driverLicense(driverLicense)
+                    .driverLicenseExpirationDate(driverLicenseExpirationDate)
+                    .driverLicenseDoc(null)
+                    .maker(maker)
+                    .model(model)
+                    .color(color)
+                    .build();
+        } catch (Exception e) {
+            return null;
         }
-        return OnboardingDriving.builder()
-                .driverLicense(driverLicense)
-                .driverLicenseExpirationDate(driverLicenseExpirationDate)
-                .driverLicenseDoc(null)
-                .maker(maker)
-                .model(model)
-                .color(color)
-                .build();
     }
 
     @Override

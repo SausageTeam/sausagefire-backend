@@ -43,18 +43,22 @@ public class EmployeeOnboardingVisaServiceImpl implements EmployeeOnboardingVisa
     @Override
     @Transactional
     public OnboardingVisa getOnboardingVisa(int userId) {
-        OnboardingVisa onboardingVisa = new OnboardingVisa();
-        User user = userDAO.getUserById(userId);
-        Person person = user.getPerson();
-        Employee employee = employeeDAO.getEmployeeByPerson(person);
-        int visaStatusId = employee.getVisaStatusId();
-        VisaStatus visaStatus = visaStatusDAO.getVisaStatusById(visaStatusId);
-        if (visaStatus != null) {
-            onboardingVisa.setVisaType(visaStatus.getVisaType());
-            onboardingVisa.setVisaStartDate(employee.getVisaStartDate());
-            onboardingVisa.setVisaEndDate(employee.getVisaEndDate());
+        try {
+            OnboardingVisa onboardingVisa = new OnboardingVisa();
+            User user = userDAO.getUserById(userId);
+            Person person = user.getPerson();
+            Employee employee = employeeDAO.getEmployeeByPerson(person);
+            int visaStatusId = employee.getVisaStatusId();
+            VisaStatus visaStatus = visaStatusDAO.getVisaStatusById(visaStatusId);
+            if (visaStatus != null) {
+                onboardingVisa.setVisaType(visaStatus.getVisaType());
+                onboardingVisa.setVisaStartDate(employee.getVisaStartDate());
+                onboardingVisa.setVisaEndDate(employee.getVisaEndDate());
+            }
+            return onboardingVisa;
+        } catch (Exception e) {
+            return null;
         }
-        return onboardingVisa;
     }
 
     @Override
@@ -68,7 +72,7 @@ public class EmployeeOnboardingVisaServiceImpl implements EmployeeOnboardingVisa
         String visaEndDate = onboardingVisa.getVisaEndDate();
 
         VisaStatus visaStatus = visaStatusDAO.setOtherVisaStatus(visaType);
-        if (visaStatus == null){
+        if (visaStatus == null) {
             LocalDateTime now = LocalDateTime.now();
             DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String formatDateTime = now.format(format);

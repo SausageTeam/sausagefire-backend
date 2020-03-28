@@ -54,36 +54,40 @@ public class EmployeeOnboardingEmergencyServiceImpl implements EmployeeOnboardin
     @Override
     @Transactional
     public OnboardingEmergency getOnboardingEmergency(int userId) {
-        User user = userDAO.getUserById(userId);
-        Person person = user.getPerson();
-        Employee employee = employeeDAO.getEmployeeByPerson(person);
-        if (employee.getEmergencyId() == 0){
+        try {
+            User user = userDAO.getUserById(userId);
+            Person person = user.getPerson();
+            Employee employee = employeeDAO.getEmployeeByPerson(person);
+            if (employee.getEmergencyId() == 0) {
+                return OnboardingEmergency.builder()
+                        .addressDomain(AddressDomain.builder().build()).build();
+            }
+            Contact contact = contactDAO.getContactById(employee.getEmergencyId());
+            Person contactPerson = contact.getPerson();
+            Address address = addressDAO.getAddressByPerson(contactPerson);
+
+            AddressDomain addressDomain = AddressDomain.builder()
+                    .addressLineOne(address.getAddressLineOne())
+                    .addressLineTwo(address.getAddressLineTwo())
+                    .city(address.getCity())
+                    .zipCode(address.getZipCode())
+                    .stateName(address.getStateName())
+                    .stateAbbr(address.getStateAbbr())
+                    .build();
+
             return OnboardingEmergency.builder()
-                    .addressDomain(AddressDomain.builder().build()).build();
+                    .firstName(contactPerson.getFirstName())
+                    .lastName(contactPerson.getLastName())
+                    .middleName(contactPerson.getMiddleName())
+                    .email(contactPerson.getEmail())
+                    .cellPhone(contactPerson.getCellphone())
+                    .addressDomain(addressDomain)
+                    .relationship(contact.getRelationship())
+                    .title(contact.getTitle())
+                    .build();
+        } catch (Exception e) {
+            return null;
         }
-        Contact contact = contactDAO.getContactById(employee.getEmergencyId());
-        Person contactPerson = contact.getPerson();
-        Address address = addressDAO.getAddressByPerson(contactPerson);
-
-        AddressDomain addressDomain = AddressDomain.builder()
-                .addressLineOne(address.getAddressLineOne())
-                .addressLineTwo(address.getAddressLineTwo())
-                .city(address.getCity())
-                .zipCode(address.getZipCode())
-                .stateName(address.getStateName())
-                .stateAbbr(address.getStateAbbr())
-                .build();
-
-        return OnboardingEmergency.builder()
-                .firstName(contactPerson.getFirstName())
-                .lastName(contactPerson.getLastName())
-                .middleName(contactPerson.getMiddleName())
-                .email(contactPerson.getEmail())
-                .cellPhone(contactPerson.getCellphone())
-                .addressDomain(addressDomain)
-                .relationship(contact.getRelationship())
-                .title(contact.getTitle())
-                .build();
     }
 
     @Override
@@ -127,7 +131,7 @@ public class EmployeeOnboardingEmergencyServiceImpl implements EmployeeOnboardin
                     .isEmergency(0)
                     .isLandlord(0).build();
             contact = contactDAO.setContact(contact);
-        } else{
+        } else {
             contact = contactDAO.getContactById(employee.getEmergencyId());
             emergencyPerson = contact.getPerson();
             address = addressDAO.getAddressByPerson(emergencyPerson);

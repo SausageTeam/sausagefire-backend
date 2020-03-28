@@ -29,29 +29,28 @@ public class AuthController {
 
     @GetMapping("/auth")
     public @ResponseBody
-    AuthGetResponse getAuth(HttpServletRequest httpServletRequest){
+    AuthGetResponse getAuth(HttpServletRequest httpServletRequest) {
         AuthGetResponse authGetResponse = new AuthGetResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
             authGetResponse.setRedirectUrl(AUTH_SERVICE);
-            prepareResponse(authGetResponse, "401", false, "User not login");
-        }
-        else{
+            prepareResponse(authGetResponse, "401", false, "User not found");
+        } else {
             int userId = Integer.parseInt(id);
             Auth auth = authService.getAuth(userId);
-            if (auth == null){
+            if (auth == null) {
                 authGetResponse.setRedirectUrl(AUTH_SERVICE);
-                prepareResponse(authGetResponse, "500", false, "Database Missing data");
-            }
-            else{
+                prepareResponse(authGetResponse, "500", false, "Unexpected Error");
+            } else {
                 authGetResponse.setAuth(auth);
-                prepareResponse(authGetResponse,"200", true, "");
+                prepareResponse(authGetResponse, "200", true, "");
             }
         }
         return authGetResponse;
     }
 
-        private void prepareResponse(GenericResponse response, String statusCode, boolean success, String errorMessage) {
-            response.setServiceStatus(new ServiceStatus(statusCode, success, errorMessage));
-        }
+    private void prepareResponse(GenericResponse response, String statusCode, boolean success, String errorMessage) {
+        response.setServiceStatus(new ServiceStatus(statusCode, success, errorMessage));
+    }
+
 }

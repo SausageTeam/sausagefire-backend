@@ -55,39 +55,42 @@ public class EmployeeOnboardingPersonServiceImpl implements EmployeeOnboardingPe
     @Override
     @Transactional
     public OnboardingPerson getOnboardingPerson(int userId) {
-        User user = userDAO.getUserById(userId);
-        Person person = user.getPerson();
-        Employee employee = employeeDAO.getEmployeeByPerson(person);
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String formatDateTime = now.format(format);
-        ApplicationWorkFlow applicationWorkFlow = applicationWorkFlowDAO.getApplicationWorkFlowByEmployee(employee);
-        if (applicationWorkFlow == null) {
-            applicationWorkFlow = ApplicationWorkFlow.builder()
-                    .employee(employee)
-                    .status(ONBOARDING.getValue())
-                    .comments(null)
-                    .type(ONBOARDING.getStr())
-                    .upload(REQUIRE.getValue())
-                    .notify(NOT_NOTIFIED.getValue())
-                    .createdDateTime(formatDateTime)
-                    .modificationDateTime(formatDateTime)
+        try {
+            User user = userDAO.getUserById(userId);
+            Person person = user.getPerson();
+            Employee employee = employeeDAO.getEmployeeByPerson(person);
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formatDateTime = now.format(format);
+            ApplicationWorkFlow applicationWorkFlow = applicationWorkFlowDAO.getApplicationWorkFlowByEmployee(employee);
+            if (applicationWorkFlow == null) {
+                applicationWorkFlow = ApplicationWorkFlow.builder()
+                        .employee(employee)
+                        .status(ONBOARDING.getValue())
+                        .comments(null)
+                        .type(ONBOARDING.getStr())
+                        .upload(REQUIRE.getValue())
+                        .notify(NOT_NOTIFIED.getValue())
+                        .createdDateTime(formatDateTime)
+                        .modificationDateTime(formatDateTime)
+                        .build();
+                applicationWorkFlowDAO.setApplicationWorkFlow(applicationWorkFlow);
+            }
+
+            return OnboardingPerson.builder()
+                    .firstName(person.getFirstName())
+                    .middleName(person.getMiddleName())
+                    .lastName(person.getLastName())
+                    .email(person.getEmail())
+                    .cellPhone(person.getCellphone())
+                    .alternatePhone(person.getAlternatePhone())
+                    .gender(person.getGender())
+                    .ssn(person.getSSN())
+                    .dob(person.getDOB())
                     .build();
-            applicationWorkFlowDAO.setApplicationWorkFlow(applicationWorkFlow);
+        } catch (Exception e) {
+            return null;
         }
-
-        return OnboardingPerson.builder()
-                .firstName(person.getFirstName())
-                .middleName(person.getMiddleName())
-                .lastName(person.getLastName())
-                .email(person.getEmail())
-                .cellPhone(person.getCellphone())
-                .alternatePhone(person.getAlternatePhone())
-                .gender(person.getGender())
-                .ssn(person.getSSN())
-                .dob(person.getDOB())
-                .build();
-
     }
 
     @Override
