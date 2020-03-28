@@ -6,12 +6,16 @@ import com.sausage.app.domain.hr.hire.generateToken.HireGenerateToken;
 import com.sausage.app.domain.hr.hire.generateToken.HireGenerateTokenGetResponse;
 import com.sausage.app.domain.hr.hire.generateToken.HireGenerateTokenPostRequest;
 import com.sausage.app.domain.hr.hire.generateToken.HireGenerateTokenPostResponse;
+import com.sausage.app.security.util.JwtUtil;
 import com.sausage.app.service.hr.hire.applicationReview.HRHireApplicationReviewService;
 import com.sausage.app.service.hr.hire.generateToken.HRHireGenerateTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+
+import static com.sausage.app.constant.Constant.JWT_TOKEN_COOKIE_NAME;
+import static com.sausage.app.constant.Constant.SIGNING_KEY;
 
 @RestController
 @RequestMapping("hr/hire")
@@ -35,30 +39,38 @@ public class HRHireManagement {
     public @ResponseBody
     HireGenerateTokenGetResponse getHireGenerateToken(HttpServletRequest httpServletRequest) {
         HireGenerateTokenGetResponse hireGenerateTokenGetResponse = new HireGenerateTokenGetResponse();
-        //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 2;
-        prepareResponse(hireGenerateTokenGetResponse, true, "");
+        String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
+        if (id == null) {
+            prepareResponse(hireGenerateTokenGetResponse, "401", false, "User not Found");
+        } else {
+            int userId = Integer.parseInt(id);
+            prepareResponse(hireGenerateTokenGetResponse, "200", true, "");
+        }
         return hireGenerateTokenGetResponse;
     }
 
     @PostMapping(value = "/generate-token")
     public @ResponseBody
-    HireGenerateTokenPostResponse postHireGenerateToken(@RequestBody HireGenerateTokenPostRequest hireGenerateTokenPostRequest) {
+    HireGenerateTokenPostResponse postHireGenerateToken(HttpServletRequest httpServletRequest, @RequestBody HireGenerateTokenPostRequest hireGenerateTokenPostRequest) {
         HireGenerateTokenPostResponse hireGenerateTokenPostResponse = new HireGenerateTokenPostResponse();
-        //        int userId = Integer.parseInt(JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY));
-        int userId = 2;
-        HireGenerateToken hireGenerateToken = hireGenerateTokenPostRequest.getHireGenerateToken();
-        boolean success = hrHireGenerateTokenService.setHireGenerateToken(userId, hireGenerateToken);
-        if (!success) {
-            prepareResponse(hireGenerateTokenPostResponse, false, "Duplicate Email Address");
+        String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
+        if (id == null) {
+            prepareResponse(hireGenerateTokenPostResponse, "401", false, "User not Found");
         } else {
-            prepareResponse(hireGenerateTokenPostResponse, true, "");
+            int userId = Integer.parseInt(id);
+            HireGenerateToken hireGenerateToken = hireGenerateTokenPostRequest.getHireGenerateToken();
+            boolean success = hrHireGenerateTokenService.setHireGenerateToken(userId, hireGenerateToken);
+            if (!success) {
+                prepareResponse(hireGenerateTokenPostResponse, "500",false, "Duplicate Email Address");
+            } else {
+                prepareResponse(hireGenerateTokenPostResponse, "200",true, "");
+            }
         }
         return hireGenerateTokenPostResponse;
     }
 
-    private void prepareResponse(GenericResponse response, boolean success, String errorMessage) {
-        response.setServiceStatus(new ServiceStatus(success ? "SUCCESS" : "FAILED", success, errorMessage));
+    private void prepareResponse(GenericResponse response, String statusCode, boolean success, String errorMessage) {
+        response.setServiceStatus(new ServiceStatus(statusCode, success, errorMessage));
     }
 
 }
