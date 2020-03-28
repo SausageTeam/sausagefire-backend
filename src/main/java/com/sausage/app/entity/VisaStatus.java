@@ -1,7 +1,6 @@
 package com.sausage.app.entity;
 
 import lombok.*;
-import org.omg.CORBA.PRIVATE_MEMBER;
 
 import javax.persistence.*;
 import java.io.Serializable;
