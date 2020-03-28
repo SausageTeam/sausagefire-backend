@@ -49,7 +49,7 @@ public class HRHireGenerateTokenServiceImpl implements HRHireGenerateTokenServic
             String encryptToken = AES.encrypt(decryptToken, SECRET_KEY);
 
             LocalDateTime now = LocalDateTime.now();
-            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String formatDateTime = now.format(format);
 
             registrationToken = RegistrationToken.builder()

@@ -68,7 +68,7 @@ public class HRVisaStatusManagementServiceImpl implements HRVisaStatusManagement
         List<VisaStatusRecord> visaStatusRecordList = new ArrayList<>();
         List<Employee> employeeList = employeeDAO.getAllEmployee();
         LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formatDateTime = now.format(format);
 
         for (Employee employee : employeeList) {

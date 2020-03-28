@@ -59,7 +59,7 @@ public class EmployeeOnboardingPersonServiceImpl implements EmployeeOnboardingPe
         Person person = user.getPerson();
         Employee employee = employeeDAO.getEmployeeByPerson(person);
         LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formatDateTime = now.format(format);
         ApplicationWorkFlow applicationWorkFlow = applicationWorkFlowDAO.getApplicationWorkFlowByEmployee(employee);
         if (applicationWorkFlow == null) {

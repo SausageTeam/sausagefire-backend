@@ -70,7 +70,7 @@ public class EmployeeOnboardingVisaServiceImpl implements EmployeeOnboardingVisa
         VisaStatus visaStatus = visaStatusDAO.setOtherVisaStatus(visaType);
         if (visaStatus == null){
             LocalDateTime now = LocalDateTime.now();
-            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String formatDateTime = now.format(format);
             visaStatus = VisaStatus.builder()
                     .visaType(visaType)

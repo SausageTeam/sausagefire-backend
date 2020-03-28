@@ -32,7 +32,7 @@ public class HibernateConfig {
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan("com.sausage.nav.entity");
+        sessionFactory.setPackagesToScan("com.sausage.app.entity");
         sessionFactory.setHibernateProperties(hibernateProperties());
 
         return sessionFactory;
