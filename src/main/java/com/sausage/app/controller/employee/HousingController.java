@@ -5,8 +5,7 @@ import com.sausage.app.domain.housing.maintenanceHistory.MaintenanceHistory;
 import com.sausage.app.domain.housing.maintenanceHistory.MaintenanceHistoryResponse;
 import com.sausage.app.domain.housing.housingInfo.HousingInfo;
 import com.sausage.app.domain.housing.housingInfo.HousingInfoResponse;
-import com.sausage.app.domain.housing.report.ReportRequest;
-import com.sausage.app.domain.housing.report.ReportResponse;
+import com.sausage.app.domain.housing.report.FacilityReportResponse;
 import com.sausage.app.service.employee.housing.FacilityReportService;
 import com.sausage.app.service.employee.housing.HousingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,14 +62,13 @@ public class HousingController {
 
     @Transactional
     @PostMapping("/facilityReport")
-    public ReportResponse postFacilityReport(@RequestBody ReportRequest request){
+    public FacilityReportResponse postFacilityReport(@RequestBody FacilityReportResponse response){
         int userID = 1;
-        ReportResponse response = new ReportResponse();
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         String formatDateTime = now.format(format);
         int employeeID = facilityReportService.getEmployeeID(userID);
-        facilityReportService.updateFacilityReport(request.getTitle(), employeeID, formatDateTime, request.getDescription(), "open");
+        facilityReportService.updateFacilityReport(response.getFacilityReport().getTitle(), employeeID, formatDateTime, response.getFacilityReport().getDescription(), "open");
 
         prepareFacilityReportResponse(response, true, "");
         return response;
@@ -84,7 +82,7 @@ public class HousingController {
         response.setServiceStatus(new ServiceStatus(success ? "SUCCESS" : "FAILED", success, errorMessage));
     }
 
-    private void prepareFacilityReportResponse(ReportResponse response, boolean success, String errorMessage) {
+    private void prepareFacilityReportResponse(FacilityReportResponse response, boolean success, String errorMessage) {
         response.setServiceStatus(new ServiceStatus(success ? "SUCCESS" : "FAILED", success, errorMessage));
     }
 }

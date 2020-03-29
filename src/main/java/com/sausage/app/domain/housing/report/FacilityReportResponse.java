@@ -5,12 +5,10 @@ import com.sausage.app.domain.common.ServiceStatus;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.xml.ws.Service;
-
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ReportResponse {
+public class FacilityReportResponse {
     private ServiceStatus serviceStatus;
-    private String redirectUrl;
+    private FacilityReport facilityReport;
 }
