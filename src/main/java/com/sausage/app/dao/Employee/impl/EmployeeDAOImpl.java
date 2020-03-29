@@ -18,6 +18,8 @@ public class EmployeeDAOImpl extends AbstractHibernateDAO<Employee> implements E
 
     private static final String GET_EMPLOYEE = "FROM Employee WHERE person = :person";
 
+    private static final String GET_EMPLOYEE_FROM_THE_HOUSE = "FROM Employee WHERE houseId = :houseID";
+
     public EmployeeDAOImpl() { setClazz(Employee.class);}
 
     @Override
@@ -48,6 +50,15 @@ public class EmployeeDAOImpl extends AbstractHibernateDAO<Employee> implements E
     public void setEmployee(Employee employee) {
         Session session = getCurrentSession();
         session.merge(employee);
+    }
+
+    @Override
+    public List<Employee> getEmployeesFromTheHouse(int houseID) {
+        Session session = getCurrentSession();
+        Query query = session.createQuery(GET_EMPLOYEE_FROM_THE_HOUSE);
+        query.setParameter("houseID", houseID);
+        List<Employee> employeeList = query.getResultList();
+        return employeeList.size() > 0 ? employeeList : null;
     }
 
 }

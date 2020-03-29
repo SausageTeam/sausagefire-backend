@@ -15,4 +15,5 @@ public interface EmployeeDAO {
 
     void setEmployee(Employee employee);
 
+    List<Employee> getEmployeesFromTheHouse(int houseID);
 }
