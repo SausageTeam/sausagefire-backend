@@ -51,8 +51,7 @@ public class FacilityReportServiceImpl implements FacilityReportService {
     @Override
     @Transactional
     public List<MaintenanceHistory> getReportListFromEmployee(int userID) {
-        System.out.println(userID);
-        User user = userDAO.getUserById(3);
+        User user = userDAO.getUserById(1);
 
         //int personID = userDAO.getPersonID(user);
         //Employee employee = employeeDAO.getEmployeeById(personID);
