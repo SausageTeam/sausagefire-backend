@@ -1,4 +1,4 @@
-package com.sausage.app.dao.ApplicationWorkFlow.enums;
+package com.sausage.app.constant.enums.ApplicationWorkFlow;
 
 public enum ApplicationWorkFlowUploadEnums {
     WAITING(1, "WAITING"),

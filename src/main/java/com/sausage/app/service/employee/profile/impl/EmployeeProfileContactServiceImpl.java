@@ -27,26 +27,27 @@ public class EmployeeProfileContactServiceImpl implements EmployeeProfileContact
         this.personDAO = personDAO;
     }
 
-    private Person getPersonByUserId(int userId) {
-        User user = userDAO.getUserById(userId);
-        return personDAO.getPersonById(user.getPersonId());
-    }
-
     @Override
     @Transactional
     public ProfileContact getProfileContact(int userId) {
-        Person person = getPersonByUserId(userId);
-        return ProfileContact.builder()
-                .personalEmail(person.getEmail())
-                .cellPhone(person.getCellphone())
-                .alternatePhone(person.getAlternatePhone())
-                .build();
+        try {
+            User user = userDAO.getUserById(userId);
+            Person person = user.getPerson();
+            return ProfileContact.builder()
+                    .personalEmail(person.getEmail())
+                    .cellPhone(person.getCellphone())
+                    .alternatePhone(person.getAlternatePhone())
+                    .build();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     @Transactional
     public void setProfileContact(int userId, ProfileContact profileContact) {
-        Person person = getPersonByUserId(userId);
+        User user = userDAO.getUserById(userId);
+        Person person = user.getPerson();
         person.setEmail(profileContact.getPersonalEmail());
         person.setCellphone(profileContact.getCellPhone());
         person.setAlternatePhone(profileContact.getAlternatePhone());

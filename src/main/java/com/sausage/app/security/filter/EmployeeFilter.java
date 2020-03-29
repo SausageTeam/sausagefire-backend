@@ -1,7 +1,7 @@
 package com.sausage.app.security.filter;
 
 import com.sausage.app.constant.Constant;
-import com.sausage.app.dao.Role.enums.RoleEnums;
+//import com.sausage.app.dao.Role.enums.RoleEnums;
 import com.sausage.app.security.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

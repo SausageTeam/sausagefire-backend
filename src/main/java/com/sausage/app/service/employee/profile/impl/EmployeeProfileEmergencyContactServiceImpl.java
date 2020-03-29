@@ -1,13 +1,13 @@
 package com.sausage.app.service.employee.profile.impl;
 
 import com.sausage.app.dao.Address.AddressDAO;
-import com.sausage.app.dao.Contact.ContactDAO;
-import com.sausage.app.dao.Employee.EmployeeDAO;
 import com.sausage.app.dao.Person.PersonDAO;
 import com.sausage.app.dao.User.UserDAO;
 import com.sausage.app.domain.common.AddressDomain;
 import com.sausage.app.domain.employee.profile.profileEmergencyContact.ProfileEmergencyContact;
-import com.sausage.app.entity.*;
+import com.sausage.app.entity.Address;
+import com.sausage.app.entity.Person;
+import com.sausage.app.entity.User;
 import com.sausage.app.service.employee.profile.EmployeeProfileEmergencyContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,10 +19,6 @@ public class EmployeeProfileEmergencyContactServiceImpl implements EmployeeProfi
     private UserDAO userDAO;
 
     private PersonDAO personDAO;
-
-    private EmployeeDAO employeeDAO;
-
-    private ContactDAO contactDAO;
 
     private AddressDAO addressDAO;
 
@@ -37,60 +33,48 @@ public class EmployeeProfileEmergencyContactServiceImpl implements EmployeeProfi
     }
 
     @Autowired
-    public void setEmployeeDAO(EmployeeDAO employeeDAO) {
-        this.employeeDAO = employeeDAO;
-    }
-
-    @Autowired
-    public void setContactDAO(ContactDAO contactDAO) {
-        this.contactDAO = contactDAO;
-    }
-
-    @Autowired
     public void setAddressDAO(AddressDAO addressDAO) {
         this.addressDAO = addressDAO;
-    }
-
-    private Person getContactPersonByUserId(int userId) {
-        User user = userDAO.getUserById(userId);
-        Person person = personDAO.getPersonById(user.getPersonId());
-        Employee employee = employeeDAO.getEmployeeByPerson(person);
-        Contact contact = contactDAO.getContactById(employee.getEmergencyId());
-        return contact.getPerson();
     }
 
     @Override
     @Transactional
     public ProfileEmergencyContact getProfileEmergencyContact(int userId) {
-        Person person = getContactPersonByUserId(userId);
-        String firstName = person.getFirstName();
-        String middleName = person.getMiddleName();
-        String lastName = person.getLastName();
-        String cellPhone = person.getCellphone();
+        try {
+            User user = userDAO.getUserById(userId);
+            Person person = user.getPerson();
+            String firstName = person.getFirstName();
+            String middleName = person.getMiddleName();
+            String lastName = person.getLastName();
+            String cellPhone = person.getCellphone();
 
-        Address address = addressDAO.getAddressByPerson(person);
-        AddressDomain addressDomain = AddressDomain.builder()
-                .addressLineOne(address.getAddressLineOne())
-                .addressLineTwo(address.getAddressLineTwo())
-                .city(address.getCity())
-                .zipCode(address.getZipCode())
-                .stateName(address.getStateName())
-                .stateAbbr(address.getStateAbbr())
-                .build();
+            Address address = addressDAO.getAddressByPerson(person);
+            AddressDomain addressDomain = AddressDomain.builder()
+                    .addressLineOne(address.getAddressLineOne())
+                    .addressLineTwo(address.getAddressLineTwo())
+                    .city(address.getCity())
+                    .zipCode(address.getZipCode())
+                    .stateName(address.getStateName())
+                    .stateAbbr(address.getStateAbbr())
+                    .build();
 
-        return ProfileEmergencyContact.builder()
-                .firstName(firstName)
-                .middleName(middleName)
-                .lastName(lastName)
-                .cellPhone(cellPhone)
-                .addressDomain(addressDomain)
-                .build();
+            return ProfileEmergencyContact.builder()
+                    .firstName(firstName)
+                    .middleName(middleName)
+                    .lastName(lastName)
+                    .cellPhone(cellPhone)
+                    .addressDomain(addressDomain)
+                    .build();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     @Transactional
     public void setProfileEmergencyContact(int userId, ProfileEmergencyContact profileEmergencyContact) {
-        Person person = getContactPersonByUserId(userId);
+        User user = userDAO.getUserById(userId);
+        Person person = user.getPerson();
         String firstName = profileEmergencyContact.getFirstName();
         String middleName = profileEmergencyContact.getMiddleName();
         String lastName = profileEmergencyContact.getLastName();

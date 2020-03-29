@@ -1,7 +1,6 @@
-package com.sausage.app.dao.ApplicationWorkFlow.enums;
+package com.sausage.app.constant.enums.ApplicationWorkFlow;
 
-public enum ApplicationWorkFlowStatusEnums {
-    ONBOARDING(0, "ONBOARDING"),
+public enum ApplicationWorkFlowOPTStatusEnums {
     OPT_RECEIPT(1, "OPT RECEIPT"),
     OPT_EAD(2, "OPT EAD"),
     I983(3, "I983"),
@@ -12,7 +11,7 @@ public enum ApplicationWorkFlowStatusEnums {
     private final int value;
     private final String str;
 
-    ApplicationWorkFlowStatusEnums(int value, String str) {
+    ApplicationWorkFlowOPTStatusEnums(int value, String str) {
         this.value = value;
         this.str = str;
     }

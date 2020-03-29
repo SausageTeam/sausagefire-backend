@@ -1,9 +1,8 @@
 package com.sausage.app.service.employee.profile.impl;
 
 import com.sausage.app.dao.Employee.EmployeeDAO;
-import com.sausage.app.dao.Person.PersonDAO;
-import com.sausage.app.dao.VisaStatus.VisaStatusDAO;
 import com.sausage.app.dao.User.UserDAO;
+import com.sausage.app.dao.VisaStatus.VisaStatusDAO;
 import com.sausage.app.domain.employee.profile.profileEmployment.ProfileEmployment;
 import com.sausage.app.entity.Employee;
 import com.sausage.app.entity.Person;
@@ -17,12 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import static com.sausage.app.constant.Constant.ACTIVE_FLAG;
+
 @Service
 public class EmployeeProfileEmploymentServiceImpl implements EmployeeProfileEmploymentService {
 
     private UserDAO userDAO;
-
-    private PersonDAO personDAO;
 
     private EmployeeDAO employeeDAO;
 
@@ -31,11 +30,6 @@ public class EmployeeProfileEmploymentServiceImpl implements EmployeeProfileEmpl
     @Autowired
     public void setUserDAO(UserDAO userDAO) {
         this.userDAO = userDAO;
-    }
-
-    @Autowired
-    public void setPersonDAO(PersonDAO personDAO) {
-        this.personDAO = personDAO;
     }
 
     @Autowired
@@ -48,43 +42,47 @@ public class EmployeeProfileEmploymentServiceImpl implements EmployeeProfileEmpl
         this.visaStatusDAO = visaStatusDAO;
     }
 
-    private Employee getEmployeeByUserId(int userId) {
-        User user = userDAO.getUserById(userId);
-        Person person = personDAO.getPersonById(user.getPersonId());
-        return employeeDAO.getEmployeeByPerson(person);
-    }
-
     @Override
     @Transactional
     public ProfileEmployment getProfileEmployment(int userId) {
-        Employee employee = getEmployeeByUserId(userId);
-        VisaStatus visaStatus = visaStatusDAO.getVisaStatusById(employee.getVisaStatusId());
+        try {
+            User user = userDAO.getUserById(userId);
+            Person person = user.getPerson();
+            Employee employee = employeeDAO.getEmployeeByPerson(person);
+            VisaStatus visaStatus = visaStatusDAO.getVisaStatusById(employee.getVisaStatusId());
 
-        return ProfileEmployment.builder()
-                .title(employee.getTitle())
-                .startDate(employee.getStartDate())
-                .endDate(employee.getEndDate())
-                .visaType(visaStatus.getVisaType())
-                .visaStartDate(employee.getVisaStartDate())
-                .visaEndDate(employee.getVisaEndDate())
-                .build();
+            return ProfileEmployment.builder()
+                    .title(employee.getTitle())
+                    .startDate(employee.getStartDate())
+                    .endDate(employee.getEndDate())
+                    .visaType(visaStatus.getVisaType())
+                    .visaStartDate(employee.getVisaStartDate())
+                    .visaEndDate(employee.getVisaEndDate())
+                    .build();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     @Transactional
     public void setProfileEmployment(int userId, ProfileEmployment profileEmployment) {
-        Employee employee = getEmployeeByUserId(userId);
+        User user = userDAO.getUserById(userId);
+        Person person = user.getPerson();
+        Employee employee = employeeDAO.getEmployeeByPerson(person);
 
         String visaType = profileEmployment.getVisaType();
         VisaStatus visaStatus = visaStatusDAO.setOtherVisaStatus(visaType);
         if (visaStatus == null) {
             LocalDateTime now = LocalDateTime.now();
-            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String formatDateTime = now.format(format);
             visaStatus = VisaStatus.builder()
                     .visaType(visaType)
-                    .modificationDate(formatDateTime)
-                    .createUser(userId)
+                    .activeFlag(ACTIVE_FLAG)
+                    .createdDateTime(formatDateTime)
+                    .modificationDateTime(formatDateTime)
+                    .createdUser(userId)
                     .build();
             visaStatus = visaStatusDAO.setVisaStatus(visaStatus);
         }

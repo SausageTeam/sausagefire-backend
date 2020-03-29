@@ -1,12 +1,11 @@
 package com.sausage.app.service.hr.hire.generateToken.impl;
 
-import com.sausage.app.constant.Constant;
 import com.sausage.app.dao.RegistrationToken.RegistrationTokenDAO;
 import com.sausage.app.dao.User.UserDAO;
 import com.sausage.app.domain.hr.hire.generateToken.HireGenerateToken;
 import com.sausage.app.entity.RegistrationToken;
 import com.sausage.app.entity.User;
-import com.sausage.app.fileIO.AES;
+import com.sausage.app.security.util.AES;
 import com.sausage.app.service.hr.hire.generateToken.HRHireGenerateTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,16 +49,16 @@ public class HRHireGenerateTokenServiceImpl implements HRHireGenerateTokenServic
             String encryptToken = AES.encrypt(decryptToken, SECRET_KEY);
 
             LocalDateTime now = LocalDateTime.now();
-            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String formatDateTime = now.format(format);
 
             registrationToken = RegistrationToken.builder()
                     .token(encryptToken)
                     .validDuration(DEFAULT_REGISTRATION_TOKEN_VALID_DURATION)
                     .email(email)
-                    .createdBy(userId)
                     .activeFlag(ACTIVE_FLAG)
-                    .createDateTime(formatDateTime)
+                    .createdDateTime(formatDateTime)
+                    .createdUser(userId)
                     .build();
 
             registrationTokenDAO.setRegistrationToken(registrationToken);

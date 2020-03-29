@@ -35,25 +35,29 @@ public class HREmployeeProfileServiceImpl implements HREmployeeProfileService {
     @Override
     @Transactional
     public EmployeeProfile getEmployeeProfile() {
-        List<EmployeeRecord> employeeRecordList = new ArrayList<>();
-        List<Employee> employeeList = employeeDAO.getAllEmployee();
-        for (Employee employee : employeeList) {
-            Person person = employee.getPerson();
-            VisaStatus visaStatus = visaStatusDAO.getVisaStatusById(employee.getVisaStatusId());
-            EmployeeRecord employeeRecord = EmployeeRecord.builder()
-                    .firstName(person.getFirstName())
-                    .middleName(person.getMiddleName())
-                    .lastName(person.getLastName())
-                    .ssn(person.getSSN())
-                    .startDate(employee.getStartDate())
-                    .visaStatus(visaStatus.getVisaType())
-                    .build();
-            employeeRecordList.add(employeeRecord);
-        }
+        try {
+            List<EmployeeRecord> employeeRecordList = new ArrayList<>();
+            List<Employee> employeeList = employeeDAO.getAllEmployee();
+            for (Employee employee : employeeList) {
+                Person person = employee.getPerson();
+                VisaStatus visaStatus = visaStatusDAO.getVisaStatusById(employee.getVisaStatusId());
+                EmployeeRecord employeeRecord = EmployeeRecord.builder()
+                        .firstName(person.getFirstName())
+                        .middleName(person.getMiddleName())
+                        .lastName(person.getLastName())
+                        .ssn(person.getSSN())
+                        .startDate(employee.getStartDate())
+                        .visaStatus(visaStatus.getVisaType())
+                        .build();
+                employeeRecordList.add(employeeRecord);
+            }
 
-        return EmployeeProfile.builder()
-                .employeeRecordList(employeeRecordList)
-                .build();
+            return EmployeeProfile.builder()
+                    .employeeRecordList(employeeRecordList)
+                    .build();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override

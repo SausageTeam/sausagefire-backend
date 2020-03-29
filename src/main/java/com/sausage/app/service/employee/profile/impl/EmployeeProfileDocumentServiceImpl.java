@@ -4,9 +4,6 @@ import com.sausage.app.dao.Employee.EmployeeDAO;
 import com.sausage.app.dao.Person.PersonDAO;
 import com.sausage.app.dao.User.UserDAO;
 import com.sausage.app.domain.employee.profile.profileDocument.ProfileDocument;
-import com.sausage.app.entity.Employee;
-import com.sausage.app.entity.Person;
-import com.sausage.app.entity.User;
 import com.sausage.app.service.employee.profile.EmployeeProfileDocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,12 +31,6 @@ public class EmployeeProfileDocumentServiceImpl implements EmployeeProfileDocume
     @Autowired
     public void setEmployeeDAO(EmployeeDAO employeeDAO) {
         this.employeeDAO = employeeDAO;
-    }
-
-    private Employee getEmployeeByUserId(int userId) {
-        User user = userDAO.getUserById(userId);
-        Person person = personDAO.getPersonById(user.getPersonId());
-        return employeeDAO.getEmployeeByPerson(person);
     }
 
     @Override

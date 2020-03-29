@@ -11,6 +11,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "Facility")
 public class Facility implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -27,4 +28,5 @@ public class Facility implements Serializable {
 
     @Column(name = "HOUSE_ID")
     private int houseID;
+
 }

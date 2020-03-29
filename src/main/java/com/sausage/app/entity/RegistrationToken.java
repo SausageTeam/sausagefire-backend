@@ -28,13 +28,13 @@ public class RegistrationToken implements Serializable {
     @Column(name = "EMAIL")
     private String email;
 
-    @Column(name = "CREATED_BY")
-    private int createdBy;
-
     @Column(name = "ACTIVE_FLAG")
     private int activeFlag;
 
-    @Column(name = "CREATE_DATE_TIME")
-    private String createDateTime;
+    @Column(name = "CREATED_DATE_TIME")
+    private String createdDateTime;
+
+    @Column(name = "CREATED_USER")
+    private int createdUser;
 
 }

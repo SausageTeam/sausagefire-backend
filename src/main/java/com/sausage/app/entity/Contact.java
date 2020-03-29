@@ -38,5 +38,4 @@ public class Contact implements Serializable {
     @Column(name = "IS_LANDLORD")
     private int isLandlord;
 
-
 }

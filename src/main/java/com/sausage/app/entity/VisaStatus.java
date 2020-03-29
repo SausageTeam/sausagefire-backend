@@ -1,7 +1,6 @@
 package com.sausage.app.entity;
 
 import lombok.*;
-import org.omg.CORBA.PRIVATE_MEMBER;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,6 +13,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "VisaStatus")
 public class VisaStatus implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -22,15 +22,16 @@ public class VisaStatus implements Serializable {
     @Column(name = "VISA_TYPE")
     private String visaType;
 
-    @Column(name = "CUSTOM_TYPE")
-    private String customType;
-
     @Column(name = "ACTIVE_FLAG")
     private int activeFlag;
 
-    @Column(name = "MODIFICATION_DATE")
-    private String modificationDate;
+    @Column(name = "CREATED_DATE_TIME")
+    private String createdDateTime;
 
-    @Column(name = "CREATE_USER")
-    private int createUser;
+    @Column(name = "MODIFICATION_DATE_TIME")
+    private String modificationDateTime;
+
+    @Column(name = "CREATED_USER")
+    private int createdUser;
+
 }
