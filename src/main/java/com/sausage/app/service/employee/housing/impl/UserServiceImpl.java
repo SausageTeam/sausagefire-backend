@@ -12,6 +12,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public int getPersonID(User user) {
-        return user.getPersonId();
+        return user.getPerson().getId();
     }
 }

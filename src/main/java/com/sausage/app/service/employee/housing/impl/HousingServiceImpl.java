@@ -56,7 +56,7 @@ public class HousingServiceImpl implements HousingService {
     @Transactional
     public HousingInfo getHousingInfo(int userID){
         User user = userDAO.getUserById(3);
-        int personID = user.getPersonId();
+        int personID = user.getPerson().getId();
         Person person = personDAO.getPersonById(personID);
         Employee employee = employeeDAO.getEmployeeByPerson(person);
         int houseID = employee.getHouseId();

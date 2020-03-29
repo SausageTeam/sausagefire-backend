@@ -56,7 +56,7 @@ public class FacilityReportServiceImpl implements FacilityReportService {
 
         //int personID = userDAO.getPersonID(user);
         //Employee employee = employeeDAO.getEmployeeById(personID);
-        Person person = personDAO.getPersonById(user.getPersonId());
+        Person person = personDAO.getPersonById(user.getPerson().getId());
         Employee employee = employeeDAO.getEmployeeByPerson(person);
         int employeeID = employee.getId();
         List<MaintenanceHistory> maintenanceHistoryList = new ArrayList<>();
@@ -89,7 +89,7 @@ public class FacilityReportServiceImpl implements FacilityReportService {
     @Transactional
     public int getEmployeeID(int userID) {
         User user = userDAO.getUserById(userID);
-        int personID = user.getPersonId();
+        int personID = user.getPerson().getId();
         Person p = personDAO.getPersonById(personID);
         Employee e = employeeDAO.getEmployeeById(p.getId());
         return e.getId();
