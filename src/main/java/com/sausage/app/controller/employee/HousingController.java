@@ -64,7 +64,7 @@ public class HousingController {
     @Transactional
     @PostMapping("/facilityReport")
     public ReportResponse postFacilityReport(@RequestBody ReportRequest request){
-        int userID = 2;
+        int userID = 1;
         ReportResponse response = new ReportResponse();
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
