@@ -55,22 +55,24 @@ public class HRHireGenerateTokenServiceImpl implements HRHireGenerateTokenServic
             return false;
         }
 
-        if (registrationToken != null) {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formatDateTime = now.format(format);
+        String decryptToken = String.format("%s %s %s %s %s", email, title, startDate, endDate, formatDateTime);
+        String encryptToken = AES.encrypt(decryptToken, SECRET_KEY);
+        if (registrationToken != null){
             String createDateTime = registrationToken.getCreatedDateTime();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DEFAULT_DATE_TIME_FORMAT);
             LocalDateTime expiryDate = LocalDateTime.parse(createDateTime, formatter).plusHours(registrationToken.getValidDuration());
             boolean usable = expiryDate.isAfter(LocalDateTime.now());
-            if (registrationToken.getActiveFlag() == INACTIVE_FLAG || !usable) {
-                return false;
+            if (!usable){
+                registrationToken.setToken(encryptToken);
+                registrationToken.setCreatedDateTime(formatDateTime);
+                registrationToken.setCreatedUser(userId);
+                registrationTokenDAO.setRegistrationToken(registrationToken);
             }
-        } else {
-            String decryptToken = String.format("%s %s %s %s", email, title, startDate, endDate);
-            String encryptToken = AES.encrypt(decryptToken, SECRET_KEY);
-
-            LocalDateTime now = LocalDateTime.now();
-            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            String formatDateTime = now.format(format);
-
+        }
+        else {
             registrationToken = RegistrationToken.builder()
                     .token(encryptToken)
                     .validDuration(DEFAULT_REGISTRATION_TOKEN_VALID_DURATION)
@@ -86,6 +88,7 @@ public class HRHireGenerateTokenServiceImpl implements HRHireGenerateTokenServic
         emailService.sendMail(email, GENERATE_TOKEN_NOTIFICATION_SUBJECT, body);
         return true;
     }
+
 }
 
 
