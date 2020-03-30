@@ -1,6 +1,7 @@
 package com.sausage.app.dao.Employee;
 
 import com.sausage.app.entity.Employee;
+import com.sausage.app.entity.House;
 import com.sausage.app.entity.Person;
 
 import java.util.List;
@@ -15,5 +16,5 @@ public interface EmployeeDAO {
 
     void setEmployee(Employee employee);
 
-    List<Employee> getEmployeesFromTheHouse(int houseID);
+    List<Employee> getEmployeesByHouse(House house);
 }
