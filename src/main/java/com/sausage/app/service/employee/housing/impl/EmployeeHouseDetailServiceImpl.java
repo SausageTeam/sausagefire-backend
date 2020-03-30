@@ -69,11 +69,12 @@ public class EmployeeHouseDetailServiceImpl implements EmployeeHouseDetailServic
 
             List<Resident> residentList = new ArrayList<>();
             List<Employee> employeeList = employeeDAO.getEmployeesByHouse(house);
-            for (Employee e : employeeList){
+            for (Employee e : employeeList) {
                 Person p = e.getPerson();
-                String name = p.getFirstName();
-                if (p.getPreferredName() != null){
-                    name = p.getPreferredName();
+                System.out.println(p.getId());
+                String name = p.getPreferredName();
+                if (name == null || name.equals("")) {
+                    name = p.getFirstName();
                 }
                 String phone = p.getCellphone();
                 Resident resident = Resident.builder()
@@ -86,7 +87,7 @@ public class EmployeeHouseDetailServiceImpl implements EmployeeHouseDetailServic
                     .addressDomain(addressDomain)
                     .residentList(residentList)
                     .build();
-        }catch (Exception e) {
+        } catch (Exception e) {
             return null;
         }
     }
