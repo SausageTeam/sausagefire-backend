@@ -404,8 +404,8 @@ public class EmployeeOnboardingController {
     }
 
 
-    @PostMapping(value = "/submit", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> postOnboardingSubmit(HttpServletRequest httpServletRequest){
+    @GetMapping(value = "/submit", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getOnboardingSubmit(HttpServletRequest httpServletRequest){
         ResponseEntity<String> responseEntity;
 
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
