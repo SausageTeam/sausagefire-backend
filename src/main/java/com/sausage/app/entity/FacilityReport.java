@@ -1,14 +1,15 @@
 package com.sausage.app.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "FacilityReport")
 public class FacilityReport implements Serializable {
@@ -21,8 +22,9 @@ public class FacilityReport implements Serializable {
     @Column(name = "TITLE")
     private String title;
 
-    @Column(name = "EMPLOYEE_ID")
-    private int employeeID;
+    @ManyToOne
+    @JoinColumn(name = "EMPLOYEE_ID")
+    private Employee employee;
 
     @Column(name = "REPORT_DATE")
     private String reportDate;

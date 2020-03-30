@@ -1,7 +1,5 @@
 package com.sausage.app.controller.employee;
 
-import com.sausage.app.domain.common.GenericResponse;
-import com.sausage.app.domain.common.ServiceStatus;
 import com.sausage.app.domain.employee.profile.profileAddress.ProfileAddress;
 import com.sausage.app.domain.employee.profile.profileAddress.ProfileAddressGetResponse;
 import com.sausage.app.domain.employee.profile.profileAddress.ProfileAddressPostRequest;
@@ -28,11 +26,14 @@ import com.sausage.app.domain.employee.profile.profileName.ProfileNamePostRespon
 import com.sausage.app.security.util.JwtUtil;
 import com.sausage.app.service.employee.profile.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static com.sausage.app.constant.Constant.*;
+import static com.sausage.app.constant.Constant.JWT_TOKEN_COOKIE_NAME;
+import static com.sausage.app.constant.Constant.SIGNING_KEY;
 
 @RestController
 @RequestMapping("/employee/profile")
@@ -84,237 +85,292 @@ public class EmployeeProfileController {
      * Name section
      */
     @GetMapping(value = "/name")
-    public ProfileNameGetResponse getProfileName(HttpServletRequest httpServletRequest) {
+    public ResponseEntity<Object> getProfileName(HttpServletRequest httpServletRequest) {
+        ResponseEntity<Object> responseEntity;
+
         ProfileNameGetResponse profileNameGetResponse = new ProfileNameGetResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
-            prepareResponse(profileNameGetResponse, "401", false, "User not Found");
+            responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Sorry, you are not authorized 😅");
         } else {
             int userId = Integer.parseInt(id);
             ProfileName profileName = employeeProfileNameService.getProfileName(userId);
             if (profileName == null) {
-                prepareResponse(profileNameGetResponse, "500", false, "Unexpected Error");
+                responseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Sorry, no data found 😅");
             } else {
                 profileNameGetResponse.setProfileName(profileName);
-                prepareResponse(profileNameGetResponse, "200", true, "");
+                responseEntity = ResponseEntity.ok()
+                        .body(profileNameGetResponse);
             }
         }
-        return profileNameGetResponse;
+        return responseEntity;
     }
 
     @PostMapping(value = "/name")
-    public ProfileNamePostResponse postProfileName(HttpServletRequest httpServletRequest, @RequestBody ProfileNamePostRequest profileNamePostRequest) {
+    public ResponseEntity<Object> postProfileName(HttpServletRequest httpServletRequest, @RequestBody ProfileNamePostRequest profileNamePostRequest) {
+        ResponseEntity<Object> responseEntity;
+
         ProfileNamePostResponse profileNamePostResponse = new ProfileNamePostResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
-            prepareResponse(profileNamePostResponse, "401", false, "User not Found");
+            responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Sorry, you are not authorized 😅");
         } else {
             int userId = Integer.parseInt(id);
             ProfileName profileName = profileNamePostRequest.getProfileName();
             if (profileName == null) {
-                prepareResponse(profileNamePostResponse, "500", false, "Unexpected Error");
+                responseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Sorry, no data found 😅");
             } else {
                 employeeProfileNameService.setProfileName(userId, profileName);
-                prepareResponse(profileNamePostResponse, "200", true, "");
+                responseEntity = ResponseEntity.ok()
+                        .body(profileNamePostResponse);
             }
         }
-        return profileNamePostResponse;
+        return responseEntity;
     }
 
     /**
      * Address section
      */
     @GetMapping(value = "/address")
-    public ProfileAddressGetResponse getProfileAddress(HttpServletRequest httpServletRequest) {
+    public ResponseEntity<Object> getProfileAddress(HttpServletRequest httpServletRequest) {
+        ResponseEntity<Object> responseEntity;
+
         ProfileAddressGetResponse profileAddressGetResponse = new ProfileAddressGetResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
-            prepareResponse(profileAddressGetResponse, "401", false, "User not Found");
+            responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Sorry, you are not authorized 😅");
         } else {
             int userId = Integer.parseInt(id);
             ProfileAddress profileAddress = employeeProfileAddressService.getProfileAddress(userId);
             if (profileAddress == null) {
-                prepareResponse(profileAddressGetResponse, "500", false, "Unexpected Error");
+                responseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Sorry, no data found 😅");
             } else {
                 profileAddressGetResponse.setProfileAddress(profileAddress);
-                prepareResponse(profileAddressGetResponse, "200", true, "");
+                responseEntity = ResponseEntity.ok()
+                        .body(profileAddressGetResponse);
             }
         }
-        return profileAddressGetResponse;
+        return responseEntity;
     }
 
     @PostMapping(value = "/address")
-    public ProfileAddressPostResponse postProfileAddress(HttpServletRequest httpServletRequest, @RequestBody ProfileAddressPostRequest profileAddressPostRequest) {
+    public ResponseEntity<Object> postProfileAddress(HttpServletRequest httpServletRequest, @RequestBody ProfileAddressPostRequest profileAddressPostRequest) {
+        ResponseEntity<Object> responseEntity;
+
         ProfileAddressPostResponse profileAddressPostResponse = new ProfileAddressPostResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
-            prepareResponse(profileAddressPostResponse, "401", false, "User not Found");
+            responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Sorry, you are not authorized 😅");
         } else {
             int userId = Integer.parseInt(id);
             ProfileAddress profileAddress = profileAddressPostRequest.getProfileAddress();
             if (profileAddress == null) {
-                prepareResponse(profileAddressPostResponse, "500", true, "Unexpected Error");
+                responseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Sorry, no data found 😅");
             } else {
                 employeeProfileAddressService.setProfileAddress(userId, profileAddress);
-                prepareResponse(profileAddressPostResponse, "200", true, "");
+                responseEntity = ResponseEntity.ok()
+                        .body(profileAddressPostResponse);
             }
         }
-        return profileAddressPostResponse;
+        return responseEntity;
     }
 
     /**
      * Contact section
      */
     @GetMapping(value = "/contact")
-    public ProfileContactGetResponse getProfileContact(HttpServletRequest httpServletRequest) {
+    public ResponseEntity<Object> getProfileContact(HttpServletRequest httpServletRequest) {
+        ResponseEntity<Object> responseEntity;
+
         ProfileContactGetResponse profileContactGetResponse = new ProfileContactGetResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
-            prepareResponse(profileContactGetResponse, "401", false, "User not Found");
+            responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Sorry, you are not authorized 😅");
         } else {
             int userId = Integer.parseInt(id);
             ProfileContact profileContact = employeeProfileContactService.getProfileContact(userId);
             if (profileContact == null) {
-                prepareResponse(profileContactGetResponse, "500", false, "Unexpected Error");
+                responseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Sorry, no data found 😅");
             } else {
                 profileContactGetResponse.setProfileContact(profileContact);
-                prepareResponse(profileContactGetResponse, "200", true, "");
+                responseEntity = ResponseEntity.ok()
+                        .body(profileContactGetResponse);
             }
         }
-        return profileContactGetResponse;
+        return responseEntity;
     }
 
     @PostMapping(value = "/contact")
-    public ProfileContactPostResponse postProfileContact(HttpServletRequest httpServletRequest, @RequestBody ProfileContactPostRequest profileContactPostRequest) {
+    public ResponseEntity<Object> postProfileContact(HttpServletRequest httpServletRequest, @RequestBody ProfileContactPostRequest profileContactPostRequest) {
+        ResponseEntity<Object> responseEntity;
+
         ProfileContactPostResponse profileContactPostResponse = new ProfileContactPostResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
-            prepareResponse(profileContactPostResponse, "401", false, "User not Found");
+            responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Sorry, you are not authorized 😅");
         } else {
             int userId = Integer.parseInt(id);
             ProfileContact profileContact = profileContactPostRequest.getProfileContact();
             if (profileContact == null) {
-                prepareResponse(profileContactPostResponse, "500", false, "Unexpected Error");
+                responseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Sorry, no data found 😅");
             } else {
                 employeeProfileContactService.setProfileContact(userId, profileContact);
-                prepareResponse(profileContactPostResponse, "200", true, "");
+                responseEntity = ResponseEntity.ok()
+                        .body(profileContactPostResponse);
             }
         }
-        return profileContactPostResponse;
+        return responseEntity;
     }
 
     /**
      * Employment section
      */
     @GetMapping(value = "/employment")
-    public ProfileEmploymentGetResponse getProfileEmployment(HttpServletRequest httpServletRequest) {
+    public ResponseEntity<Object> getProfileEmployment(HttpServletRequest httpServletRequest) {
+        ResponseEntity<Object> responseEntity;
+
         ProfileEmploymentGetResponse profileEmploymentGetResponse = new ProfileEmploymentGetResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
-            prepareResponse(profileEmploymentGetResponse, "401", false, "User not Found");
+            responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Sorry, you are not authorized 😅");
         } else {
             int userId = Integer.parseInt(id);
             ProfileEmployment profileEmployment = employeeProfileEmploymentService.getProfileEmployment(userId);
             if (profileEmployment == null) {
-                prepareResponse(profileEmploymentGetResponse, "500", false, "Unexpected Error");
+                responseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Sorry, no data found 😅");
             } else {
                 profileEmploymentGetResponse.setProfileEmployment(profileEmployment);
-                prepareResponse(profileEmploymentGetResponse, "200", true, "");
+                responseEntity = ResponseEntity.ok()
+                        .body(profileEmploymentGetResponse);
             }
         }
-        return profileEmploymentGetResponse;
+        return responseEntity;
     }
 
     @PostMapping(value = "/employment")
-    public ProfileEmploymentPostResponse postProfileEmployment(HttpServletRequest httpServletRequest, @RequestBody ProfileEmploymentPostRequest profileEmploymentPostRequest) {
+    public ResponseEntity<Object> postProfileEmployment(HttpServletRequest httpServletRequest, @RequestBody ProfileEmploymentPostRequest profileEmploymentPostRequest) {
+        ResponseEntity<Object> responseEntity;
+
         ProfileEmploymentPostResponse profileEmploymentPostResponse = new ProfileEmploymentPostResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
-            prepareResponse(profileEmploymentPostResponse, "401", false, "User not Found");
+            responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Sorry, you are not authorized 😅");
         } else {
             int userId = Integer.parseInt(id);
             ProfileEmployment profileEmployment = profileEmploymentPostRequest.getProfileEmployment();
             if (profileEmployment == null) {
-                prepareResponse(profileEmploymentPostResponse, "500", false, "Unexpected Error");
+                responseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Sorry, no data found 😅");
+            }else {
+                employeeProfileEmploymentService.setProfileEmployment(userId, profileEmployment);
+                responseEntity = ResponseEntity.ok()
+                        .body(profileEmploymentPostResponse);
             }
-            employeeProfileEmploymentService.setProfileEmployment(userId, profileEmployment);
-            prepareResponse(profileEmploymentPostResponse, "200", true, "");
         }
-        return profileEmploymentPostResponse;
+        return responseEntity;
     }
 
     /**
      * Emergency Contact section
      */
     @GetMapping(value = "/emergencyContact")
-    public ProfileEmergencyContactGetResponse getProfileEmergencyContact(HttpServletRequest httpServletRequest) {
+    public ResponseEntity<Object> getProfileEmergencyContact(HttpServletRequest httpServletRequest) {
+        ResponseEntity<Object> responseEntity;
+
         ProfileEmergencyContactGetResponse profileEmergencyContactGetResponse = new ProfileEmergencyContactGetResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
-            prepareResponse(profileEmergencyContactGetResponse, "401", false, "User not Found");
+            responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Sorry, you are not authorized 😅");
         } else {
             int userId = Integer.parseInt(id);
             ProfileEmergencyContact profileEmergencyContact = employeeProfileEmergencyContactService.getProfileEmergencyContact(userId);
             if (profileEmergencyContact == null) {
-                prepareResponse(profileEmergencyContactGetResponse, "500", false, "Unexpected Error");
+                responseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Sorry, no data found 😅");
             } else {
                 profileEmergencyContactGetResponse.setProfileEmergencyContact(profileEmergencyContact);
-                prepareResponse(profileEmergencyContactGetResponse, "200", true, "");
+                responseEntity = ResponseEntity.ok()
+                        .body(profileEmergencyContactGetResponse);
             }
         }
-        return profileEmergencyContactGetResponse;
+        return responseEntity;
     }
 
     @PostMapping(value = "/emergencyContact")
-    public ProfileEmergencyContactPostResponse postProfileEmergencyContact(HttpServletRequest httpServletRequest, @RequestBody ProfileEmergencyContactPostRequest profileEmergencyContactPostRequest) {
+    public ResponseEntity<Object> postProfileEmergencyContact(HttpServletRequest httpServletRequest, @RequestBody ProfileEmergencyContactPostRequest profileEmergencyContactPostRequest) {
+        ResponseEntity<Object> responseEntity;
+
         ProfileEmergencyContactPostResponse profileEmergencyContactPostResponse = new ProfileEmergencyContactPostResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
-            prepareResponse(profileEmergencyContactPostResponse, "401", false, "User not Found");
+            responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Sorry, you are not authorized 😅");
         } else {
             int userId = Integer.parseInt(id);
             ProfileEmergencyContact profileEmergencyContact = profileEmergencyContactPostRequest.getProfileEmergencyContact();
             if (profileEmergencyContact == null) {
-                prepareResponse(profileEmergencyContactPostResponse, "500", false, "Unexpected Error");
+                responseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Sorry, no data found 😅");
             } else {
                 employeeProfileEmergencyContactService.setProfileEmergencyContact(userId, profileEmergencyContact);
-                prepareResponse(profileEmergencyContactPostResponse, "200", true, "");
+                responseEntity = ResponseEntity.ok()
+                        .body(profileEmergencyContactPostResponse);
             }
         }
-        return profileEmergencyContactPostResponse;
+        return responseEntity;
     }
 
     /**
      * Document section
      */
     @GetMapping(value = "/document")
-    public ProfileDocumentGetResponse getProfileDocument(HttpServletRequest httpServletRequest) {
+    public ResponseEntity<Object> getProfileDocument(HttpServletRequest httpServletRequest) {
+        ResponseEntity<Object> responseEntity;
+
         ProfileDocumentGetResponse profileDocumentGetResponse = new ProfileDocumentGetResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
-            prepareResponse(profileDocumentGetResponse, "401", false, "User not Found");
+            responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Sorry, you are not authorized 😅");
         } else {
             int userId = Integer.parseInt(id);
-            prepareResponse(profileDocumentGetResponse, "200",true, "");
+            responseEntity = ResponseEntity.ok()
+                        .body(profileDocumentGetResponse);
         }
-        return profileDocumentGetResponse;
+        return responseEntity;
     }
 
     @PostMapping(value = "/document")
-    public ProfileDocumentPostResponse postProfileDocument(HttpServletRequest httpServletRequest, @RequestBody ProfileDocumentPostRequest profileDocumentPostRequest) {
+    public ResponseEntity<Object> postProfileDocument(HttpServletRequest httpServletRequest, @RequestBody ProfileDocumentPostRequest profileDocumentPostRequest) {
+        ResponseEntity<Object> responseEntity;
+
         ProfileDocumentPostResponse profileDocumentPostResponse = new ProfileDocumentPostResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
-            prepareResponse(profileDocumentPostResponse, "401", false, "User not Found");
+            responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Sorry, you are not authorized 😅");
         } else {
             int userId = Integer.parseInt(id);
-            prepareResponse(profileDocumentPostResponse, "200",true, "");
+            responseEntity = ResponseEntity.ok()
+                        .body(profileDocumentPostResponse);
         }
-        return profileDocumentPostResponse;
-    }
-
-    private void prepareResponse(GenericResponse response, String statusCode, boolean success, String errorMessage) {
-        response.setServiceStatus(new ServiceStatus(statusCode, success, errorMessage));
+        return responseEntity;
     }
 
 }

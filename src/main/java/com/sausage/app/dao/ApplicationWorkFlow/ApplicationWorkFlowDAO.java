@@ -11,7 +11,10 @@ public interface ApplicationWorkFlowDAO {
 
     void setApplicationWorkFlow(ApplicationWorkFlow applicationWorkFlow);
 
+    List<ApplicationWorkFlow> getAllOnboardingWaitingApplicationWorkFlow();
+
     List<ApplicationWorkFlow> getAllWaitingApplicationWorkFlow();
 
     List<ApplicationWorkFlow> getAllNotifyApplicationWorkFlow();
+
 }

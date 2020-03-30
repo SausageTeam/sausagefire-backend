@@ -56,8 +56,9 @@ public class Employee implements Serializable {
     @Column(name = "DRIVER_LICENSE_EXPIRATION_DATE")
     private String driverLicenseExpirationDate;
 
-    @Column(name = "HOUSE_ID")
-    private int houseId;
+    @ManyToOne
+    @JoinColumn(name = "HOUSE_ID")
+    private House house;
 
     @Column(name = "REFERENCE_ID")
     private int referenceId;

@@ -14,12 +14,12 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 @Service
-public class URIConvert {
+public class URIHandler {
 
     private final Path fileStorageLocation;
 
     @Autowired
-    public URIConvert(FileStorageProperties fileStorageProperties) {
+    public URIHandler(FileStorageProperties fileStorageProperties) {
         this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir())
                 .toAbsolutePath().normalize();
 

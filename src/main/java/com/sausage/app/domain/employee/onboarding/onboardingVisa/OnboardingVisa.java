@@ -13,5 +13,4 @@ public class OnboardingVisa {
 
     String visaEndDate;
 
-    String customType;
 }

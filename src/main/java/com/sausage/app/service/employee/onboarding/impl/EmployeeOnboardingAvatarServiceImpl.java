@@ -8,7 +8,7 @@ import com.sausage.app.entity.Employee;
 import com.sausage.app.entity.Person;
 import com.sausage.app.entity.User;
 import com.sausage.app.fileIO.FileOutput;
-import com.sausage.app.fileIO.URIConvert;
+import com.sausage.app.fileIO.URIHandler;
 import com.sausage.app.service.employee.onboarding.EmployeeOnboardingAvatarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class EmployeeOnboardingAvatarServiceImpl implements EmployeeOnboardingAv
 
     private EmployeeDAO employeeDAO;
 
-    private URIConvert uriConvert;
+    private URIHandler uriHandler;
 
     @Autowired
     public void setUserDAO(UserDAO userDAO) {
@@ -35,8 +35,8 @@ public class EmployeeOnboardingAvatarServiceImpl implements EmployeeOnboardingAv
     }
 
     @Autowired
-    public void setUriConvert(URIConvert uriConvert) {
-        this.uriConvert = uriConvert;
+    public void setUriHandler(URIHandler uriHandler) {
+        this.uriHandler = uriHandler;
     }
 
     @Override
@@ -48,7 +48,7 @@ public class EmployeeOnboardingAvatarServiceImpl implements EmployeeOnboardingAv
             Employee employee = employeeDAO.getEmployeeByPerson(person);
             String avatarPath = String.format(Constant.DEFAULT_FILE_PATH, employee.getId(), "avatar.jpg");
             FileOutput.getAvatar(avatarPath);
-            String uri = uriConvert.getUri(String.valueOf(employee.getId()), "avatar.jpg");
+            String uri = uriHandler.getUri(String.valueOf(employee.getId()), "avatar.jpg");
             return OnboardingAvatar.builder()
                     .avatarUri(uri)
                     .build();
@@ -63,7 +63,7 @@ public class EmployeeOnboardingAvatarServiceImpl implements EmployeeOnboardingAv
         User user = userDAO.getUserById(userId);
         Person person = user.getPerson();
         Employee employee = employeeDAO.getEmployeeByPerson(person);
-        uriConvert.storeFile(employee.getId(), file);
+        uriHandler.storeFile(employee.getId(), file);
     }
 
 }

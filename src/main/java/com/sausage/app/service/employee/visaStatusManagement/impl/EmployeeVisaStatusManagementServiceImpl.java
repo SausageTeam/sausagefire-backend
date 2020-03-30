@@ -10,7 +10,7 @@ import com.sausage.app.dao.VisaStatus.VisaStatusDAO;
 import com.sausage.app.domain.employee.visaStatusManagement.VisaStatusManagement;
 import com.sausage.app.entity.*;
 import com.sausage.app.fileIO.FileInput;
-import com.sausage.app.fileIO.URIConvert;
+import com.sausage.app.fileIO.URIHandler;
 import com.sausage.app.service.employee.visaStatusManagement.EmployeeVisaStatusManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +37,7 @@ public class EmployeeVisaStatusManagementServiceImpl implements EmployeeVisaStat
 
     private DigitalDocumentDAO digitalDocumentDAO;
 
-    private URIConvert uriConvert;
+    private URIHandler uriHandler;
 
     @Autowired
     public void setUserDAO(UserDAO userDAO) {
@@ -65,8 +65,8 @@ public class EmployeeVisaStatusManagementServiceImpl implements EmployeeVisaStat
     }
 
     @Autowired
-    public void setUriConvert(URIConvert uriConvert) {
-        this.uriConvert = uriConvert;
+    public void setUriHandler(URIHandler uriHandler) {
+        this.uriHandler = uriHandler;
     }
 
     @Override
@@ -92,8 +92,8 @@ public class EmployeeVisaStatusManagementServiceImpl implements EmployeeVisaStat
             boolean ifEAD = (applicationWorkFlow.getStatus() == OPT_EAD.getValue());
             boolean ifExpired = (diff < 100);
             if (ifF1 && ifEAD && ifExpired) {
-                String uri_empty = uriConvert.getUri("document", "I983_empty.pdf");
-                String uri_sample = uriConvert.getUri("document", "I983_sample.pdf");
+                String uri_empty = uriHandler.getUri("document", "I983_empty.pdf");
+                String uri_sample = uriHandler.getUri("document", "I983_sample.pdf");
                 visaStatusManagement.setIfNeedDownload(true);
                 visaStatusManagement.setStatus(applicationWorkFlow.getStatus());
                 visaStatusManagement.setComments(applicationWorkFlow.getComments());
