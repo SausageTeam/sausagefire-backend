@@ -7,7 +7,6 @@ import com.sausage.app.domain.employee.visaStatusManagement.VisaStatusManagement
 import com.sausage.app.security.util.JwtUtil;
 import com.sausage.app.service.employee.visaStatusManagement.EmployeeVisaStatusManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -33,25 +32,21 @@ public class EmployeeVisaStatusManagementController {
     @GetMapping
     public ResponseEntity<Object> getVisaStatusManagement(HttpServletRequest httpServletRequest) {
         ResponseEntity<Object> responseEntity;
-        HttpHeaders httpHeaders = new HttpHeaders();
 
         VisaStatusManagementGetResponse visaStatusManagementGetResponse = new VisaStatusManagementGetResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
             responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .headers(httpHeaders)
                     .body("Sorry, you are not authorized 😅");
         } else {
             int userId = Integer.parseInt(id);
             VisaStatusManagement visaStatusManagement = employeeVisaStatusManagementService.getVisaStatusManagement(userId);
             if (visaStatusManagement == null) {
                 responseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .headers(httpHeaders)
                         .body("Sorry, no data found 😅");
             } else {
                 visaStatusManagementGetResponse.setVisaStatusManagement(visaStatusManagement);
                 responseEntity = ResponseEntity.ok()
-                        .headers(httpHeaders)
                         .body(visaStatusManagementGetResponse);
             }
         }
@@ -61,25 +56,21 @@ public class EmployeeVisaStatusManagementController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> postVisaStatusManagement(HttpServletRequest httpServletRequest, @RequestBody VisaStatusManagementPostRequest visaStatusManagementPostRequest) {
         ResponseEntity<Object> responseEntity;
-        HttpHeaders httpHeaders = new HttpHeaders();
 
         VisaStatusManagementPostResponse visaStatusManagementPostResponse = new VisaStatusManagementPostResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
             responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .headers(httpHeaders)
                     .body("Sorry, you are not authorized 😅");
         } else {
             int userId = Integer.parseInt(id);
             File file = visaStatusManagementPostRequest.getFile();
             if (file == null) {
                 responseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .headers(httpHeaders)
                         .body("Sorry, no data found 😅");
             } else {
                 employeeVisaStatusManagementService.setVisaStatusManagement(userId, file);
                 responseEntity = ResponseEntity.ok()
-                        .headers(httpHeaders)
                         .body(visaStatusManagementPostResponse);
             }
         }

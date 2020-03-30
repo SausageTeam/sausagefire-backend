@@ -9,7 +9,6 @@ import com.sausage.app.security.util.JwtUtil;
 import com.sausage.app.service.hr.hire.applicationReview.HRHireApplicationReviewService;
 import com.sausage.app.service.hr.hire.generateToken.HRHireGenerateTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,18 +39,15 @@ public class HRHireManagement {
     @GetMapping(value = "/generate-token")
     public ResponseEntity<Object> getHireGenerateToken(HttpServletRequest httpServletRequest) {
         ResponseEntity<Object> responseEntity;
-        HttpHeaders httpHeaders = new HttpHeaders();
 
         HireGenerateTokenGetResponse hireGenerateTokenGetResponse = new HireGenerateTokenGetResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
             responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .headers(httpHeaders)
                     .body("Sorry, you are not authorized 😅");
         } else {
             int userId = Integer.parseInt(id);
             responseEntity = ResponseEntity.ok()
-                    .headers(httpHeaders)
                     .body(hireGenerateTokenGetResponse);
         }
         return responseEntity;
@@ -60,13 +56,11 @@ public class HRHireManagement {
     @PostMapping(value = "/generate-token")
     public ResponseEntity<Object> postHireGenerateToken(HttpServletRequest httpServletRequest, @RequestBody HireGenerateTokenPostRequest hireGenerateTokenPostRequest) {
         ResponseEntity<Object> responseEntity;
-        HttpHeaders httpHeaders = new HttpHeaders();
 
         HireGenerateTokenPostResponse hireGenerateTokenPostResponse = new HireGenerateTokenPostResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
             responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .headers(httpHeaders)
                     .body("Sorry, you are not authorized 😅");
         } else {
             int userId = Integer.parseInt(id);
@@ -74,11 +68,9 @@ public class HRHireManagement {
             boolean success = hrHireGenerateTokenService.setHireGenerateToken(userId, hireGenerateToken);
             if (!success) {
                 responseEntity = ResponseEntity.status(HttpStatus.CONFLICT)
-                        .headers(httpHeaders)
                         .body("Sorry, email is already used 😅");
             } else {
                 responseEntity = ResponseEntity.ok()
-                        .headers(httpHeaders)
                         .body(hireGenerateTokenPostResponse);
             }
         }
@@ -88,24 +80,20 @@ public class HRHireManagement {
     @GetMapping(value = "/application-review")
     public ResponseEntity<Object> getApplicationReview(HttpServletRequest httpServletRequest) {
         ResponseEntity<Object> responseEntity;
-        HttpHeaders httpHeaders = new HttpHeaders();
 
         HireApplicationReviewGetResponse hireApplicationReviewGetResponse = new HireApplicationReviewGetResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
             responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .headers(httpHeaders)
                     .body("Sorry, you are not authorized 😅");
         } else {
             HireApplicationReview hireApplicationReview = hrHireApplicationReviewService.getHireApplicationReview();
             if (hireApplicationReview == null) {
                 responseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .headers(httpHeaders)
                         .body("Sorry, no data found 😅");
             } else {
                 hireApplicationReviewGetResponse.setHireApplicationReview(hireApplicationReview);
                 responseEntity = ResponseEntity.ok()
-                        .headers(httpHeaders)
                         .body(hireApplicationReviewGetResponse);
             }
         }
@@ -115,19 +103,16 @@ public class HRHireManagement {
     @PostMapping(value = "/application-review")
     public ResponseEntity<Object> postApplicationReview(HttpServletRequest httpServletRequest, @RequestBody HireApplicationReviewPostRequest hireApplicationReviewPostRequest) {
         ResponseEntity<Object> responseEntity;
-        HttpHeaders httpHeaders = new HttpHeaders();
 
         HireApplicationReviewPostResponse hireApplicationReviewPostResponse = new HireApplicationReviewPostResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
             responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .headers(httpHeaders)
                     .body("Sorry, you are not authorized 😅");
         } else {
             ApplicationResult applicationResult = hireApplicationReviewPostRequest.getApplicationResult();
             hrHireApplicationReviewService.setHireApplicationReview(applicationResult);
             responseEntity = ResponseEntity.ok()
-                    .headers(httpHeaders)
                     .body(hireApplicationReviewPostResponse);
         }
         return responseEntity;
