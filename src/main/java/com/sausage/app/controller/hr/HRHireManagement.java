@@ -1,7 +1,5 @@
 package com.sausage.app.controller.hr;
 
-import com.sausage.app.domain.common.GenericResponse;
-import com.sausage.app.domain.common.ServiceStatus;
 import com.sausage.app.domain.hr.hire.applicationReview.*;
 import com.sausage.app.domain.hr.hire.generateToken.HireGenerateToken;
 import com.sausage.app.domain.hr.hire.generateToken.HireGenerateTokenGetResponse;
@@ -11,11 +9,12 @@ import com.sausage.app.security.util.JwtUtil;
 import com.sausage.app.service.hr.hire.applicationReview.HRHireApplicationReviewService;
 import com.sausage.app.service.hr.hire.generateToken.HRHireGenerateTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-
-import java.util.List;
 
 import static com.sausage.app.constant.Constant.JWT_TOKEN_COOKIE_NAME;
 import static com.sausage.app.constant.Constant.SIGNING_KEY;
@@ -39,75 +38,99 @@ public class HRHireManagement {
     }
 
     @GetMapping(value = "/generate-token")
-    public @ResponseBody
-    HireGenerateTokenGetResponse getHireGenerateToken(HttpServletRequest httpServletRequest) {
+    public ResponseEntity<Object> getHireGenerateToken(HttpServletRequest httpServletRequest) {
+        ResponseEntity<Object> responseEntity;
+        HttpHeaders httpHeaders = new HttpHeaders();
+
         HireGenerateTokenGetResponse hireGenerateTokenGetResponse = new HireGenerateTokenGetResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
-            prepareResponse(hireGenerateTokenGetResponse, "401", false, "User not Found");
+            responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .headers(httpHeaders)
+                    .body("Sorry, you are not authorized 😅");
         } else {
             int userId = Integer.parseInt(id);
-            prepareResponse(hireGenerateTokenGetResponse, "200", true, "");
+            responseEntity = ResponseEntity.ok()
+                    .headers(httpHeaders)
+                    .body(hireGenerateTokenGetResponse);
         }
-        return hireGenerateTokenGetResponse;
+        return responseEntity;
     }
 
     @PostMapping(value = "/generate-token")
-    public @ResponseBody
-    HireGenerateTokenPostResponse postHireGenerateToken(HttpServletRequest httpServletRequest, @RequestBody HireGenerateTokenPostRequest hireGenerateTokenPostRequest) {
+    public ResponseEntity<Object> postHireGenerateToken(HttpServletRequest httpServletRequest, @RequestBody HireGenerateTokenPostRequest hireGenerateTokenPostRequest) {
+        ResponseEntity<Object> responseEntity;
+        HttpHeaders httpHeaders = new HttpHeaders();
+
         HireGenerateTokenPostResponse hireGenerateTokenPostResponse = new HireGenerateTokenPostResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
-            prepareResponse(hireGenerateTokenPostResponse, "401", false, "User not Found");
+            responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .headers(httpHeaders)
+                    .body("Sorry, you are not authorized 😅");
         } else {
             int userId = Integer.parseInt(id);
             HireGenerateToken hireGenerateToken = hireGenerateTokenPostRequest.getHireGenerateToken();
             boolean success = hrHireGenerateTokenService.setHireGenerateToken(userId, hireGenerateToken);
             if (!success) {
-                prepareResponse(hireGenerateTokenPostResponse, "500", false, "Duplicate Email Address");
+                responseEntity = ResponseEntity.status(HttpStatus.CONFLICT)
+                        .headers(httpHeaders)
+                        .body("Sorry, email is already used 😅");
             } else {
-                prepareResponse(hireGenerateTokenPostResponse, "200", true, "");
+                responseEntity = ResponseEntity.ok()
+                        .headers(httpHeaders)
+                        .body(hireGenerateTokenPostResponse);
             }
         }
-        return hireGenerateTokenPostResponse;
+        return responseEntity;
     }
 
     @GetMapping(value = "/application-review")
-    public @ResponseBody
-    HireApplicationReviewGetResponse getApplicationReview(HttpServletRequest httpServletRequest) {
+    public ResponseEntity<Object> getApplicationReview(HttpServletRequest httpServletRequest) {
+        ResponseEntity<Object> responseEntity;
+        HttpHeaders httpHeaders = new HttpHeaders();
+
         HireApplicationReviewGetResponse hireApplicationReviewGetResponse = new HireApplicationReviewGetResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
-            prepareResponse(hireApplicationReviewGetResponse, "401", false, "User not Found");
+            responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .headers(httpHeaders)
+                    .body("Sorry, you are not authorized 😅");
         } else {
             HireApplicationReview hireApplicationReview = hrHireApplicationReviewService.getHireApplicationReview();
             if (hireApplicationReview == null) {
-                prepareResponse(hireApplicationReviewGetResponse, "500", false, "Unexpected Error");
+                responseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .headers(httpHeaders)
+                        .body("Sorry, no data found 😅");
             } else {
                 hireApplicationReviewGetResponse.setHireApplicationReview(hireApplicationReview);
-                prepareResponse(hireApplicationReviewGetResponse, "200", true, "");
+                responseEntity = ResponseEntity.ok()
+                        .headers(httpHeaders)
+                        .body(hireApplicationReviewGetResponse);
             }
         }
-        return hireApplicationReviewGetResponse;
+        return responseEntity;
     }
 
     @PostMapping(value = "/application-review")
-    public @ResponseBody
-    HireApplicationReviewPostResponse postApplicationReview(HttpServletRequest httpServletRequest, @RequestBody HireApplicationReviewPostRequest hireApplicationReviewPostRequest) {
+    public ResponseEntity<Object> postApplicationReview(HttpServletRequest httpServletRequest, @RequestBody HireApplicationReviewPostRequest hireApplicationReviewPostRequest) {
+        ResponseEntity<Object> responseEntity;
+        HttpHeaders httpHeaders = new HttpHeaders();
+
         HireApplicationReviewPostResponse hireApplicationReviewPostResponse = new HireApplicationReviewPostResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
-            prepareResponse(hireApplicationReviewPostResponse, "401", false, "User not Found");
+            responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .headers(httpHeaders)
+                    .body("Sorry, you are not authorized 😅");
         } else {
             ApplicationResult applicationResult = hireApplicationReviewPostRequest.getApplicationResult();
             hrHireApplicationReviewService.setHireApplicationReview(applicationResult);
-            prepareResponse(hireApplicationReviewPostResponse, "200", true, "");
+            responseEntity = ResponseEntity.ok()
+                    .headers(httpHeaders)
+                    .body(hireApplicationReviewPostResponse);
         }
-        return hireApplicationReviewPostResponse;
-    }
-
-    private void prepareResponse(GenericResponse response, String statusCode, boolean success, String errorMessage) {
-        response.setServiceStatus(new ServiceStatus(statusCode, success, errorMessage));
+        return responseEntity;
     }
 
 }
