@@ -56,7 +56,7 @@ public class AuthController {
                 httpHeaders.add("ifNeedVisa", String.valueOf(auth.isIfNeedVisa()));
                 responseEntity = ResponseEntity.ok()
                         .headers(httpHeaders)
-                        .body("Hello 😇");
+                        .body("Hello, everything is ok 😇");
             }
         }
         return responseEntity;
