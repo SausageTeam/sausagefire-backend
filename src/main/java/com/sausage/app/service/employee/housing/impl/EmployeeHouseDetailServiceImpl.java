@@ -1,9 +1,6 @@
 package com.sausage.app.service.employee.housing.impl;
 
-import com.sausage.app.dao.Address.AddressDAO;
-import com.sausage.app.dao.Contact.ContactDAO;
 import com.sausage.app.dao.Employee.EmployeeDAO;
-import com.sausage.app.dao.House.HouseDAO;
 import com.sausage.app.dao.User.UserDAO;
 import com.sausage.app.domain.common.AddressDomain;
 import com.sausage.app.domain.employee.housing.houseDetail.HouseDetail;
@@ -24,10 +21,6 @@ public class EmployeeHouseDetailServiceImpl implements EmployeeHouseDetailServic
 
     private EmployeeDAO employeeDAO;
 
-    private ContactDAO contactDAO;
-
-    private HouseDAO houseDAO;
-
     @Autowired
     public void setUserDAO(UserDAO userDAO) {
         this.userDAO = userDAO;
@@ -38,16 +31,6 @@ public class EmployeeHouseDetailServiceImpl implements EmployeeHouseDetailServic
         this.employeeDAO = employeeDAO;
     }
 
-    @Autowired
-    public void setContactDAO(ContactDAO contactDAO) {
-        this.contactDAO = contactDAO;
-    }
-
-    @Autowired
-    public void setHouseDAO(HouseDAO houseDAO) {
-        this.houseDAO = houseDAO;
-    }
-
     @Override
     @Transactional
     public HouseDetail getHouseDetail(int userId) {
@@ -55,8 +38,7 @@ public class EmployeeHouseDetailServiceImpl implements EmployeeHouseDetailServic
             User user = userDAO.getUserById(userId);
             Person person = user.getPerson();
             Employee employee = employeeDAO.getEmployeeByPerson(person);
-            Contact contact = contactDAO.getContactByPerson(person);
-            House house = houseDAO.getHouseByContact(contact);
+            House house = employee.getHouse();
             Address address = house.getAddress();
             AddressDomain addressDomain = AddressDomain.builder()
                     .addressLineOne(address.getAddressLineOne())
