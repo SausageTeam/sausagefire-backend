@@ -1,7 +1,6 @@
 package com.sausage.app.service.employee.housing.impl;
 
 import com.sausage.app.dao.Contact.ContactDAO;
-import com.sausage.app.dao.Employee.EmployeeDAO;
 import com.sausage.app.dao.FacilityReport.FacilityReportDAO;
 import com.sausage.app.dao.FacilityReportDetail.FacilityReportDetailDAO;
 import com.sausage.app.dao.House.HouseDAO;
@@ -10,8 +9,12 @@ import com.sausage.app.domain.employee.housing.facilityReports.record.FacilityRe
 import com.sausage.app.domain.employee.housing.facilityReports.record.FacilityRecordUpdate;
 import com.sausage.app.domain.employee.housing.facilityReports.record.FacilityReportsRecord;
 import com.sausage.app.domain.employee.housing.facilityReports.record.FacilityReportsRecordDetail;
-import com.sausage.app.entity.*;
+import com.sausage.app.entity.Employee;
+import com.sausage.app.entity.FacilityReport;
+import com.sausage.app.entity.FacilityReportDetail;
+import com.sausage.app.entity.Person;
 import com.sausage.app.service.employee.housing.EmployeeFacilityReportsRecordService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,15 +24,19 @@ import java.util.List;
 @Service
 public class EmployeeFacilityReportsRecordServiceImpl implements EmployeeFacilityReportsRecordService {
 
-    private UserDAO userDAO;
-
-    private ContactDAO contactDAO;
-
-    private HouseDAO houseDAO;
-
     private FacilityReportDAO facilityReportDAO;
 
     private FacilityReportDetailDAO facilityReportDetailDAO;
+
+    @Autowired
+    public void setFacilityReportDAO(FacilityReportDAO facilityReportDAO) {
+        this.facilityReportDAO = facilityReportDAO;
+    }
+
+    @Autowired
+    public void setFacilityReportDetailDAO(FacilityReportDetailDAO facilityReportDetailDAO) {
+        this.facilityReportDetailDAO = facilityReportDetailDAO;
+    }
 
     @Override
     @Transactional
