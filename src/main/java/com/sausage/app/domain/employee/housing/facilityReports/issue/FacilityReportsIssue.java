@@ -11,6 +11,6 @@ public class FacilityReportsIssue {
 
     String title;
 
-    String Description;
+    String description;
 
 }
