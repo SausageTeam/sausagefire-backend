@@ -1,12 +1,15 @@
 package com.sausage.app.controller.hr;
 
-import com.sausage.app.domain.common.GenericResponse;
-import com.sausage.app.domain.common.ServiceStatus;
-import com.sausage.app.domain.hr.dashboard.*;
+import com.sausage.app.domain.hr.dashboard.Dashboard;
+import com.sausage.app.domain.hr.dashboard.DashboardGetResponse;
+import com.sausage.app.domain.hr.dashboard.DashboardPostRequest;
+import com.sausage.app.domain.hr.dashboard.DashboardPostResponse;
 import com.sausage.app.security.util.JwtUtil;
 import com.sausage.app.service.hr.dashboard.HRDashboardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,41 +29,44 @@ public class HRDashboardController {
     }
 
     @GetMapping
-    public @ResponseBody
-    DashboardGetResponse getHRDashboard(HttpServletRequest httpServletRequest) {
+    public ResponseEntity<Object> getHRDashboard(HttpServletRequest httpServletRequest) {
+        ResponseEntity<Object> responseEntity;
+
         DashboardGetResponse dashboardGetResponse = new DashboardGetResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
-            prepareResponse(dashboardGetResponse, "401", false, "User not Found");
+            responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Sorry, you are not authorized 😅");
         } else {
             Dashboard dashboard = HRDashboardService.getHRDashboard();
             if (dashboard == null) {
-                prepareResponse(dashboardGetResponse, "500", false, "Unexpected Error");
+                responseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Sorry, no data found 😅");
             } else {
                 dashboardGetResponse.setDashboard(dashboard);
-                prepareResponse(dashboardGetResponse, "200", true, "");
+                responseEntity = ResponseEntity.ok()
+                        .body(dashboardGetResponse);
             }
         }
-        return dashboardGetResponse;
+        return responseEntity;
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody
-    DashboardPostResponse postHRDashboard(HttpServletRequest httpServletRequest, @RequestBody DashboardPostRequest dashboardPostRequest) {
+    public ResponseEntity<Object> postHRDashboard(HttpServletRequest httpServletRequest, @RequestBody DashboardPostRequest dashboardPostRequest) {
+        ResponseEntity<Object> responseEntity;
+
         DashboardPostResponse dashboardPostResponse = new DashboardPostResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
-            prepareResponse(dashboardPostResponse, "401", false, "User not Found");
+            responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Sorry, you are not authorized 😅");
         } else {
             int employeeId = dashboardPostRequest.getEmployeeId();
             HRDashboardService.postHRDashboard(employeeId);
-            prepareResponse(dashboardPostResponse, "200", true, "");
+            responseEntity = ResponseEntity.ok()
+                    .body(dashboardPostResponse);
         }
-        return dashboardPostResponse;
-    }
-
-    private void prepareResponse(GenericResponse response, String statusCode, boolean success, String errorMessage) {
-        response.setServiceStatus(new ServiceStatus(statusCode, success, errorMessage));
+        return responseEntity;
     }
 
 }

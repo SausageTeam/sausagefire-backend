@@ -7,7 +7,7 @@ import com.sausage.app.domain.common.nav.Nav;
 import com.sausage.app.entity.Employee;
 import com.sausage.app.entity.Person;
 import com.sausage.app.entity.User;
-import com.sausage.app.fileIO.URIConvert;
+import com.sausage.app.fileIO.URIHandler;
 import com.sausage.app.service.common.nav.NavService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class NavServiceImpl implements NavService {
 
     private EmployeeDAO employeeDAO;
 
-    private URIConvert uriConvert;
+    private URIHandler uriHandler;
 
     @Autowired
     public void setUserDAO(UserDAO userDAO) {
@@ -40,8 +40,8 @@ public class NavServiceImpl implements NavService {
     }
 
     @Autowired
-    public void setUriConvert(URIConvert uriConvert) {
-        this.uriConvert = uriConvert;
+    public void setUriHandler(URIHandler uriHandler) {
+        this.uriHandler = uriHandler;
     }
 
     @Override
@@ -51,7 +51,7 @@ public class NavServiceImpl implements NavService {
             User user = userDAO.getUserById(userId);
             Person person = user.getPerson();
             Employee employee = employeeDAO.getEmployeeByPerson(person);
-            String uri = uriConvert.getUri(String.valueOf(employee.getId()), "avatar.jpg");
+            String uri = uriHandler.getUri(String.valueOf(employee.getId()), "avatar.jpg");
             return Nav.builder()
                     .firstName(person.getFirstName())
                     .avatarUri(uri)

@@ -1,7 +1,5 @@
 package com.sausage.app.controller.hr;
 
-import com.sausage.app.domain.common.GenericResponse;
-import com.sausage.app.domain.common.ServiceStatus;
 import com.sausage.app.domain.hr.visaStatusManagement.VisaStatusManagement;
 import com.sausage.app.domain.hr.visaStatusManagement.VisaStatusManagementGetResponse;
 import com.sausage.app.domain.hr.visaStatusManagement.VisaStatusManagementPostRequest;
@@ -9,7 +7,9 @@ import com.sausage.app.domain.hr.visaStatusManagement.VisaStatusManagementPostRe
 import com.sausage.app.security.util.JwtUtil;
 import com.sausage.app.service.hr.visaStatusManagement.HRVisaStatusManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,41 +29,44 @@ public class HRVisaStatusManagementController {
     }
 
     @GetMapping
-    public @ResponseBody
-    VisaStatusManagementGetResponse getVisaStatusManagement(HttpServletRequest httpServletRequest) {
+    public ResponseEntity<Object> getVisaStatusManagement(HttpServletRequest httpServletRequest) {
+        ResponseEntity<Object> responseEntity;
+
         VisaStatusManagementGetResponse visaStatusManagementGetResponse = new VisaStatusManagementGetResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
-            prepareResponse(visaStatusManagementGetResponse, "401", false, "User not Found");
+            responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Sorry, you are not authorized 😅");
         } else {
             VisaStatusManagement visaStatusManagement = HRVisaStatusManagementService.getVisaStatusManagement();
             if (visaStatusManagement == null) {
-                prepareResponse(visaStatusManagementGetResponse, "500", false, "Unexpected Error");
+                responseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Sorry, no data found 😅");
             } else {
                 visaStatusManagementGetResponse.setVisaStatusManagement(visaStatusManagement);
-                prepareResponse(visaStatusManagementGetResponse, "200", true, "");
+                responseEntity = ResponseEntity.ok()
+                        .body(visaStatusManagementGetResponse);
             }
         }
-        return visaStatusManagementGetResponse;
+        return responseEntity;
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody
-    VisaStatusManagementPostResponse postVisaStatusManagement(HttpServletRequest httpServletRequest, @RequestBody VisaStatusManagementPostRequest visaStatusManagementPostRequest) {
+    public ResponseEntity<Object> postVisaStatusManagement(HttpServletRequest httpServletRequest, @RequestBody VisaStatusManagementPostRequest visaStatusManagementPostRequest) {
+        ResponseEntity<Object> responseEntity;
+
         VisaStatusManagementPostResponse visaStatusManagementPostResponse = new VisaStatusManagementPostResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
-            prepareResponse(visaStatusManagementPostResponse, "401", false, "User not Found");
+            responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Sorry, you are not authorized 😅");
         } else {
             int employeeId = visaStatusManagementPostRequest.getEmployeeId();
             HRVisaStatusManagementService.setVisaStatusManagement(employeeId);
-            prepareResponse(visaStatusManagementPostResponse, "200", true, "");
+            responseEntity = ResponseEntity.ok()
+                    .body(visaStatusManagementPostResponse);
         }
-        return visaStatusManagementPostResponse;
-    }
-
-    private void prepareResponse(GenericResponse response, String statusCode, boolean success, String errorMessage) {
-        response.setServiceStatus(new ServiceStatus(statusCode, success, errorMessage));
+        return responseEntity;
     }
 
 }

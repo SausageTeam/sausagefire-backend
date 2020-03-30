@@ -7,7 +7,7 @@ import com.sausage.app.domain.employee.profile.profileName.ProfileName;
 import com.sausage.app.entity.Employee;
 import com.sausage.app.entity.Person;
 import com.sausage.app.entity.User;
-import com.sausage.app.fileIO.URIConvert;
+import com.sausage.app.fileIO.URIHandler;
 import com.sausage.app.service.employee.profile.EmployeeProfileNameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ public class EmployeeProfileNameServiceImpl implements EmployeeProfileNameServic
 
     private EmployeeDAO employeeDAO;
 
-    private URIConvert uriConvert;
+    private URIHandler uriHandler;
 
     @Autowired
     public void setUserDAO(UserDAO userDAO) {
@@ -43,8 +43,8 @@ public class EmployeeProfileNameServiceImpl implements EmployeeProfileNameServic
     }
 
     @Autowired
-    public void setUriConvert(URIConvert uriConvert) {
-        this.uriConvert = uriConvert;
+    public void setUriHandler(URIHandler uriHandler) {
+        this.uriHandler = uriHandler;
     }
 
     @Override
@@ -59,7 +59,7 @@ public class EmployeeProfileNameServiceImpl implements EmployeeProfileNameServic
             String lastName = person.getLastName();
             String preferredName = person.getPreferredName();
 
-            String uri = uriConvert.getUri(String.valueOf(employee.getId()), "avatar.jpg");
+            String uri = uriHandler.getUri(String.valueOf(employee.getId()), "avatar.jpg");
 
             String dob = person.getDOB();
             DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
