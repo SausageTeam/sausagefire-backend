@@ -404,7 +404,7 @@ public class EmployeeOnboardingController {
     }
 
 
-    @GetMapping(value = "/submit", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/submit")
     public ResponseEntity<String> getOnboardingSubmit(HttpServletRequest httpServletRequest){
         ResponseEntity<String> responseEntity;
 
