@@ -36,13 +36,12 @@ public class AuthController {
         ResponseEntity<String> responseEntity;
         HttpHeaders httpHeaders = new HttpHeaders();
 
-        AuthGetResponse authGetResponse = new AuthGetResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
             httpHeaders.add("redirectUrl", AUTH_SERVICE);
             responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .headers(httpHeaders)
-                    .body("Sorry, you need to login first 😅");
+                    .body("Sorry, you are not authorized 😅");
         } else {
             int userId = Integer.parseInt(id);
             Auth auth = authService.getAuth(userId);
@@ -61,10 +60,6 @@ public class AuthController {
             }
         }
         return responseEntity;
-    }
-
-    private void prepareResponse(GenericResponse response, String statusCode, boolean success, String errorMessage) {
-        response.setServiceStatus(new ServiceStatus(statusCode, success, errorMessage));
     }
 
 }
