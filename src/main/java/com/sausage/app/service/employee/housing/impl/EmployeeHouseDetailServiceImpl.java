@@ -71,7 +71,6 @@ public class EmployeeHouseDetailServiceImpl implements EmployeeHouseDetailServic
             List<Employee> employeeList = employeeDAO.getEmployeesByHouse(house);
             for (Employee e : employeeList) {
                 Person p = e.getPerson();
-                System.out.println(p.getId());
                 String name = p.getPreferredName();
                 if (name == null || name.equals("")) {
                     name = p.getFirstName();
