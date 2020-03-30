@@ -1,7 +1,5 @@
 package com.sausage.app.controller.employee;
 
-import com.sausage.app.domain.common.GenericResponse;
-import com.sausage.app.domain.common.ServiceStatus;
 import com.sausage.app.domain.employee.onboarding.onboardingAvatar.OnboardingAvatar;
 import com.sausage.app.domain.employee.onboarding.onboardingAvatar.OnboardingAvatarGetResponse;
 import com.sausage.app.domain.employee.onboarding.onboardingAvatar.OnboardingAvatarPostResponse;

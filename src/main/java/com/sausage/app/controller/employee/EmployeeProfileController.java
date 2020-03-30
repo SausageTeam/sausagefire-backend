@@ -1,7 +1,5 @@
 package com.sausage.app.controller.employee;
 
-import com.sausage.app.domain.common.GenericResponse;
-import com.sausage.app.domain.common.ServiceStatus;
 import com.sausage.app.domain.employee.profile.profileAddress.ProfileAddress;
 import com.sausage.app.domain.employee.profile.profileAddress.ProfileAddressGetResponse;
 import com.sausage.app.domain.employee.profile.profileAddress.ProfileAddressPostRequest;
@@ -35,7 +33,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static com.sausage.app.constant.Constant.*;
+import static com.sausage.app.constant.Constant.JWT_TOKEN_COOKIE_NAME;
+import static com.sausage.app.constant.Constant.SIGNING_KEY;
 
 @RestController
 @RequestMapping("/employee/profile")

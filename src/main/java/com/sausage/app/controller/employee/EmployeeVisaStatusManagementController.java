@@ -1,7 +1,5 @@
 package com.sausage.app.controller.employee;
 
-import com.sausage.app.domain.common.GenericResponse;
-import com.sausage.app.domain.common.ServiceStatus;
 import com.sausage.app.domain.employee.visaStatusManagement.VisaStatusManagement;
 import com.sausage.app.domain.employee.visaStatusManagement.VisaStatusManagementGetResponse;
 import com.sausage.app.domain.employee.visaStatusManagement.VisaStatusManagementPostRequest;
@@ -9,7 +7,10 @@ import com.sausage.app.domain.employee.visaStatusManagement.VisaStatusManagement
 import com.sausage.app.security.util.JwtUtil;
 import com.sausage.app.service.employee.visaStatusManagement.EmployeeVisaStatusManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,46 +31,59 @@ public class EmployeeVisaStatusManagementController {
     }
 
     @GetMapping
-    public @ResponseBody
-    VisaStatusManagementGetResponse getVisaStatusManagement(HttpServletRequest httpServletRequest) {
+    public ResponseEntity<Object> getVisaStatusManagement(HttpServletRequest httpServletRequest) {
+        ResponseEntity<Object> responseEntity;
+        HttpHeaders httpHeaders = new HttpHeaders();
+
         VisaStatusManagementGetResponse visaStatusManagementGetResponse = new VisaStatusManagementGetResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
-            prepareResponse(visaStatusManagementGetResponse, "401", false, "User not Found");
+            responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .headers(httpHeaders)
+                    .body("Sorry, you are not authorized 😅");
         } else {
             int userId = Integer.parseInt(id);
             VisaStatusManagement visaStatusManagement = employeeVisaStatusManagementService.getVisaStatusManagement(userId);
             if (visaStatusManagement == null) {
-                prepareResponse(visaStatusManagementGetResponse, "500", false, "Unexpected Error");
+                responseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .headers(httpHeaders)
+                        .body("Sorry, no data found 😅");
             } else {
                 visaStatusManagementGetResponse.setVisaStatusManagement(visaStatusManagement);
-                prepareResponse(visaStatusManagementGetResponse, "200", true, "");
+                responseEntity = ResponseEntity.ok()
+                        .headers(httpHeaders)
+                        .body(visaStatusManagementGetResponse);
             }
         }
-        return visaStatusManagementGetResponse;
+        return responseEntity;
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody
-    VisaStatusManagementPostResponse postVisaStatusManagement(HttpServletRequest httpServletRequest, @RequestBody VisaStatusManagementPostRequest visaStatusManagementPostRequest) {
+    public ResponseEntity<Object> postVisaStatusManagement(HttpServletRequest httpServletRequest, @RequestBody VisaStatusManagementPostRequest visaStatusManagementPostRequest) {
+        ResponseEntity<Object> responseEntity;
+        HttpHeaders httpHeaders = new HttpHeaders();
+
         VisaStatusManagementPostResponse visaStatusManagementPostResponse = new VisaStatusManagementPostResponse();
         String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
         if (id == null) {
-            prepareResponse(visaStatusManagementPostResponse, "401", false, "User not Found");
+            responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .headers(httpHeaders)
+                    .body("Sorry, you are not authorized 😅");
         } else {
             int userId = Integer.parseInt(id);
             File file = visaStatusManagementPostRequest.getFile();
-            if (file == null){
-                prepareResponse(visaStatusManagementPostResponse, "500", false, "Expected Error");
+            if (file == null) {
+                responseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .headers(httpHeaders)
+                        .body("Sorry, no data found 😅");
+            } else {
+                employeeVisaStatusManagementService.setVisaStatusManagement(userId, file);
+                responseEntity = ResponseEntity.ok()
+                        .headers(httpHeaders)
+                        .body(visaStatusManagementPostResponse);
             }
-            employeeVisaStatusManagementService.setVisaStatusManagement(userId, file);
-            prepareResponse(visaStatusManagementPostResponse, "200", true, "");
         }
-        return visaStatusManagementPostResponse;
-    }
-
-    private void prepareResponse(GenericResponse response, String statusCode, boolean success, String errorMessage) {
-        response.setServiceStatus(new ServiceStatus(statusCode, success, errorMessage));
+        return responseEntity;
     }
 
 }
