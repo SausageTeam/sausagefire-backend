@@ -53,6 +53,8 @@ public class EmployeeOnboardingController {
 
     private EmployeeOnboardingEmergencyService employeeOnboardingEmergencyService;
 
+    private EmployeeOnboardingSubmitService employeeOnboardingSubmitService;
+
     @Autowired
     public void setEmployeeOnboardingPersonService(EmployeeOnboardingPersonService employeeOnboardingPersonService) {
         this.employeeOnboardingPersonService = employeeOnboardingPersonService;
@@ -81,6 +83,11 @@ public class EmployeeOnboardingController {
     @Autowired
     public void setEmployeeOnboardingEmergencyService(EmployeeOnboardingEmergencyService employeeOnboardingEmergencyService) {
         this.employeeOnboardingEmergencyService = employeeOnboardingEmergencyService;
+    }
+
+    @Autowired
+    public void setEmployeeOnboardingSubmitService(EmployeeOnboardingSubmitService employeeOnboardingSubmitService) {
+        this.employeeOnboardingSubmitService = employeeOnboardingSubmitService;
     }
 
     /**
@@ -392,6 +399,24 @@ public class EmployeeOnboardingController {
                 responseEntity = ResponseEntity.ok()
                         .body(onboardingEmergencyPostResponse);
             }
+        }
+        return responseEntity;
+    }
+
+
+    @PostMapping(value = "/submit", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> postOnboardingSubmit(HttpServletRequest httpServletRequest){
+        ResponseEntity<String> responseEntity;
+
+        String id = JwtUtil.getSubject(httpServletRequest, JWT_TOKEN_COOKIE_NAME, SIGNING_KEY);
+        if (id == null) {
+            responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Sorry, you are not authorized 😅");
+        } else {
+            int userId = Integer.parseInt(id);
+            employeeOnboardingSubmitService.setEmployeeOnboardingSubmit(userId);
+            responseEntity = ResponseEntity.ok()
+            .body("Waiting, everything is ok 😇");
         }
         return responseEntity;
     }
